@@ -26,6 +26,11 @@ class JSRoutingCommand extends ContainerAwareCommand
     private $extractor;
 
     /**
+     * @var bool
+     */
+    private $canExecute = true;
+
+    /**
      * {@inheritdoc}
      */
     protected function configure()
@@ -54,7 +59,7 @@ class JSRoutingCommand extends ContainerAwareCommand
         if ( !$input->getOption('target') && !$container->getParameter('netbull_core.js_routes_path') ) {
             $output->writeln('<error>No exit file is specified!</error>');
             $output->writeln('Please specify it in netbull_core.js_routes_path');
-            exit;
+            $this->canExecute = false;
         }
 
         $this->targetPath   = $input->getOption('target') ?: sprintf('%s/../%s', $container->getParameter('kernel.root_dir'), $container->getParameter('netbull_core.js_routes_path'));
@@ -66,6 +71,10 @@ class JSRoutingCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        if ( !$this->canExecute ) {
+            return;
+        }
+
         $output->writeln('Dumping exposed routes.');
         $output->writeln('');
         $this->doDump($output);
@@ -101,7 +110,7 @@ class JSRoutingCommand extends ContainerAwareCommand
             }
         }
 
-        $source = file_get_contents(__DIR__ . '/../Resources/js/router.js');
+        $source = file_get_contents($this->getContainer()->get('kernel')->locateResource('@NetbullCoreBundle/Resources/js/Router.js'));
         $content = str_replace('//<ROUTES>', $routes, $source);
 
         if ( false === @file_put_contents($this->targetPath, $content) ) {
