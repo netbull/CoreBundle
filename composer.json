@@ -1,0 +1,23 @@
+{
+  "name" : "netbull/core-bundle",
+  "description" : "Core bundle",
+  "type" : "symfony-bundle",
+  "authors" : [{
+    "name" : "Aleksandar Dimitrov",
+    "email" : "netbull2007@gmail.com"
+  }],
+  "keywords" : [
+    "core symfony bundle"
+  ],
+  "license" : [
+    "MIT"
+  ],
+  "require" : {
+
+  },
+  "autoload" : {
+    "psr-4" : {
+      "Netbull\\CoreBundle\\" : ""
+    }
+  }
+}
