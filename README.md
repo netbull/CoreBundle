@@ -47,3 +47,35 @@ class AppKernel extends Kernel
     // ...
 }
 ```
+
+Step 3: Configure bundle
+-----------------------------
+```yaml
+    netbull_core:
+        js_routing_path: <ASSETS_FOLDER>/<JS_FILE_NAME>.js
+```
+
+Step 4: Configure some routes
+-----------------------------
+Add `exposed: true` option to every route which you want to be available in the JS
+
+```yaml
+    some_route:
+        path:     /
+        options:
+            expose: true
+```
+
+Step 5: Optionally add this line to allow dev mode of the urls
+-----------------------------
+```twig
+    <head>
+        // ...
+        
+        <script>
+            window.DEBUG = {% if app.environment == 'dev'%}'/app_dev.php'{% else %}''{% endif %};
+        </script>
+        
+        // ...
+    </head>
+```

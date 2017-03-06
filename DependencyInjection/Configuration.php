@@ -4,6 +4,7 @@ namespace Netbull\CoreBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 
 /**
  * This is the class that validates and merges configuration from your app/config files.
@@ -20,10 +21,22 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('netbull_core');
 
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
+        $this->addJSRouting($rootNode);
 
         return $treeBuilder;
+    }
+
+    /**
+     * @param ArrayNodeDefinition $node
+     */
+    public function addJSRouting( ArrayNodeDefinition $node )
+    {
+        $node
+            ->children()
+                ->scalarNode('js_routes_path')
+                    ->defaultNull()
+                ->end()
+            ->end()
+        ;
     }
 }

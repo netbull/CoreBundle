@@ -1,4 +1,4 @@
 services:
-#    netbull_core.example:
-#        class: Netbull\CoreBundle\Example
-#        arguments: ["@service_id", "plain_value", "%parameter%"]
+    netbull_core.js_routing:
+        class: Netbull\CoreBundle\Routing\Extractor
+        arguments: [ '@router', '%kernel.cache_dir%', '%kernel.bundles%' ]
