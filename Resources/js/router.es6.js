@@ -1,7 +1,7 @@
 export default {
     get(route) {
         const routes = {
-            //<ROUTES>
+//<ROUTES>
         };
 
         if ( !routes[route] ) {
@@ -35,4 +35,3 @@ export default {
         }
     }
 };
-

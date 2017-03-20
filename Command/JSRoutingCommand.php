@@ -98,7 +98,7 @@ class JSRoutingCommand extends ContainerAwareCommand
 
         $templates = [
             'js'    => "this.%s = route('%s');\n",
-            'es6'   => "'%s': '%s',\n"
+            'es6'   => "\t\t\t'%s': '%s',\n"
         ];
 
         $type = $this->getContainer()->getParameter('netbull_core.js_type');
