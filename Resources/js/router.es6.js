@@ -5,7 +5,7 @@ export default {
         };
 
         if ( !routes[path] ) {
-            return;
+            throw new Error('Path ' + path + ' does not exists');
         }
 
         let args = [...arguments];
