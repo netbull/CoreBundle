@@ -1,15 +1,17 @@
 export default {
-    get(route) {
+    get(path) {
         const routes = {
 //<ROUTES>
         };
 
-        if ( !routes[route] ) {
+        if ( !routes[path] ) {
             return;
         }
 
-        let r = this.route(routes[route]);
-        return r.apply(this, arguments);
+        let args = [...arguments];
+        args.shift();
+
+        return this.route(routes[path]).apply(this, args);
     },
 
     route( route ) {
@@ -25,7 +27,7 @@ export default {
                 return t.replace(':' + (n + 1), e);
             }, route);
 
-            if (-1 !== s.indexOf(':')) {
+            if ( -1 !== s.indexOf(':') ) {
                 throw new Error('Path \'' + s + '\' is expecting more arguments');
             }
 
