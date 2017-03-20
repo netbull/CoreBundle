@@ -23,6 +23,7 @@ class NetbullCoreExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $container->setParameter('netbull_core.js_routes_path', $config['js_routes_path']);
+        $container->setParameter('netbull_core.js_type', $config['js_type']);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');

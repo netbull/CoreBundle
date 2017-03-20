@@ -96,6 +96,13 @@ class JSRoutingCommand extends ContainerAwareCommand
 
         $output->writeln('<info>[file+]</info> ' . $this->targetPath);
 
+        $templates = [
+            'js'    => "this.%s = route('%s');\n",
+            'es6'   => "'%s': '%s',\n"
+        ];
+
+        $type = $this->getContainer()->getParameter('netbull_core.js_type');
+
         $routes = '';
         foreach ( $this->extractor->getRoutes() as $name => $route ) {
             preg_match_all("/{(.*?)}/i", $route->getPath(), $routeParams);
@@ -106,11 +113,11 @@ class JSRoutingCommand extends ContainerAwareCommand
                     return ':' . ($parameters[$m[1]] + 1);
                 }, $route->getPath());
 
-                $routes .= sprintf("this.%s = route('%s');\n", $name, $normalizedRoute);
+                $routes .= sprintf($templates[$type], $name, $normalizedRoute);
             }
         }
 
-        $source = file_get_contents($this->getContainer()->get('kernel')->locateResource('@NetbullCoreBundle/Resources/js/Router.js'));
+        $source = file_get_contents($this->getContainer()->get('kernel')->locateResource('@NetbullCoreBundle/Resources/js/router.' . $type . '.js'));
         $content = str_replace('//<ROUTES>', $routes, $source);
 
         if ( false === @file_put_contents($this->targetPath, $content) ) {

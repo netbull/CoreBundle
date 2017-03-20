@@ -36,6 +36,13 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('js_routes_path')
                     ->defaultNull()
                 ->end()
+                ->scalarNode('js_type')
+                    ->defaultValue('js')
+                    ->validate()
+                        ->ifNotInArray(['js','es6'])
+                        ->thenInvalid('The allowed options are js and es6')
+                    ->end()
+                ->end()
             ->end()
         ;
     }
