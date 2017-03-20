@@ -9,7 +9,7 @@ export default {
         }
 
         let r = this.route(routes[route]);
-        return r();
+        return r(args);
     },
 
     route( route ) {
