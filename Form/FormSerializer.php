@@ -83,7 +83,7 @@ class FormSerializer
         return [
             'type'      => $type->getBlockPrefix(),
             'options'   => $this->extractOptions($childFormView),
-            'value'     => $childFormView->vars['value'],
+            'value'     => ( !is_object($childFormView->vars['value']) ) ? $childFormView->vars['value'] : null,
             'fields'    => $childFields
         ];
     }
