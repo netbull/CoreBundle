@@ -24,9 +24,10 @@ class FormSerializer
 
         $formView = $type->createView($form);
         $type->buildView($formView, $form, $options);
-        $type->finishView($formView, $form, $options);
 
         $fields = $this->getChildren($form, $formView);
+
+        $type->finishView($formView, $form, $options);
 
         // Get the CSRF token
         if ( $formView->offsetExists('_token') ) {
@@ -58,7 +59,7 @@ class FormSerializer
     {
         $fields = [];
         foreach ( $form->all() as $name => $childForm ) {
-            $fields[$name] = $this->extractFieldData($childForm, $parent);
+            $fields[$name] = $this->extractFieldData($childForm, $parent, $name);
         }
 
         return $fields;
@@ -67,13 +68,17 @@ class FormSerializer
     /**
      * @param FormInterface $form
      * @param FormView      $parent
+     * @param null          $name
      * @return array
      */
-    private function extractFieldData( FormInterface $form, FormView $parent )
+    private function extractFieldData( FormInterface $form, FormView $parent, $name = null )
     {
         $type = $form->getConfig()->getType();
 
         $childFormView = $form->createView($parent);
+        if ( $name ) {
+            $parent->children[$name] = $childFormView;
+        }
 
         $childFields = [];
         if ( $form->count() > 0 ) {
