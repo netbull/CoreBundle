@@ -7,7 +7,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
-use Netbull\CoreBundle\Routing\Extractor;
+use Netbull\CoreBundle\Routing\Serializer;
 
 /**
  * Class JSRoutingCommand
@@ -21,7 +21,7 @@ class JSRoutingCommand extends ContainerAwareCommand
     private $targetPath;
 
     /**
-     * @var Extractor
+     * @var Serializer
      */
     private $extractor;
 
