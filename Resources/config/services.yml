@@ -1,5 +1,5 @@
 services:
-    netbull_core.serializer:
+    netbull_core.form.serializer:
         class: Netbull\CoreBundle\Form\FormSerializer
 
     netbull_core.js_routing:
