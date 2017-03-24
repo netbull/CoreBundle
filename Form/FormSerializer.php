@@ -46,7 +46,7 @@ class FormSerializer
             'fields'    => $fields
         ];
 
-        return $output;
+        return json_encode($output);
     }
 
     /**
