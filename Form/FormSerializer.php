@@ -109,6 +109,14 @@ class FormSerializer
                 $options[$name] = $option;
             }
 
+            if ( 'choices' === $name ) {
+                foreach ( $option as $choice )
+                    $options['choices'][] = [
+                        'label' => $choice->label,
+                        'value' => $choice->value,
+                    ];
+            }
+
             // Field level errors
             if ( 'errors' === $name ) {
                 $errors = [];
