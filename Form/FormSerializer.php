@@ -110,6 +110,7 @@ class FormSerializer
 
         if ( 0 === count($childFields) ) {
             $data['value']  = ( !is_object($childFormView->vars['value']) && !is_callable($childFormView->vars['value']) ) ? $childFormView->vars['value'] : null;
+        } else {
             $data['fields'] = $childFields;
         }
 
