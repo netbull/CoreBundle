@@ -4,6 +4,7 @@ namespace Netbull\CoreBundle\Form;
 
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Class FormSerializer
@@ -11,7 +12,24 @@ use Symfony\Component\Form\FormInterface;
  */
 class FormSerializer
 {
-    private $trimFields = [ 'form', 'block_prefixes', 'cache_key', 'submitted', 'multipart', 'method', 'action', 'value', 'unique_block_prefix' ];
+    private $trimFields = [
+        'form', 'block_prefixes', 'cache_key', 'submitted', 'multipart', 'method', 'action', 'value', 'unique_block_prefix',
+        'placeholder_in_choices', 'separator', 'data', 'compound', 'clicked'
+    ];
+
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    /**
+     * FormSerializer constructor.
+     * @param TranslatorInterface $translator
+     */
+    public function __construct( TranslatorInterface $translator )
+    {
+        $this->translator = $translator;
+    }
 
     /**
      * @param FormInterface $form
@@ -85,12 +103,17 @@ class FormSerializer
             $childFields = $this->getChildren($form, $childFormView);
         }
 
-        return [
+        $data = [
             'type'      => $type->getBlockPrefix(),
-            'options'   => $this->extractOptions($childFormView),
-            'value'     => ( !is_object($childFormView->vars['value']) && !is_callable($childFormView->vars['value']) ) ? $childFormView->vars['value'] : null,
-            'fields'    => $childFields
+            'options'   => $this->extractOptions($childFormView)
         ];
+
+        if ( 0 === count($childFields) ) {
+            $data['value']  = ( !is_object($childFormView->vars['value']) && !is_callable($childFormView->vars['value']) ) ? $childFormView->vars['value'] : null;
+            $data['fields'] = $childFields;
+        }
+
+        return $data;
     }
 
     /**
@@ -121,7 +144,7 @@ class FormSerializer
             if ( 'errors' === $name ) {
                 $errors = [];
                 foreach ( $option as $error ) {
-                    $errors[] = $error;
+                    $errors[] = $this->translator->trans($error->getMessage(), $error->getMessageParameters(), 'validators');
                 }
                 $options['errors'] = $errors;
             }

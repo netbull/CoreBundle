@@ -1,0 +1,4 @@
+user:
+    password_min: 'The password should be longer than {{ limit }} symbols'
+    password_max: 'The password should be shorter than {{ limit }} symbols'
+    password_not_blank: 'The password not be empty'

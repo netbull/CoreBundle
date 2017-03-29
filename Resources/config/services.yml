@@ -1,6 +1,7 @@
 services:
     netbull_core.form.serializer:
         class: Netbull\CoreBundle\Form\FormSerializer
+        arguments: [ '@translator' ]
 
     netbull_core.js_routing:
         class: Netbull\CoreBundle\Routing\Extractor
