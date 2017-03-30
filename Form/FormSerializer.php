@@ -108,7 +108,7 @@ class FormSerializer
             'options'   => $this->extractOptions($childFormView)
         ];
 
-        if ( 0 === count($childFields) ) {
+        if ( 0 === count($childFields) || 'choice' === $type->getBlockPrefix() ) {
             $data['value']  = ( !is_object($childFormView->vars['value']) && !is_callable($childFormView->vars['value']) ) ? $childFormView->vars['value'] : null;
         } else {
             $data['fields'] = $childFields;
