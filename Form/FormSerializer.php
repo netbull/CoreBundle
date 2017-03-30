@@ -108,7 +108,7 @@ class FormSerializer
             'options'   => $this->extractOptions($childFormView)
         ];
 
-        if ( 0 === count($childFields) || 'choice' === $type->getBlockPrefix() ) {
+        if ( 0 === count($childFields) ) {
             $data['value']  = ( !is_object($childFormView->vars['value']) && !is_callable($childFormView->vars['value']) ) ? $childFormView->vars['value'] : null;
         } else {
             $data['fields'] = $childFields;
@@ -131,14 +131,6 @@ class FormSerializer
                 ( is_string($option) || is_bool($option) || is_int($option) || is_float($option) )
             ) {
                 $options[$name] = $option;
-            }
-
-            if ( 'choices' === $name ) {
-                foreach ( $option as $choice )
-                    $options['choices'][] = [
-                        'label' => $choice->label,
-                        'value' => $choice->value,
-                    ];
             }
 
             // Field level errors
