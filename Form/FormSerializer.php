@@ -5,6 +5,7 @@ namespace Netbull\CoreBundle\Form;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\VarDumper\VarDumper;
 
 /**
  * Class FormSerializer
@@ -14,7 +15,7 @@ class FormSerializer
 {
     private $trimFields = [
         'form', 'block_prefixes', 'cache_key', 'submitted', 'multipart', 'method', 'action', 'value', 'unique_block_prefix',
-        'placeholder_in_choices', 'separator', 'data', 'clicked'
+        'data', 'clicked'
     ];
 
     /**
@@ -65,6 +66,8 @@ class FormSerializer
             'fields'    => $fields
         ];
 
+        VarDumper::dump($formView);
+        exit;
         return json_encode($output);
     }
 
@@ -140,6 +143,15 @@ class FormSerializer
                     $errors[] = $this->translator->trans($error->getMessage(), $error->getMessageParameters(), 'validators');
                 }
                 $options['errors'] = $errors;
+            }
+
+            // Additional attributes
+            if ( 'attr' === $name || 'label_attr' === $name ) {
+                $attributes = [];
+                foreach ( $option as $attrname => $attrvalue ) {
+                    $attributes[$attrname] = $attrvalue;
+                }
+                $options[$name] = $attributes;
             }
         }
 
