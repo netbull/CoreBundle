@@ -55,6 +55,7 @@ class FormSerializer
             $fields[$options['name']] = [
                 'type'      => 'hidden',
                 'options'   => $options,
+                'parent'    => true,
                 'value'     => $tokenView->vars['value'],
                 'fields'    => []
             ];
@@ -62,7 +63,8 @@ class FormSerializer
 
         $output = [
             'options'   => $this->extractOptions($formView, true),
-            'fields'    => $fields
+            'fields'    => $fields,
+            'parent'    => false,
         ];
 
         return json_encode($output);
@@ -105,6 +107,7 @@ class FormSerializer
 
         $data = [
             'type'      => $type->getBlockPrefix(),
+            'parent'    => true,
             'options'   => $this->extractOptions($childFormView)
         ];
 
