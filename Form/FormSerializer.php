@@ -145,6 +145,18 @@ class FormSerializer
                 $options['errors'] = $errors;
             }
 
+            // Choice views
+            if ( 'choices' === $name ) {
+                $choices = [];
+                foreach ( $option as $choice ) {
+                    $choices[] = [
+                        'label' => $choice->label,
+                        'value' => $choice->value,
+                    ];
+                }
+                $options['choices'] = $choices;
+            }
+
             // Additional attributes
             if ( 'attr' === $name || 'label_attr' === $name ) {
                 $attributes = [];
