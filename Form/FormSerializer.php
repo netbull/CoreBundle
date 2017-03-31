@@ -5,7 +5,6 @@ namespace Netbull\CoreBundle\Form;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\VarDumper\VarDumper;
 
 /**
  * Class FormSerializer
@@ -66,8 +65,6 @@ class FormSerializer
             'fields'    => $fields
         ];
 
-        VarDumper::dump($formView);
-        exit;
         return json_encode($output);
     }
 
