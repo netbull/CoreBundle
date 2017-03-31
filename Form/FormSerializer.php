@@ -174,6 +174,9 @@ class FormSerializer
             if ( 'attr' === $name || 'label_attr' === $name ) {
                 $attributes = [];
                 foreach ( $option as $attrname => $attrvalue ) {
+                    if ( 'class' === $attrname ) {
+                        $attrname = 'className';
+                    }
                     $attributes[$attrname] = $attrvalue;
                 }
                 $options[$name] = $attributes;
