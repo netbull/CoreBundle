@@ -14,7 +14,7 @@ class FormSerializer
 {
     private $trimFields = [
         'form', 'block_prefixes', 'cache_key', 'submitted', 'multipart', 'method', 'action', 'value', 'unique_block_prefix',
-        'placeholder_in_choices', 'separator', 'data', 'compound', 'clicked'
+        'placeholder_in_choices', 'separator', 'data', 'clicked'
     ];
 
     /**
