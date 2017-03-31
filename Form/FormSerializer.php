@@ -127,6 +127,8 @@ class FormSerializer
      */
     private function extractOptions( FormView $view, $isForm = false )
     {
+        $checkboxRadio = !empty($view->parent) && isset($view->parent->vars['choices']);
+
         $options = [];
         foreach ( $view->vars as $name => $option ) {
             if (
@@ -134,6 +136,17 @@ class FormSerializer
                 ( is_string($option) || is_bool($option) || is_int($option) || is_float($option) )
             ) {
                 $options[$name] = $option;
+            }
+
+            // Fix of the shitty bug for choices
+            // Radio buttons should have the parent's name
+            // Checkboxes should have the parent's name + []
+            if ( 'full_name' === $name && $checkboxRadio && isset($view->parent->vars['expanded']) ) {
+                $options['full_name'] = $view->parent->vars['full_name'];
+
+                if ( $view->parent->vars['multiple'] ) {
+                    $options['full_name'] .= '[]';
+                }
             }
 
             // Field level errors
