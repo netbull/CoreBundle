@@ -108,12 +108,11 @@ class FormSerializer
         $data = [
             'type'      => $type->getBlockPrefix(),
             'parent'    => true,
-            'options'   => $this->extractOptions($childFormView)
+            'options'   => $this->extractOptions($childFormView),
+            'value'     => ( !is_object($childFormView->vars['value']) && !is_callable($childFormView->vars['value']) ) ? $childFormView->vars['value'] : null
         ];
 
-        if ( 0 === count($childFields) ) {
-            $data['value']  = ( !is_object($childFormView->vars['value']) && !is_callable($childFormView->vars['value']) ) ? $childFormView->vars['value'] : null;
-        } else {
+        if ( 0 < count($childFields) ) {
             $data['fields'] = $childFields;
         }
 
