@@ -159,7 +159,7 @@ class FormSerializer
             }
 
             // Choice views
-            if ( 'choices' === $name ) {
+            if ( 'choices' === $name || 'preferred_choices' === $name ) {
                 $choices = [];
                 foreach ( $option as $choice ) {
                     $choices[] = [
@@ -167,7 +167,7 @@ class FormSerializer
                         'value' => $choice->value,
                     ];
                 }
-                $options['choices'] = $choices;
+                $options[$name] = $choices;
             }
 
             // Additional attributes
