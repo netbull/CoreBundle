@@ -1,0 +1,132 @@
+{% block dynamic_type_widget %}
+    {% set additionalClass = '' %}
+    {% if hidden %}
+        {% set additionalClass = 'hidden' %}
+    {% endif %}
+
+    {% set attr = attr|merge({
+    'class': (attr.class|default('') ~ ' dynamic-type form-control' ~ ' ' ~ additionalClass)|trim
+    }) %}
+
+    {% if multiple %}
+        {% set attr = attr|merge({'multiple' : 'multiple'}) %}
+    {% endif %}
+
+    {% spaceless %}
+        <select {{ block('widget_attributes') }}>
+            {% if value is iterable %}
+                {% for id, data in value %}
+                    {% block dynamic_type_widget_select_option %}
+                        <option value="{{ id }}" selected="selected" {% if data.attr is defined %}{% for field, valueAttr in data.attr %}data-{{ field }}="{{ valueAttr }}"{% endfor %}{% endif %}>{{ data.text }}</option>
+                    {% endblock %}
+                {% endfor %}
+            {% endif %}
+        </select>
+    {% endspaceless %}
+{% endblock %}
+
+{% block ajax_type_widget %}
+    {% set additionalClass = '' %}
+    {% if hidden %}
+        {% set additionalClass = 'hidden' %}
+    {% endif %}
+
+    {% set attr = attr|merge({
+    'data-placeholder'          : placeholder|trans({}, translation_domain),
+    'class'                     : (attr.class|default('') ~ ' ajax-type form-control' ~ ' ' ~ additionalClass)|trim
+    }) %}
+
+    {% if remote_path %}
+        {% set attr = attr|merge({
+        'data-ajax--url'            : remote_path,
+        'data-ajax--data-type'      : "",
+        'data-minimum-input-length' : minimum_input_length,
+        }) %}
+    {% endif %}
+
+    {% if multiple %}
+        {% set attr = attr|merge({'multiple' : 'multiple'}) %}
+    {% endif %}
+
+    {% spaceless %}
+        <select {{ block('widget_attributes') }}>
+            {% if form.vars.placeholder %}
+                <option value=""{% if form.vars.value|length == 0 %} selected="selected"{% endif %}>{{ form.vars.placeholder }}</option>
+            {% endif %}
+            {% if value is iterable %}
+                {% for id, data in value %}
+                    {% block ajax_type_widget_select_option %}
+                        <option value="{{ id }}" selected="selected" {% if data.attr is defined %}{% for field, valueAttr in data.attr %}data-{{ field }}="{{ valueAttr }}"{% endfor %}{% endif %}>{{ data.text }}</option>
+                    {% endblock %}
+                {% endfor %}
+            {% endif %}
+        </select>
+    {% endspaceless %}
+{% endblock %}
+
+{% block select2_type_widget %}
+    {% set additionalClass = '' %}
+    {% if hidden %}
+        {% set additionalClass = 'hidden' %}
+    {% endif %}
+
+    {% set attr = attr|merge({
+    'data-language'             : language,
+    'data-placeholder'          : placeholder|trans({}, translation_domain),
+    'class'                     : (attr.class|default('') ~ ' select2-type form-control' ~ ' ' ~ additionalClass)|trim
+    }) %}
+
+    {% if remote_path %}
+        {% set attr = attr|merge({
+        'data-ajax--url'            : remote_path,
+        'data-ajax--cache'          : cache ? 'true' : 'false',
+        'data-ajax--delay'          : delay,
+        'data-ajax--data-type'      : "",
+        'data-minimum-input-length' : minimum_input_length,
+        }) %}
+    {% endif %}
+
+    {% if multiple %}
+        {% set attr = attr|merge({'multiple' : 'multiple'}) %}
+    {% endif %}
+
+    {% if allow_clear %}
+        {% set attr = attr|merge({'data-allow-clear' : 'true'}) %}
+    {% endif %}
+
+    {% if tags %}
+        {% set attr = attr|merge({'data-tags' : 'true'}) %}
+    {% endif %}
+
+    {% spaceless %}
+        <select {{ block('widget_attributes') }}>
+            {% if form.vars.placeholder %}
+                <option value=""{% if form.vars.value|length == 0 %} selected="selected"{% endif %}>{{ form.vars.placeholder }}</option>
+            {% endif %}
+            {% if value is iterable %}
+                {% for id, data in value %}
+                    {% block select2_type_widget_select_option %}
+                        <option value="{{ id }}" selected="selected" {% if data.attr is defined %}{% for field, valueAttr in data.attr %}data-{{ field }}="{{ valueAttr }}"{% endfor %}{% endif %}>{{ data.text }}</option>
+                    {% endblock %}
+                {% endfor %}
+            {% endif %}
+        </select>
+    {% endspaceless %}
+{% endblock %}
+
+{%- block auto_collection_widget -%}
+    {% set empty = form.children|length == 0 %}
+    <div class="collection collection-auto" id="{{ form.vars.id }}" data-prototype="{{ form_widget(form.vars.prototype)|e('html_attr') }}"{% if form.vars.prototype %} data-name="{{ form.vars.prototype.vars.name }}"{% endif %}>
+        <div class="text-center{% if not empty %} hidden{% endif %}">
+            <button class="btn btn-link item-add" type="button">
+                <i class="fa fa-plus"></i> Add new {{ form.vars.name|inflect|titleize }}
+            </button>
+        </div>
+
+        <div class="collection-items">
+            {% for child in form %}
+                {{ form_widget(child) }}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

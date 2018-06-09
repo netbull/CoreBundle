@@ -1,0 +1,42 @@
+services:
+    netbull_core.twig.extension:
+        class: NetBull\CoreBundle\Twig\CoreExtension
+        public: true
+        arguments: [ '@service_container' ]
+        tags:
+            - { name: twig.extension }
+
+    netbull_core.twig.extension.assets:
+        class: NetBull\CoreBundle\Twig\AssetsExtension
+        public: true
+        arguments: [ '@service_container' ]
+        tags:
+            - { name: twig.extension }
+
+    netbull_core.paginator:
+        class: NetBull\CoreBundle\Paginator\Paginator
+        arguments: [ '@doctrine.orm.entity_manager', '@request_stack' ]
+        public: true
+
+    netbull_core.paginator_simple:
+        class: NetBull\CoreBundle\Paginator\PaginatorSimple
+        arguments: [ '@doctrine.orm.entity_manager', '@request_stack' ]
+
+    netbull_core.js_routing:
+        class: NetBull\CoreBundle\Routing\Extractor
+        arguments: [ '@router', '%kernel.cache_dir%', '%kernel.bundles%' ]
+
+    libphonenumber.phone_number_util:
+        class: libphonenumber\PhoneNumberUtil
+
+    netbull_core.phone_number.helper:
+        class: NetBull\CoreBundle\Templating\Helper\PhoneNumberHelper
+        tags:
+            - { name: templating.helper, alias: phone_number_helper }
+
+    netbull_core.phone_number.twig.extension:
+        class: NetBull\CoreBundle\Twig\PhoneNumberExtension
+        arguments: [ '@netbull_core.phone_number.helper' ]
+        public: false
+        tags:
+            - { name: twig.extension }

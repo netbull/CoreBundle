@@ -1,0 +1,94 @@
+services:
+    netbull_core.allowed_locales_provider:
+        public: true
+        class: NetBull\CoreBundle\Locale\Information\AllowedLocalesProvider
+        calls:
+            - [setAllowedLocales, [ '%netbull_locale.allowed_locales%' ]]
+
+    netbull_core.validator.locale:
+        class: NetBull\CoreBundle\Locale\Validator\LocaleValidator
+        tags:
+            - { name: validator.constraint_validator, alias: netbull_core.validator.locale }
+        arguments: [ '%netbull_core.intl_extension_installed%', '%netbull_core.intl_extension_fallback.iso3166%', '%netbull_core.intl_extension_fallback.iso639%', '%netbull_core.intl_extension_fallback.script%' ]
+
+    netbull_core.validator.locale_allowed:
+        class: NetBull\CoreBundle\Locale\Validator\LocaleAllowedValidator
+        tags:
+            - { name: validator.constraint_validator, alias: netbull_core.validator.locale_allowed }
+        arguments: [ '@netbull_core.allowed_locales_provider', '%netbull_core.intl_extension_installed%' ]
+
+    netbull_core.validator.meta:
+        class: NetBull\CoreBundle\Locale\Validator\MetaValidator
+        arguments: [ '@validator' ]
+
+    netbull_core.locale_map:
+        class: NetBull\CoreBundle\Locale\LocaleMap
+        arguments: [ '%netbull_locale.locale_map%' ]
+
+    netbull_core.locale_domain_guesser:
+        class: NetBull\CoreBundle\Locale\Guessers\DomainLocaleGuesser
+        arguments: [ '@netbull_core.validator.meta', '@netbull_core.locale_map' ]
+        tags:
+            - { name: 'locale_guesser', alias: 'domain' }
+
+    netbull_core.locale_cookie_guesser:
+        class: NetBull\CoreBundle\Locale\Guessers\CookieLocaleGuesser
+        arguments: [ '@netbull_core.validator.meta' ]
+        tags:
+            - { name: 'locale_guesser', alias: 'cookie' }
+
+    netbull_core.locale_session_guesser:
+        class: NetBull\CoreBundle\Locale\Guessers\SessionLocaleGuesser
+        arguments: [ '@session', '@netbull_core.validator.meta', '%netbull_locale.session.variable%' ]
+        tags:
+            - { name: 'locale_guesser', alias: 'session' }
+
+    netbull_core.locale_guess_manager:
+        class: NetBull\CoreBundle\Locale\LocaleGuesserManager
+        arguments: [ '%netbull_locale.guessing_order%', '@logger' ]
+
+    netbull_core.best_locale_matcher:
+        class: NetBull\CoreBundle\Locale\Matcher\DefaultBestLocaleMatcher
+        arguments: ['@netbull_core.allowed_locales_provider']
+
+    netbull_core.locale_listener:
+        class: NetBull\CoreBundle\EventListener\LocaleListener
+        tags:
+            - { name: kernel.event_subscriber }
+        arguments: [ '%kernel.default_locale%', '@netbull_core.locale_guess_manager', '@?netbull_core.best_locale_matcher', '@logger' ]
+        calls:
+            - [setEventDispatcher, [ '@event_dispatcher' ]]
+            - [setDisableVaryHeader, ['%netbull_locale.disable_vary_header%']]
+            - [setExcludedPattern, ['%netbull_locale.guessing_excluded_pattern%']]
+
+    netbull_core.locale_cookie:
+        class: '%netbull_locale.cookie.class%'
+        arguments: ['%netbull_locale.cookie.name%', '%netbull_locale.cookie.ttl%', '%netbull_locale.cookie.path%', '%netbull_locale.cookie.domain%', '%netbull_locale.cookie.secure%', '%netbull_locale.cookie.httpOnly%', '%netbull_locale.cookie.set_on_change%']
+
+    netbull_core.locale_session:
+        class: NetBull\CoreBundle\Locale\Session\LocaleSession
+        arguments: ['@session', '%netbull_locale.session.variable%']
+
+    netbull_core.locale_update_listener:
+        class: NetBull\CoreBundle\EventListener\LocaleUpdateListener
+        arguments: ['@event_dispatcher', '@netbull_core.locale_cookie', '@?netbull_core.locale_session', '%netbull_locale.guessing_order%', '@logger']
+        tags:
+            - { name: kernel.event_subscriber }
+
+    netbull_core.locale_switcher_helper:
+        public: true
+        class: NetBull\CoreBundle\Templating\Helper\LocaleSwitchHelper
+        tags:
+            - { name: templating.helper, alias: switch }
+        arguments: ['@templating', '%netbull_locale.switcher.template%']
+
+    netbull_core.locale_twig.switcher:
+        class: NetBull\CoreBundle\Twig\LocaleSwitcherExtension
+        tags:
+            - { name: twig.extension }
+        arguments: ['@service_container']
+
+    netbull_core.locale_switcher_controller:
+        public: true
+        class: NetBull\CoreBundle\Controller\LocaleController
+        arguments: ['@event_dispatcher', '@router', '@netbull_core.validator.meta', '%netbull_locale.switcher.use_referrer%', '%netbull_locale.switcher.redirect_to_route%', '%netbull_locale.switcher.redirect_statuscode%']
