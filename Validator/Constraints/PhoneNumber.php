@@ -2,12 +2,15 @@
 
 namespace NetBull\CoreBundle\Validator\Constraints;
 
+use Doctrine\Common\Annotations\Annotation;
 use Symfony\Component\Validator\Constraint;
 
 use libphonenumber\PhoneNumberUtil;
 
 /**
  * Class PhoneNumber
+ *
+ * @Annotation
  * @package NetBull\CoreBundle\Validator\Constraints
  */
 class PhoneNumber extends Constraint
