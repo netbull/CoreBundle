@@ -77,6 +77,7 @@ class LocaleController
         $useReferrer = $request->attributes->get('useReferrer', $this->useReferrer);
         $redirectToRoute = $request->attributes->get('route', $this->redirectToRoute);
         $metaValidator = $this->metaValidator;
+
         if (!$metaValidator->isAllowed($_locale)) {
             throw new \InvalidArgumentException(sprintf('Not allowed to switch to locale %s', $_locale));
         }
@@ -84,11 +85,23 @@ class LocaleController
         $localeSwitchEvent = new FilterLocaleSwitchEvent($request, $_locale);
         $this->dispatcher->dispatch(Events::ON_LOCALE_CHANGE, $localeSwitchEvent);
 
+        return $this->getResponse($request, $useReferrer, $statusCode, $redirectToRoute);
+    }
+
+    /**
+     * @param Request $request
+     * @param $useReferrer
+     * @param $statusCode
+     * @param $redirectToRoute
+     * @return RedirectResponse
+     */
+    private function getResponse(Request $request, $useReferrer, $statusCode, $redirectToRoute)
+    {
         // Redirect the User
         if ($useReferrer && $request->headers->has('referer')) {
             $response = new RedirectResponse($request->headers->get('referer'), $statusCode);
         } elseif ($this->router && $redirectToRoute) {
-            $target = $this->router->generate($redirectToRoute, array('_locale' => $_locale));
+            $target = $this->router->generate($redirectToRoute, ['_locale' => $_locale]);
             if ($request->getQueryString()) {
                 if (!strpos($target, '?')) {
                     $target .= '?';
@@ -99,6 +112,7 @@ class LocaleController
         } else {
             $response = new RedirectResponse($request->getScheme() . '://' . $request->getHttpHost() . '/', $statusCode);
         }
+
         return $response;
     }
 }
