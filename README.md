@@ -1,7 +1,7 @@
 CoreBundle
 ==========
 [![Build Status](https://travis-ci.org/netbull/AuthBundle.svg?branch=master)](https://travis-ci.org/netbull/CoreBundle)<br>
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/0f92d525-7459-41ac-9798-7217d9737148/big.png)](https://insight.sensiolabs.com/projects/0f92d525-7459-41ac-9798-7217d9737148)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/f91df530-6930-44c3-b300-0ac712498063/big.png)](https://insight.sensiolabs.com/projects/f91df530-6930-44c3-b300-0ac712498063)
 
 Installation
 ============
