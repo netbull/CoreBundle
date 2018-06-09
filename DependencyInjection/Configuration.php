@@ -22,8 +22,6 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->variableNode('assets_cdn')->end()
-
                 ->arrayNode('form_types')
                     ->children()
                         ->arrayNode('ajax')

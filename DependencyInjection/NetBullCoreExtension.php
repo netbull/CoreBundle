@@ -48,11 +48,6 @@ class NetBullCoreExtension extends Extension
             $container->setParameter('netbull_core.intl_extension_fallback.script', $localeScript);
         }
 
-        // set parameter for the assets CDN
-        if(isset($config['assets_cdn']) && !empty($config['assets_cdn'])){
-            $container->setParameter('netbull_core.assets.cdn', $config['assets_cdn']);
-        }
-
         // set parameters with the default settings so they'll be available in the service definition yml
         $varNames = ['minimum_input_length', 'page_limit', 'allow_clear', 'delay', 'language', 'cache'];
         foreach($varNames as $varName) {
