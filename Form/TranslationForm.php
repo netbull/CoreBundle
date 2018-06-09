@@ -6,6 +6,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 use Symfony\Component\Form\FormRegistry;
+use Symfony\Component\Form\FormTypeGuesserInterface;
 
 /**
  * Class TranslationForm
@@ -151,13 +152,13 @@ class TranslationForm
     }
 
     /**
-     * @param $guesser
+     * @param FormTypeGuesserInterface $guesser
      * @param $class
      * @param $property
      * @param $options
      * @return mixed
      */
-    public function guessMissingFieldOptions($guesser, $class, $property, $options)
+    public function guessMissingFieldOptions(FormTypeGuesserInterface $guesser, $class, $property, $options)
     {
         if (!isset($options['field_type']) && ($typeGuess = $guesser->guessType($class, $property))) {
             $options['field_type'] = $typeGuess->getType();

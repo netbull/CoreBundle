@@ -12,7 +12,6 @@ use Symfony\Component\Form\Extension\Core\DataTransformer\NumberToLocalizedStrin
  */
 class NumberToStringTransformer extends NumberToLocalizedStringTransformer
 {
-    private $scale;
     protected $thousandsSeparator;
     protected $decimalSeparator;
 
@@ -30,7 +29,6 @@ class NumberToStringTransformer extends NumberToLocalizedStringTransformer
 
         $this->thousandsSeparator = $thousandsSeparator;
         $this->decimalSeparator = $decimalSeparator;
-        $this->scale = $scale;
     }
 
     /**

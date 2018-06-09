@@ -2,14 +2,7 @@ services:
     netbull_core.twig.extension:
         class: NetBull\CoreBundle\Twig\CoreExtension
         public: true
-        arguments: [ '@service_container' ]
-        tags:
-            - { name: twig.extension }
-
-    netbull_core.twig.extension.assets:
-        class: NetBull\CoreBundle\Twig\AssetsExtension
-        public: true
-        arguments: [ '@service_container' ]
+        arguments: [ '@router', '@request_stack' ]
         tags:
             - { name: twig.extension }
 

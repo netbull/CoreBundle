@@ -51,14 +51,14 @@ class JSRoutingCommand extends ContainerAwareCommand
 
         $container = $this->getContainer();
 
-        if ( !$input->getOption('target') && !$container->getParameter('slr_core.js_routes_path') ) {
+        if ( !$input->getOption('target') && !$container->getParameter('netbull_core.js_routes_path') ) {
             $output->writeln('<error>No exit file is specified!</error>');
-            $output->writeln('Please specify it in slr_core.js_routes_path');
+            $output->writeln('Please specify it in netbull_core.js_routes_path');
             $this->canExecute = false;
         }
 
-        $this->targetPath   = $input->getOption('target') ?: sprintf('%s/../%s', $container->getParameter('kernel.root_dir'), $container->getParameter('slr_core.js_routes_path'));
-        $this->extractor    = $this->getContainer()->get('slr_core.js_routing');
+        $this->targetPath   = $input->getOption('target') ?: sprintf('%s/../%s', $container->getParameter('kernel.root_dir'), $container->getParameter('netbull_core.js_routes_path'));
+        $this->extractor    = $this->getContainer()->get('netbull_core.js_routing');
     }
 
     /**
@@ -96,7 +96,7 @@ class JSRoutingCommand extends ContainerAwareCommand
             'es6'   => "\t\t\t'%s': '%s',\n"
         ];
 
-        $type = $this->getContainer()->getParameter('slr_core.js_type');
+        $type = $this->getContainer()->getParameter('netbull_core.js_type');
 
         $routes = '';
         foreach ($this->extractor->getRoutes() as $name => $route) {
@@ -112,7 +112,7 @@ class JSRoutingCommand extends ContainerAwareCommand
             }
         }
 
-        $source = file_get_contents($this->getContainer()->get('kernel')->locateResource('@SLRCoreBundle/Resources/js/router.' . $type . '.js'));
+        $source = file_get_contents($this->getContainer()->get('kernel')->locateResource('@NetBullCoreBundle/Resources/js/router.' . $type . '.js'));
         $content = str_replace('//<ROUTES>', $routes, $source);
 
         if (false === @file_put_contents($this->targetPath, $content)) {

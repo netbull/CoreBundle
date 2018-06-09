@@ -154,7 +154,7 @@ class LocaleUpdateListener implements EventSubscriberInterface
     {
         return [
             // must be registered after the Router to have access to the _locale and before the Symfony LocaleListener
-            Events::onLocaleChange => ['onLocaleChange'],
+            Events::ON_LOCALE_CHANGE => ['onLocaleChange'],
         ];
     }
 }

@@ -1,5 +1,5 @@
 {% block tel_widget -%}
-    {% if widget is constant('SLR\\CoreBundle\\Form\\Type\\PhoneNumberType::WIDGET_COUNTRY_CHOICE') %}
+    {% if widget is constant('NetBull\\CoreBundle\\Form\\Type\\PhoneNumberType::WIDGET_COUNTRY_CHOICE') %}
         <div {{ block('widget_container_attributes') }}>
             {{- form_widget(form.country) -}}
             {{- form_widget(form.number) -}}

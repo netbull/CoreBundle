@@ -13,7 +13,7 @@ class Arrays
      * @param array $haystack
      * @return bool|int|string
      */
-    public static function ArraySearchRecursive( $needle, array $haystack = [] )
+    public static function arraySearchRecursive( $needle, array $haystack = [] )
     {
         foreach ($haystack as $key => $value) {
             if ($needle === $value) {
@@ -21,7 +21,7 @@ class Arrays
             } else if ((is_array($value) && $key = array_search($needle, $value))) {
                 return $key;
             } else if (is_array($value)) {
-                self::ArraySearchRecursive($needle, $value);
+                self::arraySearchRecursive($needle, $value);
             }
         }
         return false;

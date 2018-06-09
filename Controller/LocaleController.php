@@ -70,7 +70,7 @@ class LocaleController
      * @param Request $request
      * @return RedirectResponse
      */
-    public function switch(Request $request)
+    public function switchAction(Request $request)
     {
         $_locale = $request->attributes->get('_locale', $request->getLocale());
         $statusCode = $request->attributes->get('statusCode', $this->statusCode);
@@ -82,7 +82,7 @@ class LocaleController
         }
 
         $localeSwitchEvent = new FilterLocaleSwitchEvent($request, $_locale);
-        $this->dispatcher->dispatch(Events::onLocaleChange, $localeSwitchEvent);
+        $this->dispatcher->dispatch(Events::ON_LOCALE_CHANGE, $localeSwitchEvent);
 
         // Redirect the User
         if ($useReferrer && $request->headers->has('referer')) {
@@ -97,8 +97,6 @@ class LocaleController
             }
             $response = new RedirectResponse($target, $statusCode);
         } else {
-            // TODO: this seems broken, as it will not handle if the site runs in a subdir
-            // TODO: also it doesn't handle the locale at all and can therefore lead to an infinite redirect
             $response = new RedirectResponse($request->getScheme() . '://' . $request->getHttpHost() . '/', $statusCode);
         }
         return $response;

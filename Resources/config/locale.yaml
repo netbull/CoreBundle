@@ -15,7 +15,7 @@ services:
         class: NetBull\CoreBundle\Locale\Validator\LocaleAllowedValidator
         tags:
             - { name: validator.constraint_validator, alias: netbull_core.validator.locale_allowed }
-        arguments: [ '@netbull_core.allowed_locales_provider', '%netbull_core.intl_extension_installed%' ]
+        arguments: [ '@netbull_core.allowed_locales_provider' ]
 
     netbull_core.validator.meta:
         class: NetBull\CoreBundle\Locale\Validator\MetaValidator

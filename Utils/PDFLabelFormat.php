@@ -131,7 +131,7 @@ class PDFLabelFormat
      * PDFLabelFormat constructor.
      * @param array $options
      */
-    function __construct( array $options = [])
+    public function __construct( array $options = [])
     {
         if ( !empty($options) ) {
             $this->setOptions($options);

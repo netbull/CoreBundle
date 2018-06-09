@@ -25,11 +25,6 @@ class DomainLocaleGuesser extends AbstractLocaleGuesser
     private $localeMap;
 
     /**
-     * @var array
-     */
-    private $preferredLocales;
-
-    /**
      * LocaleGuesser constructor.
      * @param MetaValidator         $metaValidator
      * @param LocaleMap             $localeMap
@@ -38,7 +33,6 @@ class DomainLocaleGuesser extends AbstractLocaleGuesser
     {
         $this->metaValidator    = $metaValidator;
         $this->localeMap        = $localeMap;
-        $this->preferredLocales = [];
     }
 
     /**
@@ -54,7 +48,6 @@ class DomainLocaleGuesser extends AbstractLocaleGuesser
      */
     public function runLocaleGuessing(Request $request)
     {
-        $this->preferredLocales = $request->getLanguages();
         if (false !== $this->guessLocale($request)) {
             $locale = $this->getIdentifiedLocale();
 

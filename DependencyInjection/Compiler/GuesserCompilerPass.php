@@ -17,13 +17,13 @@ class GuesserCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (false === $container->hasDefinition('slr_core.locale_guess_manager')) {
+        if (false === $container->hasDefinition('netbull_core.locale_guess_manager')) {
             return;
         }
 
-        $definition = $container->getDefinition('slr_core.locale_guess_manager');
+        $definition = $container->getDefinition('netbull_core.locale_guess_manager');
         $taggedServiceIds = $container->findTaggedServiceIds('locale_guesser');
-        $neededServices = $container->getParameter('slr_locale.guessing_order');
+        $neededServices = $container->getParameter('netbull_locale.guessing_order');
 
         foreach ($taggedServiceIds as $id => $tagAttributes) {
             foreach ($tagAttributes as $attributes) {

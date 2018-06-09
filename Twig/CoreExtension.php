@@ -4,11 +4,13 @@ namespace NetBull\CoreBundle\Twig;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Intl\Intl;
 use Symfony\Component\DomCrawler\Crawler;
 
 use NetBull\CoreBundle\Utils\Inflect;
 use NetBull\CoreBundle\Utils\TranslationGuesser;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Class CoreExtension
@@ -17,17 +19,24 @@ use NetBull\CoreBundle\Utils\TranslationGuesser;
 class CoreExtension extends \Twig_Extension
 {
     /**
-     * @var ContainerInterface
+     * @var RouterInterface
      */
-    private $container;
+    private $router;
+
+    /**
+     * @var RequestStack
+     */
+    private $requestStack;
 
     /**
      * CoreExtension constructor.
-     * @param ContainerInterface $container
+     * @param RouterInterface $router
+     * @param RequestStack $requestStack
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(RouterInterface $router, RequestStack $requestStack)
     {
-        $this->container = $container;
+        $this->router = $router;
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -104,11 +113,11 @@ class CoreExtension extends \Twig_Extension
                     'direction' => $newDirection
                 ]);
             }
-            $link = $this->container->get('router')->generate($pagination['route'], array_merge($pagination['routeParams'], $params));
+            $link = $this->router->generate($pagination['route'], array_merge($pagination['routeParams'], $params));
 
             $string = sprintf('<a class="text-success" href="%s" title="Sort %s">%s <i class="fa fa-sort-%s"></i></a>', $link, $hint, $label, $direction);
         } else {
-            $link = $this->container->get('router')->generate($pagination['route'], array_merge($pagination['routeParams'], $pagination['sort'], [
+            $link = $this->router->generate($pagination['route'], array_merge($pagination['routeParams'], $pagination['sort'], [
                 'field'     => $field,
                 'direction' => 'asc'
             ]));
@@ -125,7 +134,7 @@ class CoreExtension extends \Twig_Extension
      */
     public function buildQueryInputs($currentField)
     {
-        $request = $this->container->get('request_stack')->getCurrentRequest();
+        $request = $this->requestStack->getCurrentRequest();
         $fields = '';
         foreach ($request->query->all() as $field => $value) {
             // Exclude the current field and the PAGE parameter
@@ -151,7 +160,7 @@ class CoreExtension extends \Twig_Extension
      * @param int $length
      * @return string
      */
-    public function loremIpsum( $length = 30 ) {
+    public function loremIpsum($length = 30) {
         $string = [];
         $words = [
             'lorem',        'ipsum',       'dolor',        'sit',
@@ -199,13 +208,14 @@ class CoreExtension extends \Twig_Extension
      * @param bool $strict
      * @return mixed|string
      */
-    public function guessTranslation( array $array, $field, $locale = null, $strict = false )
+    public function guessTranslation(array $array, $field, $locale = null, $strict = false)
     {
-        if( empty($array) ){
+        if (empty($array)) {
             return '';
         }
 
-        $locale = ($locale) ? $locale : $this->container->get('request_stack')->getCurrentRequest()->getLocale();
+        $locale = ($locale) ? $locale : $this->requestStack->getCurrentRequest()->getLocale();
+
         return TranslationGuesser::guess($array, $field, $locale, $strict);
     }
 
@@ -215,13 +225,13 @@ class CoreExtension extends \Twig_Extension
      * @param bool $strict
      * @return mixed|string
      */
-    public function getTranslation( array $array, $locale = null, $strict = false )
+    public function getTranslation(array $array, $locale = null, $strict = false)
     {
         if (empty($array)) {
             return '';
         }
 
-        $locale = ($locale) ? $locale : $this->container->get('request_stack')->getCurrentRequest()->getLocale();
+        $locale = ($locale) ? $locale : $this->requestStack->getCurrentRequest()->getLocale();
 
         return TranslationGuesser::get($array, $locale, $strict);
     }
@@ -234,10 +244,11 @@ class CoreExtension extends \Twig_Extension
      */
     public function languageFromLocale($locale, $toLocale = null)
     {
-        $request = $this->container->get('request_stack')->getCurrentRequest();
-        $auto = ($request)?$request->getLocale():'en';
+        $request = $this->requestStack->getCurrentRequest();
+        $auto = $request ? $request->getLocale() : 'en';
         $toLocale = ($toLocale)?$toLocale:$auto;
         $language = \Locale::getDisplayLanguage($locale, $toLocale);
+
         return mb_convert_case($language, MB_CASE_TITLE, 'UTF-8');
     }
 
@@ -247,7 +258,7 @@ class CoreExtension extends \Twig_Extension
      * @param int $pluralize
      * @return string
      */
-    public function inflect( string $string, $pluralize = 0 ) : string
+    public function inflect(string $string, $pluralize = 0) : string
     {
         return ($pluralize) ? Inflect::pluralize($string) : Inflect::singularize($string);
     }
@@ -266,7 +277,7 @@ class CoreExtension extends \Twig_Extension
      * @param string $locale
      * @return string
      */
-    public function getCountryName( string $code, string $locale = '' ) : string
+    public function getCountryName(string $code, string $locale = '') : string
     {
         $countries = Intl::getRegionBundle()->getCountryNames($locale);
 
@@ -279,16 +290,16 @@ class CoreExtension extends \Twig_Extension
      * @param string $title
      * @return string
      */
-    public function formatPageTitle( string $title ) : string
+    public function formatPageTitle(string $title) : string
     {
-        return sprintf('%s - %s', $title, 'SLR');
+        return sprintf('%s - %s', $title, 'NetBull');
     }
 
     /**
      * @param string $string
      * @return string
      */
-    public function stripTagsSuper( string $string ) : string
+    public function stripTagsSuper(string $string) : string
     {
         if (false === strpos($string, '<body')) {
             $text = $string;
@@ -297,6 +308,7 @@ class CoreExtension extends \Twig_Extension
             $body = $crawler->filter('body');
             $text = $body->text();
         }
+
         return $text;
     }
 

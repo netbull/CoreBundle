@@ -87,20 +87,20 @@ class PrintLabels extends \TCPDF
      * @param array|string  $format Either the name of a Label Format in the Option Value table. or an array of Label Format values.
      * @param string        $unit Unit of measure for the PDF document
      */
-    public function __construct( $format, $unit = 'mm' )
+    public function __construct($format, $unit = 'mm')
     {
-        if ( is_array($format) ) {
+        if (is_array($format)) {
             // Custom format
             $tFormat = new PDFLabelFormat($format);
         } else {
             // Saved format
-            if ( !array_key_exists($format, $this->formats) ) {
+            if (!array_key_exists($format, $this->formats)) {
                 $this->Error('The format is unknown');
             }
             $tFormat = new PDFLabelFormat($this->formats[$format]);
         }
 
-        $this->LabelSetFormat($tFormat, $unit);
+        $this->labelSetFormat($tFormat, $unit);
 
         parent::__construct($this->orientation, $this->metricDoc, $this->paper_dimensions);
         $this->SetFont($this->fontName, $this->fontStyle);
@@ -117,11 +117,11 @@ class PrintLabels extends \TCPDF
      *
      * @return float|int|mixed
      */
-    public function getFormatValue( $name, $convert = false )
+    public function getFormatValue($name, $convert = false)
     {
         $value = $this->format->getValue($name);
 
-        if ( $convert) {
+        if ($convert) {
             $value = PDFUtils::convertMetric($value, 'mm', $this->metricDoc);
         }
 
@@ -134,7 +134,7 @@ class PrintLabels extends \TCPDF
      * @param $format
      * @param $unit
      */
-    public function LabelSetFormat( $format, $unit )
+    public function labelSetFormat($format, $unit)
     {
         $this->format = $format;
         $this->paperSize = $this->getFormatValue('paper-size');
@@ -161,7 +161,7 @@ class PrintLabels extends \TCPDF
      *
      * @param string $text
      */
-    public function generateLabel( string $text ) {
+    public function generateLabel(string $text) {
         $args = [
             'w'             => $this->width,
             'h'             => 0,
@@ -179,7 +179,7 @@ class PrintLabels extends \TCPDF
             'maxh'          => $this->height,
         ];
 
-        if ($args['ishtml'] == true) {
+        if (true === $args['ishtml']) {
             $this->writeHTMLCell($args['w'], $args['h'],
                 $args['x'], $args['y'],
                 $args['txt'], $args['border'],
@@ -203,9 +203,9 @@ class PrintLabels extends \TCPDF
      *
      * @param string $text
      */
-    public function AddPdfLabel( string $text )
+    public function addPdfLabel(string $text)
     {
-        if ( $this->countX == $this->xNumber ) {
+        if ($this->countX == $this->xNumber) {
             // Page full, we start a new one
             $this->AddPage();
             $this->countX = 0;
@@ -220,7 +220,7 @@ class PrintLabels extends \TCPDF
         $this->generateLabel($text);
 
         $this->countY++;
-        if ( $this->countY == $this->yNumber ) {
+        if ($this->countY == $this->yNumber) {
             // End of column reached, we start a new one
             $this->countX++;
             $this->countY = 0;

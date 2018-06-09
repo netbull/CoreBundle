@@ -6,7 +6,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class MetaValidator
- * @package SLR\CoreBundle\Locale\Validator
+ * @package NetBull\CoreBundle\Locale\Validator
  *
  * This MetaValidator uses the LocaleAllowed and Locale validators for checks inside a guesser
  */

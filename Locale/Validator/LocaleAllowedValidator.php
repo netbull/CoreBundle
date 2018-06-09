@@ -20,20 +20,13 @@ class LocaleAllowedValidator extends ConstraintValidator
     private $allowedLocalesProvider;
 
     /**
-     * @var bool
-     */
-    private $intlExtension;
-
-    /**
      * Constructor
      *
      * @param AllowedLocalesProvider  $allowedLocalesProvider  allowed locales provided by service
-     * @param bool                    $intlExtension           Whether the intl extension is installed
      */
-    public function __construct(AllowedLocalesProvider $allowedLocalesProvider = null, $intlExtension = false)
+    public function __construct(AllowedLocalesProvider $allowedLocalesProvider = null)
     {
-        $this->allowedLocalesProvider   = $allowedLocalesProvider;
-        $this->intlExtension            = $intlExtension;
+        $this->allowedLocalesProvider = $allowedLocalesProvider;
     }
 
     /**

@@ -11,8 +11,8 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
  */
 class FormTwigTemplateCompilerPass implements CompilerPassInterface
 {
-    private $telLayout = '@SLRCore/Form/tel.html.twig';
-    private $telBootstrapLayout = '@SLRCore/Form/tel_bootstrap.html.twig';
+    private $telLayout = '@NetBullCore/Form/tel.html.twig';
+    private $telBootstrapLayout = '@NetBullCore/Form/tel_bootstrap.html.twig';
 
     /**
      * {@inheritdoc}

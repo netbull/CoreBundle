@@ -29,7 +29,6 @@ class NetBullCoreExtension extends Extension
 
             // Fallback for missing intl extension
             $intlExtensionInstalled = extension_loaded('intl');
-            $container->setParameter('netbull_core.intl_extension_installed', $intlExtensionInstalled);
             $iso3166        = [];
             $iso639one      = [];
             $iso639two      = [];

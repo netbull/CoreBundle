@@ -28,7 +28,7 @@ class FilterLocaleSwitchEvent extends Event
      */
     public function __construct(Request $request, $locale)
     {
-        if (!is_string($locale) || null == $locale || '' == $locale) {
+        if (!is_string($locale) || null === $locale || '' === $locale) {
             throw new \InvalidArgumentException(sprintf('Wrong type, expected \'string\' got \'%s\'', $locale));
         }
         $this->request = $request;

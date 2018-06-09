@@ -16,7 +16,7 @@ class LocaleMap
     /**
      * @param array $map topLevelDomain locale map, [tld => locale]
      */
-    function __construct(array $map = [])
+    public function __construct(array $map = [])
     {
         $this->map = $map;
     }

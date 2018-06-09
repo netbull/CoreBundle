@@ -59,7 +59,7 @@ namespace NetBull\CoreBundle\Utils;
 
 class Inflect
 {
-    static $plural = array(
+    public static $plural = [
         '/(quiz)$/i'               => "$1zes",
         '/^(ox)$/i'                => "$1en",
         '/([m|l])ouse$/i'          => "$1ice",
@@ -78,10 +78,10 @@ class Inflect
         '/(ax|test)is$/i'          => "$1es",
         '/(us)$/i'                 => "$1es",
         '/s$/i'                    => "s",
-        '/$/'                      => "s"
-    );
+        '/$/'                      => "s",
+    ];
 
-    static $singular = array(
+    public static $singular = [
         '/(quiz)zes$/i'             => "$1",
         '/(matr)ices$/i'            => "$1ix",
         '/(vert|ind)ices$/i'        => "$1ex",
@@ -109,10 +109,10 @@ class Inflect
         '/(h|bl)ouses$/i'           => "$1ouse",
         '/(corpse)s$/i'             => "$1",
         '/(us)es$/i'                => "$1",
-        '/s$/i'                     => ""
-    );
+        '/s$/i'                     => "",
+    ];
 
-    static $irregular = array(
+    public static $irregular = [
         'move'   => 'moves',
         'foot'   => 'feet',
         'goose'  => 'geese',
@@ -121,10 +121,10 @@ class Inflect
         'man'    => 'men',
         'tooth'  => 'teeth',
         'person' => 'people',
-        'valve'  => 'valves'
-    );
+        'valve'  => 'valves',
+    ];
 
-    static $uncountable = array(
+    public static $uncountable = [
         'sheep',
         'fish',
         'deer',
@@ -133,10 +133,14 @@ class Inflect
         'money',
         'rice',
         'information',
-        'equipment'
-    );
+        'equipment',
+    ];
 
-    public static function pluralize( $string )
+    /**
+     * @param $string
+     * @return null|string|string[]
+     */
+    public static function pluralize($string)
     {
         // save some time in the case that singular and plural are the same
         if ( in_array( strtolower( $string ), self::$uncountable ) )
@@ -187,12 +191,18 @@ class Inflect
         return $string;
     }
 
-    public static function pluralize_if($count, $string)
+    /**
+     * @param $count
+     * @param $string
+     * @return string
+     */
+    public static function pluralizeIf($count, $string)
     {
-        if ($count == 1)
+        if (1 === $count) {
             return "1 $string";
-        else
-            return $count . " " . self::pluralize($string);
+        } else {
+            return $count." ".self::pluralize($string);
+        }
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace NetBull\CoreBundle\Templating\Helper;
 
+use InvalidArgumentException;
 use Symfony\Component\Templating\Helper\HelperInterface;
 
 use libphonenumber\PhoneNumber;

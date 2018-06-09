@@ -1,6 +1,6 @@
 <?php
 
-namespace SLR\CoreBundle\Form\Type;
+namespace NetBull\CoreBundle\Form\Type;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -11,7 +11,7 @@ use NetBull\CoreBundle\Form\DataTransformer\MoneyToStringTransformer;
 
 /**
  * Class MoneyType
- * @package SLR\CoreBundle\Form\Type
+ * @package NetBull\CoreBundle\Form\Type
  */
 class MoneyType extends BaseType
 {

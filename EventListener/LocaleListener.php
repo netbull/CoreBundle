@@ -103,7 +103,7 @@ class LocaleListener implements EventSubscriberInterface
                 && ($manager->getGuesser('session') || $manager->getGuesser('cookie'))
             ) {
                 $localeSwitchEvent = new FilterLocaleSwitchEvent($request, $locale);
-                $this->dispatcher->dispatch(Events::onLocaleChange, $localeSwitchEvent);
+                $this->dispatcher->dispatch(Events::ON_LOCALE_CHANGE, $localeSwitchEvent);
             }
         }
     }
