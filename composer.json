@@ -15,7 +15,8 @@
   "require" : {
     "beberlei/DoctrineExtensions": "^1.0",
     "symfony/templating": "^4.0",
-    "giggsey/libphonenumber-for-php": "^8.8"
+    "giggsey/libphonenumber-for-php": "^8.8",
+    "knplabs/doctrine-behaviors": "^1.5"
   },
   "autoload" : {
     "psr-4" : {
