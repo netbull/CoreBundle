@@ -91,4 +91,12 @@ class NetBullCoreExtension extends Extension
             $container->setParameter($name, $config);
         }
     }
+
+    /**
+     * @return string
+     */
+    public function getAlias()
+    {
+        return 'netbull_core';
+    }
 }
