@@ -69,6 +69,7 @@ class NetBullCoreExtension extends Extension
             $loader->load('locale.yaml');
         }
         $loader->load('form.yaml');
+        $loader->load('translations.yaml');
     }
 
     /**
