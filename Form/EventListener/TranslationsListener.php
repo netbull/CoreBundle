@@ -8,7 +8,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use NetBull\CoreBundle\Form\TranslationForm;
 use NetBull\CoreBundle\Form\Type\TranslationsFieldsType;
-use NetBull\CoreBundle\ORM\Translation\TranslationInterface;
+use NetBull\CoreBundle\ORM\Subscribers\Translation\TranslationInterface;
 
 /**
  * Class TranslationsListener
@@ -49,7 +49,7 @@ class TranslationsListener implements EventSubscriberInterface
                             'data_class'    => $translationClass,
                             'fields'        => $fieldsOptions[$locale],
                             'locale'        => $locale,
-                            'required'      => in_array($locale, $formOptions['required_locales'])
+                            'required'      => in_array($locale, $formOptions['required_locales']),
                         ]
                     );
                 }
