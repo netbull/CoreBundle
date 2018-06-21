@@ -115,7 +115,8 @@ class CoreExtension extends \Twig_Extension
             }
             $link = $this->router->generate($pagination['route'], array_merge($pagination['routeParams'], $params));
 
-            $string = sprintf('<a class="text-success" href="%s" title="Sort %s">%s <i class="fa fa-sort-%s"></i></a>', $link, $hint, $label, $direction);
+            $icon = 'desc' === $direction ? 'down' : 'up';
+            $string = sprintf('<a class="text-success" href="%s" title="Sort %s">%s <i class="fa fa-sort-%s"></i></a>', $link, $hint, $label, $icon);
         } else {
             $link = $this->router->generate($pagination['route'], array_merge($pagination['routeParams'], $pagination['sort'], [
                 'field'     => $field,
