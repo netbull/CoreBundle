@@ -48,14 +48,6 @@ class NetBullCoreExtension extends Extension
             $container->setParameter('netbull_core.intl_extension_fallback.script', $localeScript);
         }
 
-        // set parameters with the default settings so they'll be available in the service definition yml
-        $varNames = ['minimum_input_length', 'page_limit', 'allow_clear', 'delay', 'language', 'cache'];
-        if (!empty($config['form_types']) && !empty($config['form_types']['ajax'])) {
-            foreach($varNames as $varName) {
-                $container->setParameter('netbull_core.form_types.ajax.' . $varName, $config['form_types']['ajax'][$varName]);
-            }
-        }
-
         $container->setParameter('netbull_core.js_routes_path', $config['js_routes_path']);
         $container->setParameter('netbull_core.js_type', $config['js_type']);
 
@@ -71,7 +63,15 @@ class NetBullCoreExtension extends Extension
             $loader->load('locale.yaml');
             $loader->load('translations.yaml');
         }
-        $loader->load('form.yaml');
+
+        // set parameters with the default settings so they'll be available in the service definition yml
+        $varNames = ['minimum_input_length', 'page_limit', 'allow_clear', 'delay', 'language', 'cache'];
+        if (!empty($config['form_types']) && !empty($config['form_types']['ajax'])) {
+            foreach($varNames as $varName) {
+                $container->setParameter('netbull_core.form_types.ajax.' . $varName, $config['form_types']['ajax'][$varName]);
+            }
+            $loader->load('form.yaml');
+        }
     }
 
     /**
