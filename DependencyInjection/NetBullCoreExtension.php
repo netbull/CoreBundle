@@ -69,9 +69,9 @@ class NetBullCoreExtension extends Extension
 
         if ($useLocale) {
             $loader->load('locale.yaml');
+            $loader->load('translations.yaml');
         }
         $loader->load('form.yaml');
-        $loader->load('translations.yaml');
     }
 
     /**
