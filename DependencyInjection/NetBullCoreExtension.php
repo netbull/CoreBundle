@@ -50,8 +50,10 @@ class NetBullCoreExtension extends Extension
 
         // set parameters with the default settings so they'll be available in the service definition yml
         $varNames = ['minimum_input_length', 'page_limit', 'allow_clear', 'delay', 'language', 'cache'];
-        foreach($varNames as $varName) {
-            $container->setParameter('netbull_core.form_types.ajax.' . $varName, $config['form_types']['ajax'][$varName]);
+        if (!empty($config['form_types']) && !empty($config['form_types']['ajax'])) {
+            foreach($varNames as $varName) {
+                $container->setParameter('netbull_core.form_types.ajax.' . $varName, $config['form_types']['ajax'][$varName]);
+            }
         }
 
         $container->setParameter('netbull_core.js_routes_path', $config['js_routes_path']);
