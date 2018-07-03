@@ -3,7 +3,6 @@
 namespace NetBull\CoreBundle\Paginator;
 
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\EntityManager;
 
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -13,11 +12,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
  */
 class Paginator extends BasePaginator
 {
-    /**
-     * @var EntityManager
-     */
-    protected $em;
-
     /**
      * @var array
      */
@@ -55,14 +49,11 @@ class Paginator extends BasePaginator
 
     /**
      * Paginator constructor.
-     * @param EntityManager $em
      * @param RequestStack $requestStack
      */
-    public function __construct(EntityManager $em, RequestStack $requestStack)
+    public function __construct(RequestStack $requestStack)
     {
         parent::__construct($requestStack);
-
-        $this->em = $em;
 
         return $this;
     }
