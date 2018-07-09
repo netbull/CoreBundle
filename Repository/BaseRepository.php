@@ -10,9 +10,6 @@ use Doctrine\ORM\EntityRepository;
  */
 class BaseRepository extends EntityRepository
 {
-    const CACHE_LIFETIME = 1800;
-    const PHOTO_FIELDS = 'id,context,providerReference,providerName,name,width,height,main';
-
     ###################################################
     #                       Helpers                   #
     ###################################################
