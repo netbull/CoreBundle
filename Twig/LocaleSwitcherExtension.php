@@ -52,14 +52,14 @@ class LocaleSwitcherExtension extends \Twig_Extension
      */
     public function renderSwitcher($route = null, $parameters = array(), $template = null)
     {
-        $showCurrentLocale = $this->container->getParameter('slr_locale.switcher.show_current_locale');
-        $useController = $this->container->getParameter('slr_locale.switcher.use_controller');
-        $allowedLocales = $this->container->get('slr_core.allowed_locales_provider')->getAllowedLocales();
+        $showCurrentLocale = $this->container->getParameter('netbull_locale.switcher.show_current_locale');
+        $useController = $this->container->getParameter('netbull_locale.switcher.use_controller');
+        $allowedLocales = $this->container->get('netbull_locale.allowed_locales_provider')->getAllowedLocales();
         $request = $this->container->get('request_stack')->getMasterRequest();
         $router = $this->container->get('router');
         $infoBuilder = new TargetInformationBuilder($request, $router, $allowedLocales, $showCurrentLocale, $useController);
         $info = $infoBuilder->getTargetInformation($route, $parameters);
 
-        return $this->container->get('slr_core.locale_switcher_helper')->renderSwitch($info, $template);
+        return $this->container->get('netbull_core.locale_switcher_helper')->renderSwitch($info, $template);
     }
 }
