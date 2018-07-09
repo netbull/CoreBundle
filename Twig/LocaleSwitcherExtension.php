@@ -36,14 +36,6 @@ class LocaleSwitcherExtension extends \Twig_Extension
     }
 
     /**
-     * @return string The name of the extension
-     */
-    public function getName()
-    {
-        return 'locale_switcher';
-    }
-
-    /**
      * @param null $route
      * @param array $parameters
      * @param null $template
@@ -54,12 +46,20 @@ class LocaleSwitcherExtension extends \Twig_Extension
     {
         $showCurrentLocale = $this->container->getParameter('netbull_locale.switcher.show_current_locale');
         $useController = $this->container->getParameter('netbull_locale.switcher.use_controller');
-        $allowedLocales = $this->container->get('netbull_locale.allowed_locales_provider')->getAllowedLocales();
+        $allowedLocales = $this->container->get('netbull_core.allowed_locales_provider')->getAllowedLocales();
         $request = $this->container->get('request_stack')->getMasterRequest();
         $router = $this->container->get('router');
         $infoBuilder = new TargetInformationBuilder($request, $router, $allowedLocales, $showCurrentLocale, $useController);
         $info = $infoBuilder->getTargetInformation($route, $parameters);
 
         return $this->container->get('netbull_core.locale_switcher_helper')->renderSwitch($info, $template);
+    }
+
+    /**
+     * @return string The name of the extension
+     */
+    public function getName()
+    {
+        return 'locale_switcher';
     }
 }
