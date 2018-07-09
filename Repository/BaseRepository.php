@@ -19,7 +19,7 @@ class BaseRepository extends EntityRepository
      * @param array $additions
      * @return array|null
      */
-    protected function arrayCombine(array $target, array $additions)
+    public static function arrayCombine(array $target, array $additions)
     {
         $tmp = null;
         foreach ($additions as $addition) {
