@@ -42,7 +42,7 @@ class LocaleSwitcherExtension extends \Twig_Extension
      * @return mixed
      * @throws \Exception
      */
-    public function renderSwitcher($route = null, $parameters = array(), $template = null)
+    public function renderSwitcher($route = null, $parameters = [], $template = null)
     {
         $showCurrentLocale = $this->container->getParameter('netbull_locale.switcher.show_current_locale');
         $useController = $this->container->getParameter('netbull_locale.switcher.use_controller');
