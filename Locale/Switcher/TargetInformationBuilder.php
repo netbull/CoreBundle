@@ -74,7 +74,7 @@ class TargetInformationBuilder
                     if (null !== $targetRoute && "" !== $targetRoute) {
                         $switchRoute = $router->generate($targetRoute, $parameters);
                     } elseif ($this->useController) {
-                        $switchRoute = $router->generate('netbull_locale_switcher', ['_locale' => $locale]);
+                        $switchRoute = $router->generate('netbull_core_locale_switcher', ['_locale' => $locale]);
                     } elseif ($route) {
                         $switchRoute = $router->generate($route, $parameters);
                     } else {

@@ -1,4 +1,4 @@
-netbull_locale_switcher:
+netbull_core_locale_switcher:
     path: /changeLocale/{_locale}
     defaults:
         _controller: netbull_core.locale_switcher_controller::switchAction

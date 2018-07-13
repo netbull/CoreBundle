@@ -8,5 +8,5 @@ namespace NetBull\CoreBundle\Locale;
  */
 final class Events
 {
-    const ON_LOCALE_CHANGE = 'netbull_locale.change';
+    const ON_LOCALE_CHANGE = 'netbull_core.locale.change';
 }

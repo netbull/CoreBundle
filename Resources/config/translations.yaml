@@ -11,7 +11,7 @@ services:
         class: NetBull\CoreBundle\Form\Type\TranslationsType
         tags:
             - { name: form.type, alias: netbull_translations }
-        arguments: ['@netbull_core.listener.translations', '%netbull_locale.allowed_locales%', '%locale%']
+        arguments: ['@netbull_core.listener.translations', '%netbull_core.locale.allowed_locales%', '%locale%']
 
     netbull_core.type.translationsfields:
         class: NetBull\CoreBundle\Form\Type\TranslationsFieldsType

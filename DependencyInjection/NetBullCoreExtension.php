@@ -25,7 +25,7 @@ class NetBullCoreExtension extends Extension
         $useLocale = isset($configs[0]['locale']);
 
         if ($useLocale) {
-            $this->bindParameters($container, 'netbull_locale', $config['locale']);
+            $this->bindParameters($container, 'netbull_core.locale', $config['locale']);
 
             // Fallback for missing intl extension
             $intlExtensionInstalled = extension_loaded('intl');

@@ -30,9 +30,9 @@ class LocaleSwitcherExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
-            new \Twig_SimpleFunction('locale_switcher', [$this, 'renderSwitcher'],['is_safe' => ['html']]),
-        );
+        return [
+            new \Twig_SimpleFunction('locale_switcher', [$this, 'renderSwitcher'], ['is_safe' => ['html']]),
+        ];
     }
 
     /**
@@ -44,8 +44,8 @@ class LocaleSwitcherExtension extends \Twig_Extension
      */
     public function renderSwitcher($route = null, $parameters = [], $template = null)
     {
-        $showCurrentLocale = $this->container->getParameter('netbull_locale.switcher.show_current_locale');
-        $useController = $this->container->getParameter('netbull_locale.switcher.use_controller');
+        $showCurrentLocale = $this->container->getParameter('netbull_core.locale.switcher.show_current_locale');
+        $useController = $this->container->getParameter('netbull_core.locale.switcher.use_controller');
         $allowedLocales = $this->container->get('netbull_core.allowed_locales_provider')->getAllowedLocales();
         $request = $this->container->get('request_stack')->getMasterRequest();
         $router = $this->container->get('router');

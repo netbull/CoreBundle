@@ -25,7 +25,7 @@ class LocaleSession
      * @param Session $session    Session
      * @param string  $sessionVar Session config var
      */
-    public function __construct(Session $session, $sessionVar = 'netbull_locale')
+    public function __construct(Session $session, $sessionVar = 'netbull_core_locale')
     {
         $this->session = $session;
         $this->sessionVar = $sessionVar;

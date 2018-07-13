@@ -34,7 +34,7 @@ class SessionLocaleGuesser extends AbstractLocaleGuesser
      * @param MetaValidator $metaValidator
      * @param string $sessionVariable
      */
-    public function __construct(Session $session, MetaValidator $metaValidator, $sessionVariable = 'netbull_locale')
+    public function __construct(Session $session, MetaValidator $metaValidator, $sessionVariable = 'netbull_core_locale')
     {
         $this->metaValidator = $metaValidator;
         $this->session = $session;
