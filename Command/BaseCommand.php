@@ -2,6 +2,7 @@
 
 namespace NetBull\CoreBundle\Command;
 
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
 /**
@@ -17,18 +18,20 @@ abstract class BaseCommand extends ContainerAwareCommand
     protected $debug = false;
 
     /**
-     * @var
+     * @var OutputInterface
      */
     protected $output;
 
     /**
-     * @return \Doctrine\Common\Persistence\ObjectManager|object
+     * @return mixed
      */
     public function getManager()
     {
-        $em = $this->getContainer()->get('doctrine')->getManager();
-        $em->getConnection()->getConfiguration()->setSQLLogger(null);
-        return $em;
+        if (!$this->getContainer()->has('doctrine')) {
+            throw new \LogicException('The DoctrineBundle is not registered in your application. Try running "composer require symfony/orm-pack".');
+        }
+
+        return $this->getContainer()->get('doctrine')->getManager();
     }
 
     /**
