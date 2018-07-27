@@ -80,7 +80,7 @@ services:
         class: NetBull\CoreBundle\Templating\Helper\LocaleSwitchHelper
         tags:
             - { name: templating.helper, alias: switch }
-        arguments: ['@twig', '%netbull_core.locale.switcher.template%']
+        arguments: ['@templating', '%netbull_core.locale.switcher.template%']
 
     netbull_core.locale_twig.switcher:
         class: NetBull\CoreBundle\Twig\LocaleSwitcherExtension
