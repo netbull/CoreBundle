@@ -43,4 +43,12 @@ class Point
     {
         return $this->longitude;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getLatitude() . ', ' . $this->getLongitude();
+    }
 }
