@@ -23,7 +23,7 @@ class PointToStringTransformer implements DataTransformerInterface
             return $point;
         }
 
-        return $point->getLongitude() . ', ' . $point->getLatitude();
+        return $point->getLatitude() . ', ' . $point->getLongitude();
     }
 
     /**
@@ -57,6 +57,6 @@ class PointToStringTransformer implements DataTransformerInterface
             ));
         }
 
-        return new Point($coordinates[1], $coordinates[0]);
+        return new Point($coordinates[0], $coordinates[1]);
     }
 }
