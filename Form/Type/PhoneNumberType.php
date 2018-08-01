@@ -33,7 +33,7 @@ class PhoneNumberType extends AbstractType
         if (self::WIDGET_COUNTRY_CHOICE === $options['widget']) {
             $util = PhoneNumberUtil::getInstance();
 
-            $countries = array();
+            $countries = [];
 
             if (is_array($options['country_choices'])) {
                 foreach ($options['country_choices'] as $country) {
@@ -51,7 +51,7 @@ class PhoneNumberType extends AbstractType
                 }
             }
 
-            $countryChoices = array();
+            $countryChoices = [];
 
             foreach (Intl::getRegionBundle()->getCountryNames() as $region => $name) {
                 if (false === isset($countries[$region])) {
@@ -63,12 +63,12 @@ class PhoneNumberType extends AbstractType
 
             $transformerChoices = array_values($countryChoices);
 
-            $countryOptions = $numberOptions = array(
+            $countryOptions = $numberOptions = [
                 'error_bubbling' => true,
                 'required' => $options['required'],
                 'disabled' => $options['disabled'],
                 'translation_domain' => $options['translation_domain'],
-            );
+            ];
 
             if (method_exists('Symfony\\Component\\Form\\AbstractType', 'getBlockPrefix')) {
                 $choiceType = 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType';
@@ -130,31 +130,26 @@ class PhoneNumberType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(
-            array(
-                'widget' => self::WIDGET_SINGLE_TEXT,
-                'compound' => function (Options $options) {
-                    return PhoneNumberType::WIDGET_SINGLE_TEXT !== $options['widget'];
-                },
-                'default_region' => PhoneNumberUtil::UNKNOWN_REGION,
-                'format' => PhoneNumberFormat::INTERNATIONAL,
-                'invalid_message' => 'This value is not a valid phone number.',
-                'by_reference' => false,
-                'error_bubbling' => false,
-                'country_choices' => array(),
-                'country_placeholder' => false,
-                'preferred_country_choices' => array(),
-            )
-        );
+        $resolver->setDefaults([
+            'widget' => self::WIDGET_SINGLE_TEXT,
+            'compound' => function (Options $options) {
+                return PhoneNumberType::WIDGET_SINGLE_TEXT !== $options['widget'];
+            },
+            'default_region' => PhoneNumberUtil::UNKNOWN_REGION,
+            'format' => PhoneNumberFormat::INTERNATIONAL,
+            'invalid_message' => 'This value is not a valid phone number.',
+            'by_reference' => false,
+            'error_bubbling' => false,
+            'country_choices' => [],
+            'country_placeholder' => false,
+            'preferred_country_choices' => [],
+        ]);
 
         if (method_exists($resolver, 'setDefault')) {
-            $resolver->setAllowedValues(
-                'widget',
-                array(
-                    self::WIDGET_SINGLE_TEXT,
-                    self::WIDGET_COUNTRY_CHOICE,
-                )
-            );
+            $resolver->setAllowedValues('widget', [
+                self::WIDGET_SINGLE_TEXT,
+                self::WIDGET_COUNTRY_CHOICE,
+            ]);
         }
     }
 

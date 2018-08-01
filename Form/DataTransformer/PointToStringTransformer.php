@@ -5,6 +5,8 @@ namespace NetBull\CoreBundle\Form\DataTransformer;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
+use NetBull\CoreBundle\ORM\Objects\Point;
+
 /**
  * Class PointToStringTransformer
  * @package NetBull\CoreBundle\Form\DataTransformer
@@ -12,16 +14,16 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 class PointToStringTransformer implements DataTransformerInterface
 {
     /**
-     * @param mixed $point
+     * @param Point $point
      * @return string
      */
     public function transform($point)
     {
-        if (null === $point || $point == '') {
-            return '';
+        if (!$point) {
+            return $point;
         }
 
-        return $point->getY() . ', ' . $point->getX();
+        return $point->getLongitude() . ', ' . $point->getLatitude();
     }
 
     /**
@@ -42,19 +44,19 @@ class PointToStringTransformer implements DataTransformerInterface
             ));
         }
 
-        if(is_array($stringPoint)) {
+        if (is_array($stringPoint)) {
             $stringPoint = $stringPoint['gpsCoordinate'];
         }
 
         $coordinates = explode(', ', $stringPoint);
 
-        if(count($coordinates) != 2){
+        if (count($coordinates) !== 2) {
             throw new TransformationFailedException(sprintf(
                 'The Coordinates should contain latitude and longitude!',
                 $stringPoint
             ));
         }
 
-        return 'POINT (' . $coordinates[1] . ' ' . $coordinates[0] . ')';
+        return new Point($coordinates[1], $coordinates[0]);
     }
 }
