@@ -1,0 +1,6 @@
+{% use "@NetBullCore/Form/phone_number.html.twig" %}
+
+{% block phone_number_widget -%}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' form-inline')|trim}) %}
+    {{- parent() -}}
+{%- endblock phone_number_widget %}

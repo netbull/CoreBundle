@@ -166,6 +166,6 @@ class PhoneNumberType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'tel';
+        return 'phone_number';
     }
 }
