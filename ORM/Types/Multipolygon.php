@@ -1,4 +1,5 @@
 <?php
+
 namespace NetBull\CoreBundle\ORM\Types;
 
 use Doctrine\DBAL\Types\Type;
@@ -83,7 +84,7 @@ class Multipolygon extends Type
      */
     public function convertToDatabaseValueSQL($sqlExpr, AbstractPlatform $platform)
     {
-        return sprintf('GeomFromText(%s)', $sqlExpr);
+        return sprintf('ST_GeomFromText(%s)', $sqlExpr);
     }
 
     /**
@@ -91,7 +92,7 @@ class Multipolygon extends Type
      */
     public function convertToPHPValueSQL($sqlExpr, $platform)
     {
-        return sprintf('AsText(%s)', $sqlExpr);
+        return sprintf('ST_AsText(%s)', $sqlExpr);
     }
 
     /**
