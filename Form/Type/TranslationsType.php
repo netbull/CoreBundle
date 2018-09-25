@@ -2,11 +2,10 @@
 
 namespace NetBull\CoreBundle\Form\Type;
 
-use Doctrine\Common\Collections\ArrayCollection;
-
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

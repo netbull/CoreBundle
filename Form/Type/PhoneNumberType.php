@@ -3,15 +3,14 @@
 namespace NetBull\CoreBundle\Form\Type;
 
 use Symfony\Component\Intl\Intl;
+use libphonenumber\PhoneNumberUtil;
 use Symfony\Component\Form\FormView;
+use libphonenumber\PhoneNumberFormat;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
-use libphonenumber\PhoneNumberUtil;
-use libphonenumber\PhoneNumberFormat;
 
 use NetBull\CoreBundle\Form\DataTransformer\PhoneNumberToArrayTransformer;
 use NetBull\CoreBundle\Form\DataTransformer\PhoneNumberToStringTransformer;

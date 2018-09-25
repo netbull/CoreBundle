@@ -3,7 +3,6 @@
 namespace NetBull\CoreBundle\Form\Type;
 
 use Doctrine\ORM\EntityManager;
-
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Routing\RouterInterface;
