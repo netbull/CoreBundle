@@ -5,6 +5,7 @@ namespace NetBull\CoreBundle\Form\DataTransformer;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
@@ -16,7 +17,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 class EntitiesToPropertyTransformer implements DataTransformerInterface
 {
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     protected $em;
 
@@ -37,17 +38,17 @@ class EntitiesToPropertyTransformer implements DataTransformerInterface
 
     /**
      * EntitiesToPropertyTransformer constructor.
-     * @param EntityManager     $em
-     * @param                   $class
-     * @param null              $textProperty
-     * @param string            $primaryKey
+     * @param EntityManagerInterface $em
+     * @param $class
+     * @param null $textProperty
+     * @param string $primaryKey
      */
-    public function __construct(EntityManager $em, $class, $textProperty = null, $primaryKey = 'id')
+    public function __construct(EntityManagerInterface $em, $class, $textProperty = null, $primaryKey = 'id')
     {
-        $this->em               = $em;
-        $this->className        = $class;
-        $this->textProperty     = $textProperty;
-        $this->primaryKey       = $primaryKey;
+        $this->em = $em;
+        $this->className = $class;
+        $this->textProperty = $textProperty;
+        $this->primaryKey = $primaryKey;
     }
 
     /**

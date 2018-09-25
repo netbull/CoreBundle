@@ -2,9 +2,16 @@
 
 namespace NetBull\CoreBundle\Form\Type;
 
+use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\AbstractType;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\DataTransformerInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+
+use NetBull\CoreBundle\Form\DataTransformer\EntityToPropertySimpleTransformer;
 
 /**
  * Class EntityHiddenType
@@ -13,18 +20,17 @@ use Symfony\Component\Form\DataTransformerInterface;
 class EntityHiddenType extends AbstractType
 {
     /**
-     * @var DataTransformerInterface $transformer
+     * @var EntityManagerInterface
      */
-    private $transformer;
+    private $em;
 
     /**
-     * Constructor
-     *
-     * @param DataTransformerInterface $transformer
+     * EntityHiddenType constructor.
+     * @param EntityManagerInterface $em
      */
-    public function __construct(DataTransformerInterface $transformer)
+    public function __construct(EntityManagerInterface $em)
     {
-        $this->transformer = $transformer;
+        $this->em = $em;
     }
 
     /**
@@ -34,7 +40,25 @@ class EntityHiddenType extends AbstractType
     {
         // attach the specified model transformer for this entity list field
         // this will convert data between object and string formats
-        $builder->addModelTransformer($this->transformer);
+        $builder->addModelTransformer(new EntityToPropertySimpleTransformer($this->em, $options['class']));
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setRequired(['class']);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        parent::buildView($view, $form, $options);
+
+        $view->vars['object'] = $form->getData();
     }
 
     /**
@@ -42,7 +66,7 @@ class EntityHiddenType extends AbstractType
      */
     public function getParent()
     {
-        return 'hidden';
+        return HiddenType::class;
     }
 
     /**

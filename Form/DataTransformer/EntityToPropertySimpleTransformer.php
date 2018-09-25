@@ -2,8 +2,7 @@
 
 namespace NetBull\CoreBundle\Form\DataTransformer;
 
-use Doctrine\ORM\EntityManager;
-
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
@@ -15,7 +14,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 class EntityToPropertySimpleTransformer implements DataTransformerInterface
 {
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     protected $em;
 
@@ -25,14 +24,14 @@ class EntityToPropertySimpleTransformer implements DataTransformerInterface
     protected $className;
 
     /**
-     * EntityToPropertyTransformer constructor.
-     * @param EntityManager     $em
-     * @param                   $class
+     * EntityToPropertySimpleTransformer constructor.
+     * @param EntityManagerInterface $em
+     * @param $class
      */
-    public function __construct( EntityManager $em, $class )
+    public function __construct(EntityManagerInterface $em, $class)
     {
-        $this->em               = $em;
-        $this->className        = $class;
+        $this->em = $em;
+        $this->className = $class;
     }
 
     /**
@@ -40,7 +39,7 @@ class EntityToPropertySimpleTransformer implements DataTransformerInterface
      * @param mixed $entity
      * @return array
      */
-    public function transform( $entity )
+    public function transform($entity)
     {
         if (null === $entity) {
             return $entity;
@@ -56,7 +55,7 @@ class EntityToPropertySimpleTransformer implements DataTransformerInterface
      * @param string $value
      * @return mixed|null|object
      */
-    public function reverseTransform( $value )
+    public function reverseTransform($value)
     {
         if (null === $value) {
             return null;
