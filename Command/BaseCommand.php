@@ -23,7 +23,7 @@ abstract class BaseCommand extends ContainerAwareCommand
     protected $output;
 
     /**
-     * @return mixed
+     * @return \Doctrine\Common\Persistence\ObjectManager|object
      */
     public function getManager()
     {
