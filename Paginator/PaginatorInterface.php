@@ -10,19 +10,22 @@ interface PaginatorInterface
 {
     /**
      * Build Count Query
+     * @param array $params
      * @return mixed
      */
-    public function getPaginationCount();
+    public function getPaginationCount(array $params = []);
 
     /**
      * Build Query to get the Ids
+     * @param array $params
      * @return mixed
      */
-    public function getPaginationIds();
+    public function getPaginationIds(array $params = []);
 
     /**
      * Main Query
+     * @param array $params
      * @return mixed
      */
-    public function getPaginationQuery();
+    public function getPaginationQuery(array $params = []);
 }
