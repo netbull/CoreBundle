@@ -5,7 +5,7 @@ services:
 
     netbull_core.subscriber.translations:
         class: NetBull\CoreBundle\Form\EventListener\TranslationsSubscriber
-        arguments: ['@netbull_core.service.translation']
+        arguments: ['@netbull_core.service.translation', '@form.factory']
 
     netbull_core.type.translations:
         class: NetBull\CoreBundle\Form\Type\TranslationsType
