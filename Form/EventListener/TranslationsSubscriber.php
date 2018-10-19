@@ -88,6 +88,7 @@ class TranslationsSubscriber implements EventSubscriberInterface
                 'data_class' => $translationClass,
                 'fields' => $this->translationForm->getPrototypeFieldsOptions($translationClass, $formOptions),
                 'locale' => '__locale__',
+                'required' => false,
             ];
 
             switch ($formOptions['render_type']) {
