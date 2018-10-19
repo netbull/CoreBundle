@@ -4,6 +4,9 @@ namespace NetBull\CoreBundle\Form\EventListener;
 
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormFactoryInterface;
+use NetBull\CoreBundle\Form\Type\TranslationsType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use NetBull\CoreBundle\Form\TranslationForm;
@@ -11,19 +14,43 @@ use NetBull\CoreBundle\Form\Type\TranslationsFieldsType;
 use NetBull\CoreBundle\ORM\Subscribers\Translation\TranslationInterface;
 
 /**
- * Class TranslationsListener
+ * Class TranslationsSubscriber
  * @package NetBull\CoreBundle\Form\EventListener
  */
-class TranslationsListener implements EventSubscriberInterface
+class TranslationsSubscriber implements EventSubscriberInterface
 {
+    /**
+     * @var TranslationForm
+     */
     private $translationForm;
 
     /**
-     * @param TranslationForm $translationForm
+     * @var FormFactoryInterface
      */
-    public function __construct(TranslationForm $translationForm)
+    private $formFactory;
+
+    /**
+     * @var TranslationsType
+     */
+    private $parentForm;
+
+    /**
+     * TranslationsSubscriber constructor.
+     * @param TranslationForm $translationForm
+     * @param FormFactoryInterface $formFactory
+     */
+    public function __construct(TranslationForm $translationForm, FormFactoryInterface $formFactory)
     {
         $this->translationForm = $translationForm;
+        $this->formFactory = $formFactory;
+    }
+
+    /**
+     * @param $form
+     */
+    public function setParentForm($form)
+    {
+        $this->parentForm = $form;
     }
 
     /**
@@ -32,7 +59,7 @@ class TranslationsListener implements EventSubscriberInterface
     public function preSetData(FormEvent $event)
     {
         $form = $event->getForm();
-        
+
         $translatableClass = $form->getParent()->getConfig()->getDataClass();
         $translationClass = $this->getTranslationClass($translatableClass);
 
@@ -46,17 +73,36 @@ class TranslationsListener implements EventSubscriberInterface
                         $locale,
                         TranslationsFieldsType::class,
                         [
-                            'data_class'    => $translationClass,
-                            'fields'        => $fieldsOptions[$locale],
-                            'locale'        => $locale,
-                            'required'      => in_array($locale, $formOptions['required_locales']),
+                            'data_class' => $translationClass,
+                            'fields' => $fieldsOptions[$locale],
+                            'locale' => $locale,
+                            'required' => in_array($locale, $formOptions['required_locales']),
                         ]
                     );
                 }
             }
         }
+
+        if (isset($formOptions['prototype']) && $formOptions['prototype']) {
+            $options = [
+                'data_class' => $translationClass,
+                'fields' => $this->translationForm->getPrototypeFieldsOptions($translationClass, $formOptions),
+                'locale' => '__locale__',
+            ];
+
+            switch ($formOptions['render_type']) {
+                case TranslationsType::RENDER_TYPE_ROWS:
+
+                    break;
+                case TranslationsType::RENDER_TYPE_TABS:
+                case TranslationsType::RENDER_TYPE_TABS_SMALL:
+                    $builder = $this->formFactory->createNamedBuilder('__locale__', TranslationsFieldsType::class, null, $options);
+                    $this->parentForm->setPrototype($builder->getForm());
+                    break;
+            }
+        }
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -86,8 +132,8 @@ class TranslationsListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            FormEvents::PRE_SET_DATA    => 'preSetData',
-            FormEvents::SUBMIT          => 'submit',
+            FormEvents::PRE_SET_DATA => 'preSetData',
+            FormEvents::SUBMIT => 'submit',
         ];
     }
 
@@ -100,7 +146,7 @@ class TranslationsListener implements EventSubscriberInterface
         if (method_exists($translatableClass, "getTranslationEntityClass")) {
             return $translatableClass::getTranslationEntityClass();
         }
-        
+
         return $translatableClass .'Translation';
     }
 }

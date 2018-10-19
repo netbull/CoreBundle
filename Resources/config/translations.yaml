@@ -3,15 +3,15 @@ services:
         class: NetBull\CoreBundle\Form\TranslationForm
         arguments: ['@form.registry', '@doctrine']
 
-    netbull_core.listener.translations:
-        class: NetBull\CoreBundle\Form\EventListener\TranslationsListener
+    netbull_core.subscriber.translations:
+        class: NetBull\CoreBundle\Form\EventListener\TranslationsSubscriber
         arguments: ['@netbull_core.service.translation']
 
     netbull_core.type.translations:
         class: NetBull\CoreBundle\Form\Type\TranslationsType
         tags:
             - { name: form.type, alias: netbull_translations }
-        arguments: ['@netbull_core.listener.translations', '%netbull_core.locale.allowed_locales%', '%locale%']
+        arguments: ['@netbull_core.subscriber.translations', '%netbull_core.locale.allowed_locales%', '%locale%']
 
     netbull_core.type.translationsfields:
         class: NetBull\CoreBundle\Form\Type\TranslationsFieldsType

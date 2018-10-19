@@ -2,7 +2,7 @@
 
 namespace NetBull\CoreBundle\Form;
 
-use Doctrine\Common\Util\ClassUtils;
+use Doctrine\Common\Persistence\Proxy;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 use Symfony\Component\Form\FormRegistry;
@@ -36,6 +36,19 @@ class TranslationForm
     }
 
     /**
+     * @param $class
+     * @return bool|string
+     */
+    private function getRealClass($class)
+    {
+        if (false === $pos = strrpos($class, '\\' . Proxy::MARKER . '\\')) {
+            return $class;
+        }
+
+        return substr($class, $pos + Proxy::MARKER_LENGTH + 2);
+    }
+
+    /**
      * @param $translationClass
      * @param array $exclude
      * @return array
@@ -43,7 +56,7 @@ class TranslationForm
     protected function getTranslationFields($translationClass, array $exclude = [])
     {
         $fields = [];
-        $translationClass = ClassUtils::getRealClass($translationClass);
+        $translationClass = $this->getRealClass($translationClass);
 
         if ($manager = $this->managerRegistry->getManagerForClass($translationClass)) {
             $metadataClass = $manager->getMetadataFactory()->getMetadataFor($translationClass);
@@ -86,11 +99,47 @@ class TranslationForm
                         }
                     }
 
-                // General options for all locales
+                    // General options for all locales
                 } else {
                     foreach ($options['locales'] as $locale) {
                         $fieldsOptions[$locale][$field] = $fieldOptions;
                     }
+                }
+            }
+        }
+
+        return $fieldsOptions;
+    }
+
+    /**
+     * @param $class
+     * @param $options
+     * @return array
+     * @throws \Exception
+     */
+    public function getPrototypeFieldsOptions($class, $options)
+    {
+        $fieldsOptions = [];
+
+        foreach ($this->getFieldsList($options, $class) as $field) {
+            $fieldOptions = isset($options['fields'][$field]) ? $options['fields'][$field] : [];
+
+            if (!isset($fieldOptions['display']) || $fieldOptions['display']) {
+                $fieldOptions = $this->guessMissingFieldOptions($this->typeGuesser, $class, $field, $fieldOptions);
+
+                // Custom options by locale
+                if (isset($fieldOptions['locale_options'])) {
+                    $localesFieldOptions = $fieldOptions['locale_options'];
+                    unset($fieldOptions['locale_options']);
+
+                    $localeFieldOptions = $localesFieldOptions ? $localesFieldOptions : [];
+                    if (!isset($localeFieldOptions['display']) || $localeFieldOptions['display']) {
+                        $fieldsOptions[$field] = $localeFieldOptions + $fieldOptions;
+                    }
+
+                    // General options for all locales
+                } else {
+                    $fieldsOptions[$field] = $fieldOptions;
                 }
             }
         }
@@ -141,7 +190,7 @@ class TranslationForm
                 }
             }
 
-        // General options for all locales
+            // General options for all locales
         } else {
             foreach ($options['locales'] as $locale) {
                 $formsOptions[$locale] = $formOptions;
