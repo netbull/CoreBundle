@@ -19,4 +19,9 @@ interface TranslationInterface
      * @return array
      */
     public function getMandatoryFields();
+
+    /**
+     * @return array
+     */
+    public function toArray();
 }
