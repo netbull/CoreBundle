@@ -49,6 +49,33 @@ class TranslationGuesser
     }
 
     /**
+     * @param array $translations
+     * @param string $field
+     * @param string $locale
+     * @param string $defaultLocale
+     * @return string
+     */
+    public static function guessFallback(array $translations, string $field, string $locale, string $defaultLocale)
+    {
+        if (empty($translations)) {
+            return '';
+        }
+
+        $translation = $translations[$locale] ?? null;
+        $defaultTranslation = $translations[$defaultLocale] ?? null;
+
+        if ($translation && !empty($translation[$field])) {
+            return $translation[$field];
+        }
+
+        if ($defaultTranslation && !empty($defaultTranslation[$field])) {
+            return $defaultTranslation[$field];
+        }
+
+        return '';
+    }
+
+    /**
      * Get the translation
      * @param array     $array
      * @param string    $locale
