@@ -13,23 +13,24 @@ use NetBull\CoreBundle\Locale\Validator\MetaValidator;
 class CookieLocaleGuesser extends AbstractLocaleGuesser
 {
     /**
-     * @var string
-     */
-    const LOCALE_COOKIE_NAME = '_l';
-
-    /**
      * @var MetaValidator
      */
     private $metaValidator;
 
     /**
-     * Constructor
-     *
-     * @param MetaValidator $metaValidator    MetaValidator
+     * @var string
      */
-    public function __construct(MetaValidator $metaValidator)
+    private $cookieName;
+
+    /**
+     * CookieLocaleGuesser constructor.
+     * @param MetaValidator $metaValidator
+     * @param string $cookieName
+     */
+    public function __construct(MetaValidator $metaValidator, string $cookieName)
     {
         $this->metaValidator = $metaValidator;
+        $this->cookieName = $cookieName;
     }
 
     /**
@@ -41,8 +42,8 @@ class CookieLocaleGuesser extends AbstractLocaleGuesser
      */
     public function guessLocale(Request $request)
     {
-        if ($request->cookies->has(self::LOCALE_COOKIE_NAME) && $this->metaValidator->isAllowed($request->cookies->get(self::LOCALE_COOKIE_NAME))) {
-            $this->identifiedLocale = $request->cookies->get(self::LOCALE_COOKIE_NAME);
+        if ($request->cookies->has($this->cookieName) && $this->metaValidator->isAllowed($request->cookies->get($this->cookieName))) {
+            $this->identifiedLocale = $request->cookies->get($this->cookieName);
             return true;
         }
 

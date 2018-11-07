@@ -14,9 +14,9 @@ use NetBull\CoreBundle\Locale\Validator\MetaValidator;
 class SessionLocaleGuesser extends AbstractLocaleGuesser
 {
     /**
-     * @var string
+     * @var Session
      */
-    private $sessionVariable;
+    private $session;
 
     /**
      * @var MetaValidator
@@ -24,9 +24,9 @@ class SessionLocaleGuesser extends AbstractLocaleGuesser
     private $metaValidator;
 
     /**
-     * @var Session
+     * @var string
      */
-    private $session;
+    private $sessionVariable;
 
     /**
      * SessionLocaleGuesser constructor.
@@ -34,10 +34,10 @@ class SessionLocaleGuesser extends AbstractLocaleGuesser
      * @param MetaValidator $metaValidator
      * @param string $sessionVariable
      */
-    public function __construct(Session $session, MetaValidator $metaValidator, $sessionVariable = 'netbull_core_locale')
+    public function __construct(Session $session, MetaValidator $metaValidator, string $sessionVariable)
     {
-        $this->metaValidator = $metaValidator;
         $this->session = $session;
+        $this->metaValidator = $metaValidator;
         $this->sessionVariable = $sessionVariable;
     }
 

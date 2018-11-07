@@ -33,7 +33,7 @@ services:
 
     netbull_core.locale_cookie_guesser:
         class: NetBull\CoreBundle\Locale\Guessers\CookieLocaleGuesser
-        arguments: [ '@netbull_core.validator.meta' ]
+        arguments: [ '@netbull_core.validator.meta', '%netbull_core.locale.cookie.name%' ]
         tags:
             - { name: 'locale_guesser', alias: 'cookie' }
 
