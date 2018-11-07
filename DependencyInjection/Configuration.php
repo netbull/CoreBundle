@@ -2,6 +2,7 @@
 
 namespace NetBull\CoreBundle\DependencyInjection;
 
+use NetBull\CoreBundle\Locale\Guessers\CookieLocaleGuesser;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
@@ -162,7 +163,7 @@ class Configuration implements ConfigurationInterface
                             ->children()
                                 ->scalarNode('set_on_change')->defaultTrue()->end()
                                 ->scalarNode('class')->defaultValue('NetBull\CoreBundle\Locale\Cookie\LocaleCookie')->end()
-                                ->scalarNode('name')->defaultValue('netbull_core_locale')->end()
+                                ->scalarNode('name')->defaultValue(CookieLocaleGuesser::LOCALE_COOKIE_NAME)->end()
                                 ->scalarNode('ttl')->defaultValue('86400')->end()
                                 ->scalarNode('path')->defaultValue('/')->end()
                                 ->scalarNode('domain')->defaultValue(null)->end()
