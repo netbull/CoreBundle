@@ -91,4 +91,4 @@ services:
     netbull_core.locale_switcher_controller:
         public: true
         class: NetBull\CoreBundle\Controller\LocaleController
-        arguments: ['@event_dispatcher', '@router', '@netbull_core.validator.meta', '%netbull_core.locale.switcher.use_referrer%', '%netbull_core.locale.switcher.redirect_to_route%', '%netbull_core.locale.switcher.redirect_statuscode%']
+        arguments: ['@event_dispatcher', '@netbull_core.validator.meta', '@router', '%netbull_core.locale.switcher.use_referrer%', '%netbull_core.locale.switcher.redirect_to_route%', '%netbull_core.locale.switcher.redirect_statuscode%']

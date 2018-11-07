@@ -50,13 +50,13 @@ class LocaleController
     /**
      * LocaleController constructor.
      * @param EventDispatcherInterface $dispatcher
-     * @param RouterInterface|null $router
      * @param MetaValidator $metaValidator
+     * @param RouterInterface|null $router
      * @param bool $useReferrer
      * @param null $redirectToRoute
      * @param string $statusCode
      */
-    public function __construct(EventDispatcherInterface $dispatcher, RouterInterface $router = null, MetaValidator $metaValidator, $useReferrer = true, $redirectToRoute = null, $statusCode = '302')
+    public function __construct(EventDispatcherInterface $dispatcher, MetaValidator $metaValidator, RouterInterface $router = null, $useReferrer = true, $redirectToRoute = null, $statusCode = '302')
     {
         $this->dispatcher = $dispatcher;
         $this->router = $router;
@@ -85,7 +85,7 @@ class LocaleController
         $localeSwitchEvent = new FilterLocaleSwitchEvent($request, $_locale);
         $this->dispatcher->dispatch(Events::ON_LOCALE_CHANGE, $localeSwitchEvent);
 
-        return $this->getResponse($request, $useReferrer, $statusCode, $redirectToRoute);
+        return $this->getResponse($request, $useReferrer, $statusCode, $redirectToRoute, $_locale);
     }
 
     /**
@@ -93,9 +93,10 @@ class LocaleController
      * @param $useReferrer
      * @param $statusCode
      * @param $redirectToRoute
+     * @param $_locale
      * @return RedirectResponse
      */
-    private function getResponse(Request $request, $useReferrer, $statusCode, $redirectToRoute)
+    private function getResponse(Request $request, $useReferrer, $statusCode, $redirectToRoute, $_locale)
     {
         // Redirect the User
         if ($useReferrer && $request->headers->has('referer')) {
