@@ -168,7 +168,7 @@ class LocaleListener implements EventSubscriberInterface
     {
         return [
             // must be registered after the Router to have access to the _locale and before the Symfony LocaleListener
-            KernelEvents::REQUEST => [['onKernelRequest', 36]],
+            KernelEvents::REQUEST => [['onKernelRequest', 31]],
             KernelEvents::RESPONSE => ['onLocaleDetectedSetVaryHeader']
         ];
     }
