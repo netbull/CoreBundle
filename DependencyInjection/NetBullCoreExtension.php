@@ -22,33 +22,6 @@ class NetBullCoreExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $useLocale = isset($configs[0]['locale']);
-
-        if ($useLocale) {
-            $this->bindParameters($container, 'netbull_core.locale', $config['locale']);
-
-            // Fallback for missing intl extension
-            $intlExtensionInstalled = extension_loaded('intl');
-            $container->setParameter('netbull_core.intl_extension_installed', $intlExtensionInstalled);
-            $iso3166        = [];
-            $iso639one      = [];
-            $iso639two      = [];
-            $localeScript   = [];
-            if (!$intlExtensionInstalled) {
-                $yamlParser = new Parser();
-                $file = new FileLocator(__DIR__ . '/../Resources/config/locale');
-                $iso3166 = $yamlParser->parse(file_get_contents($file->locate('iso3166-1-alpha-2.yaml')));
-                $iso639one = $yamlParser->parse(file_get_contents($file->locate('iso639-1.yaml')));
-                $iso639two = $yamlParser->parse(file_get_contents($file->locate('iso639-2.yaml')));
-                $localeScript = $yamlParser->parse(file_get_contents($file->locate('locale_script.yaml')));
-            }
-
-            $container->setParameter('netbull_core.intl_extension_fallback.iso3166', $iso3166);
-            $mergedValues = array_merge($iso639one, $iso639two);
-            $container->setParameter('netbull_core.intl_extension_fallback.iso639', $mergedValues);
-            $container->setParameter('netbull_core.intl_extension_fallback.script', $localeScript);
-        }
-
         $container->setParameter('netbull_core.js_routes_path', $config['js_routes_path']);
         $container->setParameter('netbull_core.js_type', $config['js_type']);
 
@@ -60,10 +33,7 @@ class NetBullCoreExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yaml');
 
-        if ($useLocale) {
-            $loader->load('locale.yaml');
-            $loader->load('translations.yaml');
-        }
+        $loader->load('translations.yaml');
 
         $loader->load('form.yaml');
         // set parameters with the default settings so they'll be available in the service definition yml

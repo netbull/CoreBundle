@@ -9,9 +9,7 @@
   "keywords" : [
     "netbull core symfony bundle"
   ],
-  "license" : [
-    "MIT"
-  ],
+  "license" : "AGPL-3.0-or-later",
   "require" : {
     "beberlei/DoctrineExtensions": "^1.0",
     "symfony/templating": "^3.4 || ^4.0",
