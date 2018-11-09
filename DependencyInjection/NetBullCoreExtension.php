@@ -2,7 +2,6 @@
 
 namespace NetBull\CoreBundle\DependencyInjection;
 
-use Symfony\Component\Yaml\Parser;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -32,10 +31,8 @@ class NetBullCoreExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yaml');
-
-        $loader->load('translations.yaml');
-
         $loader->load('form.yaml');
+
         // set parameters with the default settings so they'll be available in the service definition yml
         $varNames = ['minimum_input_length', 'page_limit', 'allow_clear', 'delay', 'language', 'cache'];
         if (!empty($config['form_types']) && !empty($config['form_types']['ajax'])) {
@@ -46,27 +43,6 @@ class NetBullCoreExtension extends Extension
             $container->removeDefinition('netbull_core.form.type.dynamic');
             $container->removeDefinition('netbull_core.form.type.ajax');
             $container->removeDefinition('netbull_core.form.type.select2');
-        }
-    }
-
-    /**
-     * @param ContainerBuilder $container
-     * @param $name
-     * @param $config
-     */
-    public function bindParameters(ContainerBuilder $container, $name, $config)
-    {
-        if (is_array($config) && empty($config[0])) {
-            foreach ($config as $key => $value) {
-                if ('locale_map' === $key) {
-                    //need a assoc array here
-                    $container->setParameter($name . '.' . $key, $value);
-                } else {
-                    $this->bindParameters($container, $name . '.' . $key, $value);
-                }
-            }
-        } else {
-            $container->setParameter($name, $config);
         }
     }
 
