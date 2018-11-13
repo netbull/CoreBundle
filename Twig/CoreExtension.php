@@ -2,15 +2,12 @@
 
 namespace NetBull\CoreBundle\Twig;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Intl\Intl;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 use NetBull\CoreBundle\Utils\Inflect;
-use NetBull\CoreBundle\Utils\TranslationGuesser;
-use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Class CoreExtension
@@ -57,9 +54,6 @@ class CoreExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('guessTranslation', [$this, 'guessTranslation']),
-            new \Twig_SimpleFilter('getTranslation', [$this, 'getTranslation']),
-            new \Twig_SimpleFilter('language', [$this, 'languageFromLocale']),
             new \Twig_SimpleFilter('rename_pipe', [$this, 'renameByPipe']),
             new \Twig_SimpleFilter('inflect', [$this, 'inflect']),
             new \Twig_SimpleFilter('titleize', [$this, 'titleize']),
@@ -201,57 +195,6 @@ class CoreExtension extends \Twig_Extension
     #########################################
     #                Filters                #
     #########################################
-
-    /**
-     * @param array $array
-     * @param $field
-     * @param null $locale
-     * @param bool $strict
-     * @return mixed|string
-     */
-    public function guessTranslation(array $array, $field, $locale = null, $strict = false)
-    {
-        if (empty($array)) {
-            return '';
-        }
-
-        $locale = ($locale) ? $locale : $this->requestStack->getCurrentRequest()->getLocale();
-
-        return TranslationGuesser::guess($array, $field, $locale, $strict);
-    }
-
-    /**
-     * @param array $array
-     * @param null $locale
-     * @param bool $strict
-     * @return mixed|string
-     */
-    public function getTranslation(array $array, $locale = null, $strict = false)
-    {
-        if (empty($array)) {
-            return '';
-        }
-
-        $locale = ($locale) ? $locale : $this->requestStack->getCurrentRequest()->getLocale();
-
-        return TranslationGuesser::get($array, $locale, $strict);
-    }
-
-    /**
-     * Return Language representation for a given Locale
-     * @param $locale
-     * @param string $toLocale
-     * @return string
-     */
-    public function languageFromLocale($locale, $toLocale = null)
-    {
-        $request = $this->requestStack->getCurrentRequest();
-        $auto = $request ? $request->getLocale() : 'en';
-        $toLocale = ($toLocale)?$toLocale:$auto;
-        $language = \Locale::getDisplayLanguage($locale, $toLocale);
-
-        return mb_convert_case($language, MB_CASE_TITLE, 'UTF-8');
-    }
 
     /**
      * Pluralize or Singularize a string
