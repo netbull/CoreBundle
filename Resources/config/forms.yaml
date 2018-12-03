@@ -1,0 +1,36 @@
+services:
+    NetBull\CoreBundle\Form\Type\AjaxType:
+        autowire: true
+        public: true
+
+    NetBull\CoreBundle\Form\Type\AutoCollectionType:
+        autowire: true
+        public: true
+
+    NetBull\CoreBundle\Form\Type\DynamicType:
+        autowire: true
+        public: true
+
+    NetBull\CoreBundle\Form\Type\EntityHiddenType:
+        autowire: true
+        public: true
+
+    NetBull\CoreBundle\Form\Type\MoneyType:
+        autowire: true
+        public: true
+
+    NetBull\CoreBundle\Form\Type\PhoneNumberType:
+        autowire: true
+        public: true
+
+    NetBull\CoreBundle\Form\Type\PointTextType:
+        autowire: true
+        public: true
+
+    NetBull\CoreBundle\Form\Type\PointType:
+        autowire: true
+        public: true
+
+    NetBull\CoreBundle\Form\Type\Select2Type:
+        autowire: true
+        public: true
