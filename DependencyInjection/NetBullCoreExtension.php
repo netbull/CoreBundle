@@ -39,6 +39,8 @@ class NetBullCoreExtension extends Extension
                 $container->setParameter('netbull_core.form_types.ajax.' . $varName, $config['form_types']['ajax'][$varName]);
             }
         }
+
+        $loader->load('forms.yaml');
     }
 
     /**
