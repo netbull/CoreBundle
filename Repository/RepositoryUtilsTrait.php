@@ -17,7 +17,7 @@ trait RepositoryUtilsTrait
      * @param array $additions
      * @return array|null
      */
-    public static function arrayCombine(array $target, array $additions)
+    protected function arrayCombine(array $target, array $additions)
     {
         $tmp = null;
         foreach ($additions as $addition) {
