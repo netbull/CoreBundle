@@ -2,18 +2,20 @@
 
 namespace NetBull\CoreBundle\Command;
 
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 use NetBull\CoreBundle\Routing\Extractor;
+use NetBull\CoreBundle\Routing\ExtractorInterface;
 
 /**
  * Class JSRoutingCommand
  * @package NetBull\CoreBundle\Command
  */
-class JSRoutingCommand extends ContainerAwareCommand
+class JSRoutingCommand extends Command
 {
     /**
      * @var string
@@ -29,6 +31,25 @@ class JSRoutingCommand extends ContainerAwareCommand
      * @var bool
      */
     private $canExecute = true;
+
+    /**
+     * @var ParameterBagInterface
+     */
+    private $parameterBag;
+
+    /**
+     * JSRoutingCommand constructor.
+     * @param string|null $name
+     * @param ParameterBagInterface|null $parameterBag
+     * @param ExtractorInterface|null $extractor
+     */
+    public function __construct(string $name = null, ParameterBagInterface $parameterBag = null, ExtractorInterface $extractor = null)
+    {
+        parent::__construct($name);
+
+        $this->parameterBag = $parameterBag;
+        $this->extractor = $extractor;
+    }
 
     /**
      * {@inheritdoc}
@@ -49,16 +70,13 @@ class JSRoutingCommand extends ContainerAwareCommand
     {
         parent::initialize($input, $output);
 
-        $container = $this->getContainer();
-
-        if ( !$input->getOption('target') && !$container->getParameter('netbull_core.js_routes_path') ) {
+        if (!$input->getOption('target') && !$this->parameterBag->get('netbull_core.js_routes_path')) {
             $output->writeln('<error>No exit file is specified!</error>');
             $output->writeln('Please specify it in netbull_core.js_routes_path');
             $this->canExecute = false;
         }
 
-        $this->targetPath   = $input->getOption('target') ?: sprintf('%s/../%s', $container->getParameter('kernel.root_dir'), $container->getParameter('netbull_core.js_routes_path'));
-        $this->extractor    = $this->getContainer()->get('netbull_core.js_routing');
+        $this->targetPath = $input->getOption('target') ?: sprintf('%s/../%s', $this->parameterBag->get('kernel.root_dir'), $this->parameterBag->get('netbull_core.js_routes_path'));
     }
 
     /**
@@ -66,7 +84,7 @@ class JSRoutingCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if ( !$this->canExecute ) {
+        if (!$this->canExecute) {
             return;
         }
 
@@ -80,7 +98,7 @@ class JSRoutingCommand extends ContainerAwareCommand
      *
      * @param OutputInterface $output The command output
      */
-    private function doDump( OutputInterface $output )
+    private function doDump(OutputInterface $output)
     {
         if (!is_dir($dir = dirname($this->targetPath))) {
             $output->writeln('<info>[dir+]</info>  ' . $dir);
@@ -92,11 +110,11 @@ class JSRoutingCommand extends ContainerAwareCommand
         $output->writeln('<info>[file+]</info> ' . $this->targetPath);
 
         $templates = [
-            'js'    => "this.%s = route('%s');\n",
-            'es6'   => "\t\t\t'%s': '%s',\n"
+            'js' => "this.%s = route('%s');\n",
+            'es6' => "\t\t\t'%s': '%s',\n"
         ];
 
-        $type = $this->getContainer()->getParameter('netbull_core.js_type');
+        $type = $this->parameterBag->get('netbull_core.js_type');
 
         $routes = '';
         foreach ($this->extractor->getRoutes() as $name => $route) {
@@ -104,7 +122,7 @@ class JSRoutingCommand extends ContainerAwareCommand
 
             if (0 < count($routeParams)) {
                 $parameters = array_flip($routeParams[1]);
-                $normalizedRoute = preg_replace_callback("/{(.*?)}/i", function( $m ) use( $parameters ){
+                $normalizedRoute = preg_replace_callback("/{(.*?)}/i", function($m) use($parameters) {
                     return ':' . ($parameters[$m[1]] + 1);
                 }, $route->getPath());
 
@@ -112,7 +130,7 @@ class JSRoutingCommand extends ContainerAwareCommand
             }
         }
 
-        $source = file_get_contents($this->getContainer()->get('kernel')->locateResource('@NetBullCoreBundle/Resources/js/router.' . $type . '.js'));
+        $source = file_get_contents(__DIR__ . '/../Resources/js/router.' . $type . '.js');
         $content = str_replace('//<ROUTES>', $routes, $source);
 
         if (false === @file_put_contents($this->targetPath, $content)) {

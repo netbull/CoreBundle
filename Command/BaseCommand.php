@@ -2,14 +2,15 @@
 
 namespace NetBull\CoreBundle\Command;
 
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
 /**
  * Class BaseCommand
  * @package NetBull\CoreBundle\Command
  */
-abstract class BaseCommand extends ContainerAwareCommand
+abstract class BaseCommand extends Command
 {
     /**
      * Debug switch
@@ -23,15 +24,20 @@ abstract class BaseCommand extends ContainerAwareCommand
     protected $output;
 
     /**
+     * @var EntityManagerInterface $em
+     */
+    protected $em;
+
+    /**
      * @return \Doctrine\Common\Persistence\ObjectManager|object
      */
     public function getManager()
     {
-        if (!$this->getContainer()->has('doctrine')) {
+        if (!$this->em) {
             throw new \LogicException('The DoctrineBundle is not registered in your application. Try running "composer require symfony/orm-pack".');
         }
 
-        return $this->getContainer()->get('doctrine')->getManager();
+        return $this->em;
     }
 
     /**
@@ -39,8 +45,8 @@ abstract class BaseCommand extends ContainerAwareCommand
      */
     protected function optimize()
     {
-        if ($this->getContainer()->has('doctrine')) {
-            $this->getManager()->clear();
+        if ($this->em) {
+            $this->em->clear();
         }
     }
 

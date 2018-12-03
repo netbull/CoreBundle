@@ -3,12 +3,11 @@
 namespace NetBull\CoreBundle\ORM\Types;
 
 use Doctrine\DBAL\Types\Type;
-use Doctrine\DBAL\Types\ConversionException;
-use Doctrine\DBAL\Platforms\AbstractPlatform;
-
 use libphonenumber\PhoneNumberUtil;
 use libphonenumber\PhoneNumberFormat;
 use libphonenumber\NumberParseException;
+use Doctrine\DBAL\Types\ConversionException;
+use Doctrine\DBAL\Platforms\AbstractPlatform;
 use libphonenumber\PhoneNumber as PhoneNumberBase;
 
 /**

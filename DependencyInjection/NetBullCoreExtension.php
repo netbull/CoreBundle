@@ -31,7 +31,6 @@ class NetBullCoreExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yaml');
-        $loader->load('form.yaml');
 
         // set parameters with the default settings so they'll be available in the service definition yml
         $varNames = ['minimum_input_length', 'page_limit', 'allow_clear', 'delay', 'language', 'cache'];
@@ -39,10 +38,6 @@ class NetBullCoreExtension extends Extension
             foreach($varNames as $varName) {
                 $container->setParameter('netbull_core.form_types.ajax.' . $varName, $config['form_types']['ajax'][$varName]);
             }
-        } else {
-            $container->removeDefinition('netbull_core.form.type.dynamic');
-            $container->removeDefinition('netbull_core.form.type.ajax');
-            $container->removeDefinition('netbull_core.form.type.select2');
         }
     }
 

@@ -2,10 +2,9 @@
 
 namespace NetBull\CoreBundle\Form\DataTransformer;
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\PersistentCollection;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
@@ -17,7 +16,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 class EntityToPropertyTransformer implements DataTransformerInterface
 {
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     protected $em;
 
@@ -43,19 +42,19 @@ class EntityToPropertyTransformer implements DataTransformerInterface
 
     /**
      * EntityToPropertyTransformer constructor.
-     * @param EntityManager     $em
-     * @param                   $class
-     * @param null              $textProperty
-     * @param string            $primaryKey
-     * @param array             $data
+     * @param EntityManagerInterface $em
+     * @param string $class
+     * @param null $textProperty
+     * @param string $primaryKey
+     * @param array $data
      */
-    public function __construct( EntityManager $em, $class, $textProperty = null, $primaryKey = 'id', $data = [] )
+    public function __construct(EntityManagerInterface $em, string $class, $textProperty = null, $primaryKey = 'id', $data = [])
     {
-        $this->em               = $em;
-        $this->className        = $class;
-        $this->textProperty     = $textProperty;
-        $this->primaryKey       = $primaryKey;
-        $this->data             = $data;
+        $this->em = $em;
+        $this->className = $class;
+        $this->textProperty = $textProperty;
+        $this->primaryKey = $primaryKey;
+        $this->data = $data;
     }
 
     /**
@@ -66,6 +65,7 @@ class EntityToPropertyTransformer implements DataTransformerInterface
     public function transform($entity)
     {
         $data = [];
+
         if (null === $entity) {
             return $data;
         }
@@ -86,8 +86,8 @@ class EntityToPropertyTransformer implements DataTransformerInterface
         }
 
         $data[$accessor->getValue($entity, $this->primaryKey)] = [
-            'text'  => $text,
-            'attr'  => $attr
+            'text' => $text,
+            'attr' => $attr
         ];
         return $data;
     }

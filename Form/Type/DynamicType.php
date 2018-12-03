@@ -2,11 +2,10 @@
 
 namespace NetBull\CoreBundle\Form\Type;
 
-use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\FormView;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -21,15 +20,15 @@ use NetBull\CoreBundle\Form\DataTransformer\EntitiesToPropertyTransformer;
 class DynamicType extends AbstractType
 {
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     protected $em;
 
     /**
      * DynamicType constructor.
-     * @param EntityManager $em
+     * @param EntityManagerInterface $em
      */
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
     }
@@ -86,22 +85,23 @@ class DynamicType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'class'                 => null,
-            'primary_key'           => 'id',
-            'hidden'                => false,
-            'multiple'              => false,
-            'compound'              => false,
-            'text_property'         => null,
-            'required'              => false,
-            'transformer'           => null,
-            'data-attr'             => []
+            'class' => null,
+            'primary_key' => 'id',
+            'hidden' => false,
+            'multiple' => false,
+            'compound' => false,
+            'text_property' => null,
+            'required' => false,
+            'transformer' => null,
+            'data-attr' => []
         ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix() {
+    public function getBlockPrefix()
+    {
         return 'dynamic_type';
     }
 }

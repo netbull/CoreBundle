@@ -2,10 +2,8 @@
 
 namespace NetBull\CoreBundle\Form\DataTransformer;
 
-use Doctrine\ORM\EntityManager;
-use Doctrine\Common\Collections\ArrayCollection;
-
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
@@ -61,7 +59,7 @@ class EntitiesToPropertyTransformer implements DataTransformerInterface
         if (is_null($entities) || count($entities) === 0) {
             return [];
         }
-        
+
         $data = [];
         $accessor = PropertyAccess::createPropertyAccessor();
 

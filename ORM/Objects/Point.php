@@ -19,12 +19,13 @@ class Point
     private $longitude;
 
     /**
+     * Point constructor.
      * @param float $latitude
      * @param float $longitude
      */
     public function __construct($latitude, $longitude)
     {
-        $this->latitude  = $latitude;
+        $this->latitude = $latitude;
         $this->longitude = $longitude;
     }
 
@@ -49,6 +50,10 @@ class Point
      */
     public function __toString()
     {
+        if ($this->getLatitude() || $this->getLongitude()) {
+            return '';
+        }
+
         return $this->getLatitude() . ', ' . $this->getLongitude();
     }
 }

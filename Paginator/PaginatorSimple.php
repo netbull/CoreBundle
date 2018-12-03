@@ -4,13 +4,11 @@ namespace NetBull\CoreBundle\Paginator;
 
 use Doctrine\ORM\QueryBuilder;
 
-use Symfony\Component\HttpFoundation\RequestStack;
-
 /**
  * Class PaginatorSimple
  * @package NetBull\CoreBundle\Paginator
  */
-class PaginatorSimple extends BasePaginator
+class PaginatorSimple extends BasePaginator implements PaginatorSimpleInterface
 {
     /**
      * @var array
@@ -21,17 +19,6 @@ class PaginatorSimple extends BasePaginator
      * @var QueryBuilder|null
      */
     protected $query = null;
-
-    /**
-     * Paginator constructor.
-     * @param RequestStack $requestStack
-     */
-    public function __construct(RequestStack $requestStack)
-    {
-        parent::__construct($requestStack);
-
-        return $this;
-    }
 
     /**
      * @inheritdoc

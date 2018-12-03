@@ -2,13 +2,12 @@
 
 namespace NetBull\CoreBundle\Form\DataTransformer;
 
-use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Component\Form\Exception\TransformationFailedException;
-
 use libphonenumber\PhoneNumber;
 use libphonenumber\PhoneNumberUtil;
 use libphonenumber\PhoneNumberFormat;
 use libphonenumber\NumberParseException;
+use Symfony\Component\Form\DataTransformerInterface;
+use Symfony\Component\Form\Exception\TransformationFailedException;
 
 /**
  * Class PhoneNumberToArrayTransformer

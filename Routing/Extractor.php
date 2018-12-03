@@ -10,7 +10,7 @@ use Symfony\Component\Routing\RouterInterface;
  * Class Extractor
  * @package NetBull\CoreBundle\Routing
  */
-class Extractor
+class Extractor implements ExtractorInterface
 {
     /**
      * @var RouterInterface
@@ -38,9 +38,9 @@ class Extractor
      */
     public function __construct(RouterInterface $router, $cacheDir, $bundles = [])
     {
-        $this->router         = $router;
-        $this->cacheDir       = $cacheDir;
-        $this->bundles        = $bundles;
+        $this->router = $router;
+        $this->cacheDir = $cacheDir;
+        $this->bundles = $bundles;
     }
 
     /**

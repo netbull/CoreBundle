@@ -2,15 +2,15 @@
 
 namespace NetBull\CoreBundle\Validator\Constraints;
 
-use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\ConstraintValidator;
-use Symfony\Component\Validator\Exception\UnexpectedTypeException;
-
 use libphonenumber\PhoneNumberUtil;
 use libphonenumber\PhoneNumberType;
 use libphonenumber\PhoneNumberFormat;
 use libphonenumber\NumberParseException;
+use Symfony\Component\Validator\Constraint;
 use libphonenumber\PhoneNumber as PhoneNumberObject;
+use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+
 
 /**
  * Class PhoneNumberValidator

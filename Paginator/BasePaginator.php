@@ -59,17 +59,17 @@ abstract class BasePaginator
      */
     public function __construct(RequestStack $requestStack)
     {
-        $this->request      = $requestStack->getCurrentRequest();
+        $this->request = $requestStack->getCurrentRequest();
 
-        $this->route        = ($this->request) ? $this->request->attributes->get('_route') : null;
-        $this->routeParams  = ($this->request) ? array_merge($this->request->query->all(), $this->request->attributes->get('_route_params', [])) : null;
+        $this->route = ($this->request) ? $this->request->attributes->get('_route') : null;
+        $this->routeParams = ($this->request) ? array_merge($this->request->query->all(), $this->request->attributes->get('_route_params', [])) : null;
 
-        $params             = ($this->request) ? array_merge($this->request->query->all(),$this->request->request->all()) : [];
+        $params = ($this->request) ? array_merge($this->request->query->all(),$this->request->request->all()) : [];
         if (isset($params['perPage']) && $params['perPage'] && strtolower($params['perPage']) !== self::ALL_PARAMETER) {
             $this->maxResults = (int)$params['perPage'] ?? 20;
         }
-        $this->page         = (isset($params['page']) && (int)$params['page']) ? (int)$params['page'] : 1;
-        $this->queryFilter  = (isset($params['query'])) ? $params['query'] : '';
+        $this->page = (isset($params['page']) && (int)$params['page']) ? (int)$params['page'] : 1;
+        $this->queryFilter = (isset($params['query'])) ? $params['query'] : '';
 
         // Sniff the sorting options
         if (isset($params['field']) && !empty($params['field'])) {
@@ -122,8 +122,8 @@ abstract class BasePaginator
 
         $proximity = floor($pageRange / 2);
 
-        $startPage  = $current - $proximity;
-        $endPage    = $current + $proximity;
+        $startPage = $current - $proximity;
+        $endPage = $current + $proximity;
 
         if ($startPage < 1) {
             $endPage = min($endPage + (1 - $startPage), $pageCount);
@@ -136,20 +136,20 @@ abstract class BasePaginator
         }
 
         $pagination = [
-            'last'              => (int)$pageCount,
-            'current'           => (int)$current,
-            'numItemsPerPage'   => $this->maxResults ?? ucfirst(self::ALL_PARAMETER),
-            'first'             => 1,
-            'pageCount'         => (int)$pageCount,
-            'totalCount'        => (int)$totalCount,
-            'pageRange'         => $pageRange,
-            'startPage'         => (int)$startPage,
-            'endPage'           => (int)$endPage,
-            'route'             => $this->route,
-            'routeParams'       => $this->routeParams,
-            'query'             => $this->queryFilter,
+            'last' => (int)$pageCount,
+            'current' => (int)$current,
+            'numItemsPerPage' => $this->maxResults ?? ucfirst(self::ALL_PARAMETER),
+            'first' => 1,
+            'pageCount' => (int)$pageCount,
+            'totalCount' => (int)$totalCount,
+            'pageRange' => $pageRange,
+            'startPage' => (int)$startPage,
+            'endPage' => (int)$endPage,
+            'route' => $this->route,
+            'routeParams' => $this->routeParams,
+            'query' => $this->queryFilter,
             'pageParameterName' => 'page',
-            'sort'              => $this->sort,
+            'sort' => $this->sort,
         ];
 
         if ($current - 1 > 0) {
@@ -160,9 +160,9 @@ abstract class BasePaginator
             $pagination['next'] = $current + 1;
         }
 
-        $pagination['pagesInRange']     = $pages;
+        $pagination['pagesInRange'] = $pages;
         $pagination['firstPageInRange'] = min($pages);
-        $pagination['lastPageInRange']  = max($pages);
+        $pagination['lastPageInRange'] = max($pages);
 
         $items = $this->getRecords();
         if ($items !== null) {
@@ -172,8 +172,8 @@ abstract class BasePaginator
         }
 
         return [
-            'items'         => $items,
-            'pagination'    => $pagination
+            'items' => $items,
+            'pagination' => $pagination
         ];
     }
 

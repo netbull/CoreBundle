@@ -6,17 +6,14 @@ services:
         tags:
             - { name: twig.extension }
 
-    netbull_core.paginator:
-        class: NetBull\CoreBundle\Paginator\Paginator
+    NetBull\CoreBundle\Paginator\Paginator:
         arguments: ['@request_stack']
         public: true
 
-    netbull_core.paginator_simple:
-        class: NetBull\CoreBundle\Paginator\PaginatorSimple
+    NetBull\CoreBundle\Paginator\PaginatorSimple:
         arguments: ['@request_stack']
 
-    netbull_core.js_routing:
-        class: NetBull\CoreBundle\Routing\Extractor
+    NetBull\CoreBundle\Routing\Extractor:
         arguments: ['@router', '%kernel.cache_dir%', '%kernel.bundles%']
 
     libphonenumber.phone_number_util:

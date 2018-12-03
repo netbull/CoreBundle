@@ -2,6 +2,8 @@
 
 namespace NetBull\CoreBundle\Paginator;
 
+use Doctrine\ORM\QueryBuilder;
+
 /**
  * Interface PaginatorInterface
  * @package NetBull\CoreBundle\Paginator
@@ -9,23 +11,70 @@ namespace NetBull\CoreBundle\Paginator;
 interface PaginatorInterface
 {
     /**
-     * Build Count Query
-     * @param array $params
-     * @return mixed
+     * @return int|mixed
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function getPaginationCount(array $params = []);
+    public function getCount();
 
     /**
-     * Build Query to get the Ids
-     * @param array $params
-     * @return mixed
+     * @return array
      */
-    public function getPaginationIds(array $params = []);
+    public function getRecords();
 
     /**
-     * Main Query
-     * @param array $params
-     * @return mixed
+     * Handle the pagination
+     * @return array
      */
-    public function getPaginationQuery(array $params = []);
+    public function paginate();
+
+    /**
+     * @param string $field
+     * @return $this
+     */
+    public function setIdField(string $field = 'id');
+
+    /**
+     * @param QueryBuilder $query
+     * @return $this
+     */
+    public function setCountQuery(QueryBuilder $query);
+
+    /**
+     * @return QueryBuilder|null
+     */
+    public function getCountQuery();
+
+    /**
+     * @param QueryBuilder $query
+     * @return $this
+     */
+    public function setIdsQuery(QueryBuilder $query);
+
+    /**
+     * @return array
+     */
+    public function getIds();
+
+    /**
+     * @param QueryBuilder $query
+     * @return $this
+     */
+    public function setQuery(QueryBuilder $query);
+
+    /**
+     * @param QueryBuilder $query
+     * @return $this
+     */
+    public function setAdditionalQuery(QueryBuilder $query);
+
+    /**
+     * @return array
+     */
+    public function getSelectedIds();
+
+    /**
+     * @param array $sort
+     * @return $this
+     */
+    public function addAdditionalSorting(array $sort = []);
 }

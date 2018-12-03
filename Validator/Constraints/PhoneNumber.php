@@ -2,10 +2,9 @@
 
 namespace NetBull\CoreBundle\Validator\Constraints;
 
+use libphonenumber\PhoneNumberUtil;
 use Doctrine\Common\Annotations\Annotation;
 use Symfony\Component\Validator\Constraint;
-
-use libphonenumber\PhoneNumberUtil;
 
 /**
  * Class PhoneNumber

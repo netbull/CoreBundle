@@ -2,15 +2,13 @@
 
 namespace NetBull\CoreBundle\ORM\Subscribers\Sluggable;
 
-use Doctrine\ORM\Event\OnFlushEventArgs;
-use Doctrine\ORM\Event\LifecycleEventArgs;
-
-use Knp\DoctrineBehaviors\ORM\AbstractSubscriber;
-use Knp\DoctrineBehaviors\Reflection\ClassAnalyzer;
-
 use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\Event\OnFlushEventArgs;
+use Doctrine\ORM\Event\LifecycleEventArgs;
+use Knp\DoctrineBehaviors\ORM\AbstractSubscriber;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
+use Knp\DoctrineBehaviors\Reflection\ClassAnalyzer;
 
 /**
  * Class SluggableSubscriber
@@ -21,7 +19,7 @@ class SluggableSubscriber extends AbstractSubscriber
     private $sluggableTrait;
 
     /**
-     * SluggableSubscriber construector.
+     * SluggableSubscriber constructor.
      * @param ClassAnalyzer $classAnalyzer
      * @param $isRecursive
      * @param $sluggableTrait
@@ -48,8 +46,8 @@ class SluggableSubscriber extends AbstractSubscriber
             if (!$classMetadata->hasField('slug')) {
                 $classMetadata->mapField([
                     'fieldName' => 'slug',
-                    'type'      => 'string',
-                    'nullable'  => true
+                    'type' => 'string',
+                    'nullable' => true
                 ]);
             }
         }

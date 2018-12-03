@@ -2,11 +2,12 @@
 
 namespace NetBull\CoreBundle\Form\Type;
 
-use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\FormView;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 /**
  * Class Select2Type
@@ -35,24 +36,19 @@ class Select2Type extends AjaxType
     protected $cache;
 
     /**
-     * AjaxType constructor.
-     * @param EntityManager     $em
-     * @param RouterInterface   $router
-     * @param                   $minimumInputLength
-     * @param                   $perPage
-     * @param                   $allowClear
-     * @param                   $delay
-     * @param                   $language
-     * @param                   $cache
+     * Select2Type constructor.
+     * @param EntityManagerInterface $em
+     * @param RouterInterface $router
+     * @param ParameterBagInterface $parameterBag
      */
-    public function __construct( EntityManager $em, RouterInterface $router, $minimumInputLength, $perPage, $allowClear, $delay, $language, $cache )
+    public function __construct(EntityManagerInterface $em, RouterInterface $router, ParameterBagInterface $parameterBag)
     {
-        parent::__construct($em, $router, $minimumInputLength, $perPage);
+        parent::__construct($em, $router, $parameterBag);
 
-        $this->allowClear           = $allowClear;
-        $this->delay                = $delay;
-        $this->language             = $language;
-        $this->cache                = $cache;
+        $this->allowClear = $parameterBag->get('netbull_core.form_types.ajax.allow_clear');
+        $this->delay = $parameterBag->get('netbull_core.form_types.ajax.delay');
+        $this->language = $parameterBag->get('netbull_core.form_types.ajax.language');
+        $this->cache = $parameterBag->get('netbull_core.form_types.ajax.cache');
     }
 
     /**
@@ -79,17 +75,18 @@ class Select2Type extends AjaxType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'allow_clear'           => $this->allowClear,
-            'delay'                 => $this->delay,
-            'language'              => $this->language,
-            'cache'                 => $this->cache,
+            'allow_clear' => $this->allowClear,
+            'delay' => $this->delay,
+            'language' => $this->language,
+            'cache' => $this->cache,
         ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix() {
+    public function getBlockPrefix()
+    {
         return 'select2_type';
     }
 }

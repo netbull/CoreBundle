@@ -2,13 +2,11 @@
 
 namespace NetBull\CoreBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
-
 /**
- * Class BaseRepository
+ * Class RepositoryUtilsTrait
  * @package NetBull\CoreBundle\Repository
  */
-class BaseRepository extends EntityRepository
+trait RepositoryUtilsTrait
 {
     ###################################################
     #                       Helpers                   #

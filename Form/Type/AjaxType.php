@@ -2,11 +2,12 @@
 
 namespace NetBull\CoreBundle\Form\Type;
 
-use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\FormView;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 /**
  * Class AjaxType
@@ -14,11 +15,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class AjaxType extends DynamicType
 {
-    /**
-     * @var EntityManager
-     */
-    protected $em;
-
     /**
      * @var RouterInterface
      */
@@ -36,18 +32,17 @@ class AjaxType extends DynamicType
 
     /**
      * AjaxType constructor.
-     * @param EntityManager $em
+     * @param EntityManagerInterface $em
      * @param RouterInterface $router
-     * @param $minimumInputLength
-     * @param $perPage
+     * @param ParameterBagInterface $parameterBag
      */
-    public function __construct(EntityManager $em, RouterInterface $router, $minimumInputLength, $perPage)
+    public function __construct(EntityManagerInterface $em, RouterInterface $router, ParameterBagInterface $parameterBag)
     {
         parent::__construct($em);
 
         $this->router = $router;
-        $this->minimumInputLength = $minimumInputLength;
-        $this->perPage = $perPage;
+        $this->minimumInputLength = $parameterBag->get('netbull_core.form_types.ajax.minimum_input_length');
+        $this->perPage = $parameterBag->get('netbull_core.form_types.ajax.page_limit');
     }
 
     /**
@@ -75,19 +70,20 @@ class AjaxType extends DynamicType
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
-            'remote_path'           => null,
-            'remote_route'          => null,
-            'remote_params'         => [],
-            'perPage'               => $this->perPage,
-            'placeholder'           => '',
-            'minimum_input_length'  => $this->minimumInputLength,
+            'remote_path' => null,
+            'remote_route' => null,
+            'remote_params' => [],
+            'perPage' => $this->perPage,
+            'placeholder' => '',
+            'minimum_input_length' => $this->minimumInputLength,
         ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix() {
+    public function getBlockPrefix()
+    {
         return 'ajax_type';
     }
 }

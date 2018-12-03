@@ -4,13 +4,11 @@ namespace NetBull\CoreBundle\Paginator;
 
 use Doctrine\ORM\QueryBuilder;
 
-use Symfony\Component\HttpFoundation\RequestStack;
-
 /**
  * Class Paginator
  * @package NetBull\CoreBundle\Paginator
  */
-class Paginator extends BasePaginator
+class Paginator extends BasePaginator implements PaginatorInterface
 {
     /**
      * @var array
@@ -48,17 +46,6 @@ class Paginator extends BasePaginator
     protected $additionalSorting = [];
 
     /**
-     * Paginator constructor.
-     * @param RequestStack $requestStack
-     */
-    public function __construct(RequestStack $requestStack)
-    {
-        parent::__construct($requestStack);
-
-        return $this;
-    }
-
-    /**
      * @param string $field
      * @return $this
      */
@@ -71,7 +58,6 @@ class Paginator extends BasePaginator
 
     /**
      * @return int|mixed
-     * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function getCount()
@@ -224,9 +210,9 @@ class Paginator extends BasePaginator
     protected function arrayCombine(array $targets, array $additions)
     {
         $tmp = [];
-        foreach ($targets as $target){
-            foreach ($additions as $addition){
-                if($target[$this->idField] == $addition[$this->idField]){
+        foreach ($targets as $target) {
+            foreach ($additions as $addition) {
+                if ($target[$this->idField] == $addition[$this->idField]) {
                     $tmp[] = array_merge($target, $addition);
                     break;
                 }
