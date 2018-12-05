@@ -5,10 +5,10 @@ namespace NetBull\CoreBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\DataTransformerInterface;
+use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Validator\Constraints\LessThanOrEqual;
-use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * Class CompoundRangeType
@@ -24,14 +24,46 @@ class CompoundRangeType extends AbstractType implements DataTransformerInterface
         $builder
             ->add('min', NumberType::class, [
                 'required' => false,
-                'constraints' => new LessThanOrEqual(['propertyPath' => 'max', 'message' => 'Min value should be less or equal than the Max']),
+                'constraints' => new Callback([$this, 'validateMin']),
             ])
             ->add('max', NumberType::class, [
                 'required' => false,
-                'constraints' => new GreaterThanOrEqual(['propertyPath' => 'min', 'message' => 'Max value should be greater or equal than the Min']),
+                'constraints' => new Callback([$this, 'validateMax']),
             ])
             ->addViewTransformer($this)
         ;
+    }
+
+    /**
+     * @param $value
+     * @param ExecutionContextInterface $context
+     */
+    public function validateMin($value, ExecutionContextInterface $context)
+    {
+        $rootForm = $context->getRoot();
+        $data = $rootForm->getData();
+
+        if ($value > $context->getObject()->getParent()->get('max')->getData()) {
+            $context
+                ->buildViolation('The min value has to be lower than the max value')
+                ->addViolation();
+        }
+    }
+
+    /**
+     * @param $value
+     * @param ExecutionContextInterface $context
+     */
+    public function validateMax($value, ExecutionContextInterface $context)
+    {
+        $rootForm = $context->getRoot();
+        $data = $rootForm->getData();
+
+        if ($value < $context->getObject()->getParent()->get('min')->getData()) {
+            $context
+                ->buildViolation('The max value has to be higher than the min value')
+                ->addViolation();
+        }
     }
 
     /**
