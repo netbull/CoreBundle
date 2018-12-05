@@ -93,6 +93,9 @@ class CompoundRangeType extends AbstractType implements DataTransformerInterface
         return implode('-', $value);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -101,6 +104,9 @@ class CompoundRangeType extends AbstractType implements DataTransformerInterface
         ]);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getBlockPrefix()
     {
         return 'compound_range';
