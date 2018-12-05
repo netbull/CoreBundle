@@ -24,11 +24,9 @@ class CompoundRangeType extends AbstractType implements DataTransformerInterface
         $builder
             ->add('min', NumberType::class, [
                 'required' => false,
-                'constraints' => new Callback([$this, 'validateMin']),
             ])
             ->add('max', NumberType::class, [
                 'required' => false,
-                'constraints' => new Callback([$this, 'validateMax']),
             ])
             ->addViewTransformer($this)
         ;
@@ -38,28 +36,21 @@ class CompoundRangeType extends AbstractType implements DataTransformerInterface
      * @param $value
      * @param ExecutionContextInterface $context
      */
-    public function validateMin($value, ExecutionContextInterface $context)
+    public function validateRange($value, ExecutionContextInterface $context)
     {
-        $rootForm = $context->getRoot();
-        $data = $rootForm->getData();
+        $value = $this->transform($value);
 
-        if ($value > $context->getObject()->getParent()->get('max')->getData()) {
+        if (null === $value) {
+            return;
+        }
+
+        if ($value['min'] > $value['max']) {
             $context
                 ->buildViolation('The min value has to be lower than the max value')
                 ->addViolation();
         }
-    }
 
-    /**
-     * @param $value
-     * @param ExecutionContextInterface $context
-     */
-    public function validateMax($value, ExecutionContextInterface $context)
-    {
-        $rootForm = $context->getRoot();
-        $data = $rootForm->getData();
-
-        if ($value < $context->getObject()->getParent()->get('min')->getData()) {
+        if ($value['min'] < $value['max']) {
             $context
                 ->buildViolation('The max value has to be higher than the min value')
                 ->addViolation();
@@ -106,6 +97,7 @@ class CompoundRangeType extends AbstractType implements DataTransformerInterface
     {
         $resolver->setDefaults([
             'compound' => true,
+            'constraints' => new Callback([$this, 'validateRange']),
         ]);
     }
 
