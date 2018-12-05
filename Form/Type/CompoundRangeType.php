@@ -7,6 +7,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Validator\Constraints\LessThanOrEqual;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 
 /**
  * Class CompoundRangeType
@@ -22,9 +24,11 @@ class CompoundRangeType extends AbstractType implements DataTransformerInterface
         $builder
             ->add('min', NumberType::class, [
                 'required' => false,
+                'constraints' => new LessThanOrEqual(['propertyPath' => 'max', 'message' => 'Min value should be less or equal than the Max']),
             ])
             ->add('max', NumberType::class, [
                 'required' => false,
+                'constraints' => new GreaterThanOrEqual(['propertyPath' => 'min', 'message' => 'Max value should be greater or equal than the Min']),
             ])
             ->addViewTransformer($this)
         ;
