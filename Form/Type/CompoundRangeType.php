@@ -44,7 +44,7 @@ class CompoundRangeType extends AbstractType implements DataTransformerInterface
             return;
         }
 
-        if (empty($value['min']) || empty($value['max'])) {
+        if ((empty($value['min']) && 0 !== $value['min']) || (empty($value['max']) && 0 !== $value['max'])) {
             $context
                 ->buildViolation('Both values "Min" and "Max" should be entered')
                 ->addViolation();
