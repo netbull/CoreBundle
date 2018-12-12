@@ -7,7 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
@@ -22,10 +22,10 @@ class CompoundRangeType extends AbstractType implements DataTransformerInterface
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('min', NumberType::class, [
+            ->add('min', IntegerType::class, [
                 'required' => false,
             ])
-            ->add('max', NumberType::class, [
+            ->add('max', IntegerType::class, [
                 'required' => false,
             ])
             ->addViewTransformer($this)
