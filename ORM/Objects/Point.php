@@ -50,7 +50,7 @@ class Point
      */
     public function __toString()
     {
-        if ($this->getLatitude() || $this->getLongitude()) {
+        if (!$this->getLatitude() || !$this->getLongitude()) {
             return '';
         }
 
