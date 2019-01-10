@@ -19,7 +19,7 @@ class PointToStringTransformer implements DataTransformerInterface
      */
     public function transform($point)
     {
-        if (!$point) {
+        if (!(string)$point) {
             return $point;
         }
 
