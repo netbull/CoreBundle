@@ -76,4 +76,12 @@ class Point extends Type
     {
         return sprintf('ST_AsText(%s)', $sqlExpr);
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function requiresSQLCommentHint(AbstractPlatform $platform)
+    {
+        return true;
+    }
 }
