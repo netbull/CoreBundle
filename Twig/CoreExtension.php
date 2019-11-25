@@ -6,14 +6,17 @@ use Symfony\Component\Intl\Intl;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-
 use NetBull\CoreBundle\Utils\Inflect;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
+use Twig\TwigTest;
 
 /**
  * Class CoreExtension
  * @package NetBull\CoreBundle\Twig
  */
-class CoreExtension extends \Twig_Extension
+class CoreExtension extends AbstractExtension
 {
     /**
      * @var RouterInterface
@@ -41,10 +44,10 @@ class CoreExtension extends \Twig_Extension
      */
     public function getFunctions() {
         return [
-            new \Twig_SimpleFunction('pagination_sortable', [$this, 'sortable'], ['is_safe' => ['html']]),
-            new \Twig_SimpleFunction('queryInputs', [$this, 'buildQueryInputs'], ['is_safe' => ['html']]),
-            new \Twig_SimpleFunction('helperText', [$this, 'buildHelperText'], ['is_safe' => ['html']]),
-            new \Twig_SimpleFunction ('lipsum', [$this, 'loremIpsum'])
+            new TwigFunction('pagination_sortable', [$this, 'sortable'], ['is_safe' => ['html']]),
+            new TwigFunction('queryInputs', [$this, 'buildQueryInputs'], ['is_safe' => ['html']]),
+            new TwigFunction('helperText', [$this, 'buildHelperText'], ['is_safe' => ['html']]),
+            new TwigFunction ('lipsum', [$this, 'loremIpsum'])
         ];
     }
 
@@ -54,12 +57,12 @@ class CoreExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('rename_pipe', [$this, 'renameByPipe']),
-            new \Twig_SimpleFilter('inflect', [$this, 'inflect']),
-            new \Twig_SimpleFilter('titleize', [$this, 'titleize']),
-            new \Twig_SimpleFilter('country', [$this, 'getCountryName']),
-            new \Twig_SimpleFilter('format_page_title', [$this, 'formatPageTitle']),
-            new \Twig_SimpleFilter('strip_tags_super', [$this, 'stripTagsSuper'])
+            new TwigFilter('rename_pipe', [$this, 'renameByPipe']),
+            new TwigFilter('inflect', [$this, 'inflect']),
+            new TwigFilter('titleize', [$this, 'titleize']),
+            new TwigFilter('country', [$this, 'getCountryName']),
+            new TwigFilter('format_page_title', [$this, 'formatPageTitle']),
+            new TwigFilter('strip_tags_super', [$this, 'stripTagsSuper']),
         ];
     }
 
@@ -69,7 +72,7 @@ class CoreExtension extends \Twig_Extension
     public function getTests()
     {
         return [
-            new \Twig_SimpleTest('numeric', [$this, 'numericTest'])
+            new TwigTest('numeric', [$this, 'numericTest']),
         ];
     }
 

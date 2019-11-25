@@ -3,12 +3,15 @@
 namespace NetBull\CoreBundle\Twig;
 
 use NetBull\CoreBundle\Templating\Helper\PhoneNumberHelper;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+use Twig\TwigTest;
 
 /**
  * Class PhoneNumberExtension
  * @package NetBull\CoreBundle\Twig
  */
-class PhoneNumberExtension extends \Twig_Extension
+class PhoneNumberExtension extends AbstractExtension
 {
     /**
      * Phone number helper.
@@ -33,7 +36,7 @@ class PhoneNumberExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            new \Twig_SimpleFilter('phone_number_format', array($this->helper, 'format')),
+            new TwigFilter('phone_number_format', array($this->helper, 'format')),
         );
     }
 
@@ -43,7 +46,7 @@ class PhoneNumberExtension extends \Twig_Extension
     public function getTests()
     {
         return array(
-            new \Twig_SimpleTest('phone_number_of_type', array($this->helper, 'isType')),
+            new TwigTest('phone_number_of_type', array($this->helper, 'isType')),
         );
     }
 
