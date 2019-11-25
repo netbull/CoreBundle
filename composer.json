@@ -11,7 +11,7 @@
   ],
   "license" : "AGPL-3.0-or-later",
   "require" : {
-    "beberlei/DoctrineExtensions": "^1.0",
+    "beberlei/doctrineextensions": "^1.2",
     "symfony/templating": "^4.1",
     "symfony/framework-bundle": "^4.0",
     "symfony/orm-pack": "^1.0",
