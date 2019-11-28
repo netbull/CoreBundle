@@ -12,17 +12,15 @@
         {% set attr = attr|merge({'multiple' : 'multiple'}) %}
     {% endif %}
 
-    {% spaceless %}
-        <select {{ block('widget_attributes') }}>
-            {% if value is iterable %}
-                {% for id, data in value %}
-                    {% block dynamic_type_widget_select_option %}
-                        <option value="{{ id }}" selected="selected" {% if data.attr is defined %}{% for field, valueAttr in data.attr %}data-{{ field }}="{{ valueAttr }}"{% endfor %}{% endif %}>{{ data.text }}</option>
-                    {% endblock %}
-                {% endfor %}
-            {% endif %}
-        </select>
-    {% endspaceless %}
+    <select {{ block('widget_attributes') }}>
+        {% if value is iterable %}
+            {% for id, data in value %}
+                {% block dynamic_type_widget_select_option %}
+                    <option value="{{ id }}" selected="selected" {% if data.attr is defined %}{% for field, valueAttr in data.attr %}data-{{ field }}="{{ valueAttr }}"{% endfor %}{% endif %}>{{ data.text }}</option>
+                {% endblock %}
+            {% endfor %}
+        {% endif %}
+    </select>
 {% endblock %}
 
 {% block ajax_type_widget %}
@@ -48,20 +46,18 @@
         {% set attr = attr|merge({'multiple' : 'multiple'}) %}
     {% endif %}
 
-    {% spaceless %}
-        <select {{ block('widget_attributes') }}>
-            {% if form.vars.placeholder %}
-                <option value=""{% if form.vars.value|length == 0 %} selected="selected"{% endif %}>{{ form.vars.placeholder }}</option>
-            {% endif %}
-            {% if value is iterable %}
-                {% for id, data in value %}
-                    {% block ajax_type_widget_select_option %}
-                        <option value="{{ id }}" selected="selected" {% if data.attr is defined %}{% for field, valueAttr in data.attr %}data-{{ field }}="{{ valueAttr }}"{% endfor %}{% endif %}>{{ data.text }}</option>
-                    {% endblock %}
-                {% endfor %}
-            {% endif %}
-        </select>
-    {% endspaceless %}
+    <select {{ block('widget_attributes') }}>
+        {% if form.vars.placeholder %}
+            <option value=""{% if form.vars.value|length == 0 %} selected="selected"{% endif %}>{{ form.vars.placeholder }}</option>
+        {% endif %}
+        {% if value is iterable %}
+            {% for id, data in value %}
+                {% block ajax_type_widget_select_option %}
+                    <option value="{{ id }}" selected="selected" {% if data.attr is defined %}{% for field, valueAttr in data.attr %}data-{{ field }}="{{ valueAttr }}"{% endfor %}{% endif %}>{{ data.text }}</option>
+                {% endblock %}
+            {% endfor %}
+        {% endif %}
+    </select>
 {% endblock %}
 
 {% block select2_type_widget %}
@@ -98,20 +94,18 @@
         {% set attr = attr|merge({'data-tags' : 'true'}) %}
     {% endif %}
 
-    {% spaceless %}
-        <select {{ block('widget_attributes') }}>
-            {% if form.vars.placeholder %}
-                <option value=""{% if form.vars.value|length == 0 %} selected="selected"{% endif %}>{{ form.vars.placeholder }}</option>
-            {% endif %}
-            {% if value is iterable %}
-                {% for id, data in value %}
-                    {% block select2_type_widget_select_option %}
-                        <option value="{{ id }}" selected="selected" {% if data.attr is defined %}{% for field, valueAttr in data.attr %}data-{{ field }}="{{ valueAttr }}"{% endfor %}{% endif %}>{{ data.text }}</option>
-                    {% endblock %}
-                {% endfor %}
-            {% endif %}
-        </select>
-    {% endspaceless %}
+    <select {{ block('widget_attributes') }}>
+        {% if form.vars.placeholder %}
+            <option value=""{% if form.vars.value|length == 0 %} selected="selected"{% endif %}>{{ form.vars.placeholder }}</option>
+        {% endif %}
+        {% if value is iterable %}
+            {% for id, data in value %}
+                {% block select2_type_widget_select_option %}
+                    <option value="{{ id }}" selected="selected" {% if data.attr is defined %}{% for field, valueAttr in data.attr %}data-{{ field }}="{{ valueAttr }}"{% endfor %}{% endif %}>{{ data.text }}</option>
+                {% endblock %}
+            {% endfor %}
+        {% endif %}
+    </select>
 {% endblock %}
 
 {%- block auto_collection_widget -%}
