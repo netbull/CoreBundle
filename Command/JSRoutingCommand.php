@@ -7,7 +7,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-
 use NetBull\CoreBundle\Routing\Extractor;
 use NetBull\CoreBundle\Routing\ExtractorInterface;
 
@@ -85,12 +84,14 @@ class JSRoutingCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         if (!$this->canExecute) {
-            return;
+            return 0;
         }
 
         $output->writeln('Dumping exposed routes.');
         $output->writeln('');
         $this->doDump($output);
+
+        return 0;
     }
 
     /**

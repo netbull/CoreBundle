@@ -2,7 +2,9 @@
 
 namespace NetBull\CoreBundle\Command;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
+use LogicException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -29,12 +31,12 @@ abstract class BaseCommand extends Command
     protected $em;
 
     /**
-     * @return \Doctrine\Common\Persistence\ObjectManager|object
+     * @return ObjectManager|object
      */
     public function getManager()
     {
         if (!$this->em) {
-            throw new \LogicException('The DoctrineBundle is not registered in your application. Try running "composer require symfony/orm-pack".');
+            throw new LogicException('The DoctrineBundle is not registered in your application. Try running "composer require symfony/orm-pack".');
         }
 
         return $this->em;
