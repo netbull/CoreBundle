@@ -12,10 +12,10 @@
   "license" : "AGPL-3.0-or-later",
   "require" : {
     "beberlei/doctrineextensions": "^1.2",
-    "symfony/templating": "^4.1",
-    "symfony/framework-bundle": "^4.0",
+    "symfony/templating": "5.0.*",
+    "symfony/framework-bundle": "5.0.*",
     "symfony/orm-pack": "^1.0",
-    "giggsey/libphonenumber-for-php": "^8.10",
+    "giggsey/libphonenumber-for-php": "^8.12",
     "netbull/doctrine-behaviors": "^1.6"
   },
   "autoload" : {
