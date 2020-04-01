@@ -2,6 +2,7 @@
 
 namespace NetBull\CoreBundle\Twig;
 
+use Symfony\Component\Intl\Countries;
 use Symfony\Component\Intl\Intl;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Routing\RouterInterface;
@@ -226,11 +227,7 @@ class CoreExtension extends AbstractExtension
      */
     public function getCountryName(string $code, string $locale = '') : string
     {
-        $countries = Intl::getRegionBundle()->getCountryNames($locale);
-
-        return array_key_exists($code, $countries)
-            ? $countries[$code]
-            : $code;
+        return Countries::getName($code, $locale);
     }
 
     /**
