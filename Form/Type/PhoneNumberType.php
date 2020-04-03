@@ -2,7 +2,7 @@
 
 namespace NetBull\CoreBundle\Form\Type;
 
-use Symfony\Component\Intl\Intl;
+use Symfony\Component\Intl\Countries;
 use libphonenumber\PhoneNumberUtil;
 use Symfony\Component\Form\FormView;
 use libphonenumber\PhoneNumberFormat;
@@ -11,7 +11,6 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
 use NetBull\CoreBundle\Form\DataTransformer\PhoneNumberToArrayTransformer;
 use NetBull\CoreBundle\Form\DataTransformer\PhoneNumberToStringTransformer;
 
@@ -52,7 +51,7 @@ class PhoneNumberType extends AbstractType
 
             $countryChoices = [];
 
-            foreach (Intl::getRegionBundle()->getCountryNames() as $region => $name) {
+            foreach (Countries::getNames() as $region => $name) {
                 if (false === isset($countries[$region])) {
                     continue;
                 }
