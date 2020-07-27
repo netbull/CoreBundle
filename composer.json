@@ -1,25 +1,27 @@
 {
-  "name" : "netbull/core-bundle",
-  "description" : "Core bundle",
-  "type" : "symfony-bundle",
-  "authors" : [{
-    "name" : "Aleksandar Dimitrov",
-    "email" : "netbull2007@gmail.com"
-  }],
-  "keywords" : [
-    "netbull core symfony bundle"
-  ],
-  "license" : "AGPL-3.0-or-later",
-  "require" : {
-    "beberlei/doctrineextensions": "^1.2",
-    "symfony/templating": "5.0.*",
-    "symfony/framework-bundle": "5.0.*",
-    "symfony/orm-pack": "^1.0",
-    "giggsey/libphonenumber-for-php": "^8.12"
-  },
-  "autoload" : {
-    "psr-4" : {
-      "NetBull\\CoreBundle\\" : ""
+    "name": "netbull/core-bundle",
+    "description": "Core bundle",
+    "type": "symfony-bundle",
+    "authors": [
+        {
+            "name": "Aleksandar Dimitrov",
+            "email": "netbull2007@gmail.com"
+        }
+    ],
+    "keywords": [
+        "netbull core symfony bundle"
+    ],
+    "license": "AGPL-3.0-or-later",
+    "require": {
+        "beberlei/doctrineextensions": "1.2.*",
+        "symfony/templating": "4.4.*",
+        "symfony/framework-bundle": "4.4.*",
+        "symfony/orm-pack": "",
+        "giggsey/libphonenumber-for-php": "8.12.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "NetBull\\CoreBundle\\": "src/"
+        }
     }
-  }
 }
