@@ -16,7 +16,7 @@
         "beberlei/doctrineextensions": "1.2.*",
         "symfony/templating": "5.0.*",
         "symfony/framework-bundle": "5.0.*",
-        "symfony/orm-pack": "1.2.*",
+        "symfony/orm-pack": "2.*",
         "giggsey/libphonenumber-for-php": "8.12.*"
     },
     "autoload": {
