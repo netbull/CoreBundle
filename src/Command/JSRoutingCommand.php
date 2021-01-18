@@ -75,7 +75,7 @@ class JSRoutingCommand extends Command
             $this->canExecute = false;
         }
 
-        $this->targetPath = $input->getOption('target') ?: sprintf('%s/../%s', $this->parameterBag->get('kernel.root_dir'), $this->parameterBag->get('netbull_core.js_routes_path'));
+        $this->targetPath = $input->getOption('target') ?: $this->parameterBag->get('kernel.project_dir').'/'.$this->parameterBag->get('netbull_core.js_routes_path');
     }
 
     /**
