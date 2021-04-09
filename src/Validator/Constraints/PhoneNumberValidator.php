@@ -36,12 +36,27 @@ class PhoneNumberValidator extends ConstraintValidator
         if (false === $value instanceof PhoneNumberObject) {
             $value = (string) $value;
 
-            try {
-                $phoneNumber = $phoneUtil->parse($value, $constraint->defaultRegion);
-            } catch (NumberParseException $e) {
-                $this->addViolation($value, $constraint);
+            if (!empty($constraint->defaultRegions)) {
+                $match = false;
+                foreach ($constraint->defaultRegions as $defaultRegion) {
+                    try {
+                        $phoneNumber = $phoneUtil->parse($value, $defaultRegion);
+                        $match = true;
+                        break;
+                    } catch (NumberParseException $e) {}
+                }
 
-                return;
+                if (!$match) {
+                    $this->addViolation($value, $constraint);
+                    return;
+                }
+            } else {
+                try {
+                    $phoneNumber = $phoneUtil->parse($value, $constraint->defaultRegion);
+                } catch (NumberParseException $e) {
+                    $this->addViolation($value, $constraint);
+                    return;
+                }
             }
         } else {
             $phoneNumber = $value;
@@ -50,7 +65,6 @@ class PhoneNumberValidator extends ConstraintValidator
 
         if (false === $phoneUtil->isValidNumber($phoneNumber)) {
             $this->addViolation($value, $constraint);
-
             return;
         }
 

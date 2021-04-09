@@ -23,6 +23,13 @@ class PhoneNumberToStringTransformer implements DataTransformerInterface
     private $defaultRegion;
 
     /**
+     * Default region codes.
+     *
+     * @var array
+     */
+    private $defaultRegions;
+
+    /**
      * Display format.
      *
      * @var int
@@ -33,11 +40,13 @@ class PhoneNumberToStringTransformer implements DataTransformerInterface
      * Constructor.
      *
      * @param string $defaultRegion Default region code.
-     * @param int    $format        Display format.
+     * @param array $defaultRegions
+     * @param int $format Display format.
      */
-    public function __construct($defaultRegion = PhoneNumberUtil::UNKNOWN_REGION, $format = PhoneNumberFormat::INTERNATIONAL)
+    public function __construct($defaultRegion = PhoneNumberUtil::UNKNOWN_REGION, $defaultRegions = [], $format = PhoneNumberFormat::INTERNATIONAL)
     {
         $this->defaultRegion = $defaultRegion;
+        $this->defaultRegions = $defaultRegions;
         $this->format = $format;
     }
 
@@ -72,10 +81,27 @@ class PhoneNumberToStringTransformer implements DataTransformerInterface
 
         $util = PhoneNumberUtil::getInstance();
 
-        try {
-            return $util->parse($string, $this->defaultRegion);
-        } catch (NumberParseException $e) {
-            throw new TransformationFailedException($e->getMessage(), $e->getCode(), $e);
+        if (!empty($constraint->defaultRegions)) {
+            $exception = null;
+            foreach ($constraint->defaultRegions as $defaultRegion) {
+                try {
+                    return $util->parse($string, $defaultRegion);
+                } catch (NumberParseException $e) {
+                    $exception = new TransformationFailedException($e->getMessage(), $e->getCode(), $e);
+                }
+            }
+
+            if ($exception) {
+                throw $exception;
+            }
+        } else {
+            try {
+                return $util->parse($string, $this->defaultRegion);
+            } catch (NumberParseException $e) {
+                throw new TransformationFailedException($e->getMessage(), $e->getCode(), $e);
+            }
         }
+
+        return null;
     }
 }
