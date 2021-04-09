@@ -2,6 +2,7 @@
 
 namespace NetBull\CoreBundle\Twig;
 
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Intl\Intl;
 use Symfony\Component\DomCrawler\Crawler;
@@ -30,23 +31,31 @@ class CoreExtension extends AbstractExtension
     private $requestStack;
 
     /**
+     * @var ParameterBagInterface
+     */
+    private $parameterBag;
+
+    /**
      * CoreExtension constructor.
      * @param RouterInterface $router
      * @param RequestStack $requestStack
+     * @param ParameterBagInterface $parameterBag
      */
-    public function __construct(RouterInterface $router, RequestStack $requestStack)
+    public function __construct(RouterInterface $router, RequestStack $requestStack, ParameterBagInterface $parameterBag)
     {
         $this->router = $router;
         $this->requestStack = $requestStack;
+        $this->parameterBag = $parameterBag;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getFunctions() {
+    public function getFunctions(): array
+    {
         return [
             new TwigFunction('pagination_sortable', [$this, 'sortable'], ['is_safe' => ['html']]),
-            new TwigFunction('queryInputs', [$this, 'buildQueryInputs'], ['is_safe' => ['html']]),
+            new TwigFunction('query_inputs', [$this, 'buildQueryInputs'], ['is_safe' => ['html']]),
             new TwigFunction('helperText', [$this, 'buildHelperText'], ['is_safe' => ['html']]),
             new TwigFunction ('lipsum', [$this, 'loremIpsum'])
         ];
@@ -55,14 +64,13 @@ class CoreExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
             new TwigFilter('rename_pipe', [$this, 'renameByPipe']),
             new TwigFilter('inflect', [$this, 'inflect']),
             new TwigFilter('titleize', [$this, 'titleize']),
             new TwigFilter('country', [$this, 'getCountryName']),
-            new TwigFilter('format_page_title', [$this, 'formatPageTitle']),
             new TwigFilter('strip_tags_super', [$this, 'stripTagsSuper']),
         ];
     }
@@ -70,7 +78,7 @@ class CoreExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function getTests()
+    public function getTests(): array
     {
         return [
             new TwigTest('numeric', [$this, 'numericTest']),
@@ -86,8 +94,12 @@ class CoreExtension extends AbstractExtension
      * @param $field
      * @return string
      */
-    public function sortable($pagination, $label, $field)
+    public function sortable($pagination, $label, $field): string
     {
+        $activeClass = $this->parameterBag->get('netbull_core.paginator.active_class');
+        $notActiveClass = $this->parameterBag->get('netbull_core.paginator.not_active_class');
+        $icons = $this->parameterBag->get('netbull_core.paginator.icons');
+
         if (in_array($field, $pagination['sort'])) {
             $direction = 'asc';
             if (isset($pagination['sort']['direction']) && ($pagination['sort']['direction'] == 'asc' || $pagination['sort']['direction'] == 'desc')) {
@@ -95,10 +107,10 @@ class CoreExtension extends AbstractExtension
             }
 
             $newDirection = ($direction == 'asc') ? 'desc' : 'asc';
-            $hint = ($direction === 'asc') ? 'Descending' : 'Ascending';
+            $hint = 'asc' === $direction ? 'Descending' : 'Ascending';
 
             // If we are on DESC sorting next should be the initial state to clear the sorting
-            if ($direction == 'desc') {
+            if ('desc' === $direction) {
                 unset($pagination['sort']['field']);
                 unset($pagination['sort']['direction']);
                 unset($pagination['routeParams']['field']);
@@ -112,15 +124,13 @@ class CoreExtension extends AbstractExtension
                 ]);
             }
             $link = $this->router->generate($pagination['route'], array_merge($pagination['routeParams'], $params));
-
-            $icon = 'desc' === $direction ? 'down' : 'up';
-            $string = sprintf('<a class="text-success" href="%s" title="Sort %s">%s <i class="fa fa-sort-%s"></i></a>', $link, $hint, $label, $icon);
+            $string = sprintf('<a class="%s" href="%s" title="Sort %s">%s <i class="%s"></i></a>', $activeClass, $link, $hint, $label, $icons[$direction]);
         } else {
             $link = $this->router->generate($pagination['route'], array_merge($pagination['routeParams'], $pagination['sort'], [
-                'field'     => $field,
-                'direction' => 'asc'
+                "field" => $field,
+                "direction" => "asc"
             ]));
-            $string = sprintf('<a class="text-primary" href="%s" title="Sort Ascending">%s <i class="fa fa-sort"></i></a>', $link, $label);
+            $string = sprintf('<a class="%s" href="%s" title="Sort Ascending">%s <i class="%s"></i></a>', $notActiveClass, $link, $label, $icons['none']);
         }
 
         return $string;
@@ -131,7 +141,7 @@ class CoreExtension extends AbstractExtension
      * @param $currentField
      * @return string
      */
-    public function buildQueryInputs($currentField)
+    public function buildQueryInputs($currentField): string
     {
         $request = $this->requestStack->getCurrentRequest();
         $fields = '';
@@ -159,7 +169,8 @@ class CoreExtension extends AbstractExtension
      * @param int $length
      * @return string
      */
-    public function loremIpsum($length = 30) {
+    public function loremIpsum($length = 30): string
+    {
         $string = [];
         $words = [
             'lorem',        'ipsum',       'dolor',        'sit',
@@ -231,15 +242,6 @@ class CoreExtension extends AbstractExtension
     }
 
     /**
-     * @param string $title
-     * @return string
-     */
-    public function formatPageTitle(string $title) : string
-    {
-        return sprintf('%s - %s', $title, 'NetBull');
-    }
-
-    /**
      * @param string $string
      * @return string
      */
@@ -263,7 +265,7 @@ class CoreExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'core.extension';
     }

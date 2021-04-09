@@ -40,6 +40,10 @@ class NetBullCoreExtension extends Extension
             }
         }
 
+        foreach($config['paginator'] as $varName) {
+            $container->setParameter('netbull_core.paginator.' . $varName, $config['paginator'][$varName]);
+        }
+
         $loader->load('forms.yaml');
     }
 

@@ -51,6 +51,7 @@ class Configuration implements ConfigurationInterface
 
 
         $this->addFilesystemSection($rootNode);
+        $this->addPaginatorSection($rootNode);
 
         return $treeBuilder;
     }
@@ -119,7 +120,33 @@ class Configuration implements ConfigurationInterface
 
                     ->end()
                 ->end()
-            ->end()
-        ;
+            ->end();
+    }
+
+    /**
+     * @param ArrayNodeDefinition $node
+     */
+    private function addPaginatorSection(ArrayNodeDefinition $node)
+    {
+        $node
+            ->children()
+                ->arrayNode('paginator')
+                    ->children()
+                        ->arrayNode('sortable')
+                            ->children()
+                                ->arrayNode('icons')
+                                    ->children()
+                                        ->scalarNode('none')->defaultValue('fa fa-sort')->end()
+                                        ->scalarNode('asc')->defaultValue('fa fa-sort-up')->end()
+                                        ->scalarNode('desc')->defaultValue('fa fa-sort-down')->end()
+                                    ->end()
+                                ->end()
+                                ->scalarNode('active_class')->defaultValue('text-success')->end()
+                                ->scalarNode('not_active_class')->defaultValue('text-primary')->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
     }
 }
