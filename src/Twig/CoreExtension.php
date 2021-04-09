@@ -96,9 +96,9 @@ class CoreExtension extends AbstractExtension
      */
     public function sortable($pagination, $label, $field): string
     {
-        $activeClass = $this->parameterBag->get('netbull_core.paginator.active_class');
-        $notActiveClass = $this->parameterBag->get('netbull_core.paginator.not_active_class');
-        $icons = $this->parameterBag->get('netbull_core.paginator.icons');
+        $activeClass = $this->parameterBag->get('netbull_core.paginator.sortable.active_class');
+        $notActiveClass = $this->parameterBag->get('netbull_core.paginator.sortable.not_active_class');
+        $icons = $this->parameterBag->get('netbull_core.paginator.sortable.icons');
 
         if (in_array($field, $pagination['sort'])) {
             $direction = 'asc';
