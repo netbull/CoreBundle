@@ -41,7 +41,7 @@ class NetBullCoreExtension extends Extension
         }
 
         foreach($config['paginator'] as $key => $value) {
-            $this->setParameters($container, $key, $value);
+            $this->setParameters($container, $key, $value, '.parameters');
         }
 
         $loader->load('forms.yaml');
