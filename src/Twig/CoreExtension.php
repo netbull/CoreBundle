@@ -4,7 +4,6 @@ namespace NetBull\CoreBundle\Twig;
 
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Intl\Countries;
-use Symfony\Component\Intl\Intl;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -98,7 +97,6 @@ class CoreExtension extends AbstractExtension
     {
         $activeClass = $this->parameterBag->get('netbull_core.paginator.sortable.active_class');
         $notActiveClass = $this->parameterBag->get('netbull_core.paginator.sortable.not_active_class');
-        $icons = $this->parameterBag->get('netbull_core.paginator.sortable.icons');
 
         if (in_array($field, $pagination['sort'])) {
             $direction = 'asc';
@@ -124,13 +122,15 @@ class CoreExtension extends AbstractExtension
                 ]);
             }
             $link = $this->router->generate($pagination['route'], array_merge($pagination['routeParams'], $params));
-            $string = sprintf('<a class="%s" href="%s" title="Sort %s">%s <i class="%s"></i></a>', $activeClass, $link, $hint, $label, $icons[$direction]);
+            $icon = $this->parameterBag->get('netbull_core.paginator.sortable.icons.'.$direction);
+            $string = sprintf('<a class="%s" href="%s" title="Sort %s">%s <i class="%s"></i></a>', $activeClass, $link, $hint, $label, $icon);
         } else {
             $link = $this->router->generate($pagination['route'], array_merge($pagination['routeParams'], $pagination['sort'], [
                 "field" => $field,
                 "direction" => "asc"
             ]));
-            $string = sprintf('<a class="%s" href="%s" title="Sort Ascending">%s <i class="%s"></i></a>', $notActiveClass, $link, $label, $icons['none']);
+            $icon = $this->parameterBag->get('netbull_core.paginator.sortable.icons.none');
+            $string = sprintf('<a class="%s" href="%s" title="Sort Ascending">%s <i class="%s"></i></a>', $notActiveClass, $link, $label, $icon);
         }
 
         return $string;
