@@ -40,17 +40,34 @@ class NetBullCoreExtension extends Extension
             }
         }
 
-        foreach($config['paginator'] as $varName) {
-            $container->setParameter('netbull_core.paginator.' . $varName, $config['paginator'][$varName]);
+        foreach($config['paginator'] as $key => $value) {
+            $this->setParameters($container, $key, $value);
         }
 
         $loader->load('forms.yaml');
     }
 
     /**
+     * @param ContainerBuilder $container
+     * @param string $key
+     * @param array|string $value
+     * @param string $suffix
+     */
+    private function setParameters(ContainerBuilder $container, string $key, $value, string $suffix = '')
+    {
+        if (is_array($value)) {
+            foreach ($value as $k => $v) {
+                $this->setParameters($container, $k, $value[$k], $suffix.'.'.$key);
+            }
+        } else {
+            $container->setParameter('netbull_core'.$suffix.'.'.$key, $value);
+        }
+    }
+
+    /**
      * @return string
      */
-    public function getAlias()
+    public function getAlias(): string
     {
         return 'netbull_core';
     }

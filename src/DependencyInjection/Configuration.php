@@ -131,10 +131,13 @@ class Configuration implements ConfigurationInterface
         $node
             ->children()
                 ->arrayNode('paginator')
+					->addDefaultsIfNotSet()
                     ->children()
                         ->arrayNode('sortable')
+                            ->addDefaultsIfNotSet()
                             ->children()
                                 ->arrayNode('icons')
+                                    ->addDefaultsIfNotSet()
                                     ->children()
                                         ->scalarNode('none')->defaultValue('fa fa-sort')->end()
                                         ->scalarNode('asc')->defaultValue('fa fa-sort-up')->end()
