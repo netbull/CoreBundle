@@ -41,12 +41,7 @@ abstract class BasePaginator
     /**
      * @var array
      */
-    protected $defaultSort = [];
-
-    /**
-     * @var array
-     */
-    protected $sort = [];
+    protected $sorting = [];
 
     /**
      * @var string|null
@@ -78,10 +73,7 @@ abstract class BasePaginator
                 $direction = $params['direction'];
             }
 
-            $this->sort = [
-                'field'     => $params['field'],
-                'direction' => $direction
-            ];
+            $this->sorting[] = new Sorting($params['field'], $direction);
         }
 
         return $this;
@@ -91,7 +83,7 @@ abstract class BasePaginator
      * Handle the pagination
      * @return array
      */
-    public function paginate()
+    public function paginate(): array
     {
         $totalCount = $this->getCount();
 
@@ -136,12 +128,12 @@ abstract class BasePaginator
         }
 
         $pagination = [
-            'last' => (int)$pageCount,
+            'last' => $pageCount,
             'current' => (int)$current,
             'numItemsPerPage' => $this->maxResults ?? ucfirst(self::ALL_PARAMETER),
             'first' => 1,
-            'pageCount' => (int)$pageCount,
-            'totalCount' => (int)$totalCount,
+            'pageCount' => $pageCount,
+            'totalCount' => $totalCount,
             'pageRange' => $pageRange,
             'startPage' => (int)$startPage,
             'endPage' => (int)$endPage,
@@ -149,7 +141,8 @@ abstract class BasePaginator
             'routeParams' => $this->routeParams,
             'query' => $this->queryFilter,
             'pageParameterName' => 'page',
-            'sort' => $this->sort,
+            'sorting' => $this->sorting, // ToDo: check the template paginator how will handle this..
+            'sort' => [] // deprecated: will be removed after the macros sync
         ];
 
         if ($current - 1 > 0) {
@@ -180,7 +173,7 @@ abstract class BasePaginator
     /**
      * @return int
      */
-    public function getPage()
+    public function getPage(): ?int
     {
         return $this->page;
     }
@@ -189,7 +182,7 @@ abstract class BasePaginator
      * @param int $page
      * @return $this
      */
-    public function setPage($page)
+    public function setPage(int $page): BasePaginator
     {
         $this->page = $page;
         return $this;
@@ -198,7 +191,7 @@ abstract class BasePaginator
     /**
      * @return int
      */
-    public function getMaxResults()
+    public function getMaxResults(): ?int
     {
         return $this->maxResults;
     }
@@ -207,7 +200,7 @@ abstract class BasePaginator
      * @param $maxResults
      * @return $this
      */
-    public function setMaxResults($maxResults)
+    public function setMaxResults($maxResults): BasePaginator
     {
         if (strtolower($maxResults) !== self::ALL_PARAMETER) {
             $this->maxResults = $maxResults;
@@ -219,22 +212,32 @@ abstract class BasePaginator
     }
 
     /**
-     * @return array
+     * @return Sorting[]
      */
-    public function getSort()
+    public function getSorting(): array
     {
-        return empty($this->sort) ? $this->defaultSort : $this->sort;
+        return $this->sorting;
     }
 
-    /**
-     * @param array $sort
-     * @return $this
-     */
-    public function setSort(array $sort)
+	/**
+	 * @param Sorting[] $sorting
+	 * @return $this
+	 */
+    public function setSorting(array $sorting): BasePaginator
     {
-        $this->defaultSort = $sort;
+        $this->sorting = $sorting;
         return $this;
     }
+
+	/**
+	 * @param Sorting $sorting
+	 * @return $this
+	 */
+    public function addSorting(Sorting $sorting): BasePaginator
+    {
+		$this->sorting[] = $sorting;
+		return $this;
+	}
 
     /**
      * @return int
@@ -251,10 +254,10 @@ abstract class BasePaginator
     /**
      * @return int
      */
-    abstract public function getCount();
+    abstract public function getCount(): int;
 
     /**
      * @return array
      */
-    abstract public function getRecords();
+    abstract public function getRecords(): array;
 }

@@ -2,6 +2,7 @@
 
 namespace NetBull\CoreBundle\Paginator;
 
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
 
 /**
@@ -41,15 +42,10 @@ class Paginator extends BasePaginator implements PaginatorInterface
     protected $additionalInfoQuery = null;
 
     /**
-     * @var array
-     */
-    protected $additionalSorting = [];
-
-    /**
      * @param string $field
      * @return $this
      */
-    public function setIdField(string $field = 'id')
+    public function setIdField(string $field = 'id'): PaginatorInterface
     {
         $this->idField = $field;
 
@@ -58,9 +54,9 @@ class Paginator extends BasePaginator implements PaginatorInterface
 
     /**
      * @return int|mixed
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
-    public function getCount()
+    public function getCount(): int
     {
         return $this->countQuery->getQuery()->getSingleScalarResult();
     }
@@ -68,7 +64,7 @@ class Paginator extends BasePaginator implements PaginatorInterface
     /**
      * @inheritdoc
      */
-    public function getRecords()
+    public function getRecords(): array
     {
         $idField = $this->idField;
         $this->ids = array_map(function ($el) use ($idField) { return $el[$idField]; }, $this->getIds());
@@ -77,24 +73,20 @@ class Paginator extends BasePaginator implements PaginatorInterface
             return [];
         }
 
-        $this->query
-            ->andWhere($this->query->expr()->in($this->query->getRootAliases()[0] . '.' . $idField, ':ids'))
+        $this->query->andWhere($this->query->expr()->in($this->query->getRootAliases()[0] . '.' . $idField, ':ids'))
             ->orderBy('FIELD(' . $this->query->getRootAliases()[0] . '.' . $idField . ', :ids)')
-            ->setParameter('ids', $this->ids)
-        ;
+            ->setParameter('ids', $this->ids);
 
         $records = $this->query->getQuery()->getArrayResult();
 
         if ($this->additionalInfoQuery) {
             $qb = $this->additionalInfoQuery;
             $alias = $qb->getRootAliases()[0];
-            $qb
-                ->andWhere($qb->expr()->in($alias . '.' . $idField, ':ids'))
+            $qb->andWhere($qb->expr()->in($alias . '.' . $idField, ':ids'))
                 ->orderBy('FIELD(' . $alias . '.' . $idField . ', :ids)')
-                ->setParameter('ids', $this->ids)
-            ;
-            $additionalInfo = $this->additionalInfoQuery->getQuery()->getArrayResult();
+                ->setParameter('ids', $this->ids);
 
+            $additionalInfo = $this->additionalInfoQuery->getQuery()->getArrayResult();
             $records = $this->arrayCombine($records, $additionalInfo);
         }
 
@@ -105,7 +97,7 @@ class Paginator extends BasePaginator implements PaginatorInterface
      * @param QueryBuilder $countQuery
      * @return $this
      */
-    public function setCountQuery(QueryBuilder $countQuery)
+    public function setCountQuery(QueryBuilder $countQuery): PaginatorInterface
     {
         $this->countQuery = $countQuery;
 
@@ -113,32 +105,30 @@ class Paginator extends BasePaginator implements PaginatorInterface
     }
 
     /**
-     * @return null
+     * @return QueryBuilder
      */
-    public function getCountQuery()
+    public function getCountQuery(): QueryBuilder
     {
         return $this->countQuery;
     }
 
     /**
-     * @return null
+     * @return array
      */
-    public function getIds()
+    public function getIds(): array
     {
         if ($this->maxResults && strtolower($this->maxResults) !== self::ALL_PARAMETER) {
             $this->idsQuery->setMaxResults($this->maxResults)->setFirstResult($this->getFirstResult());
         }
 
-        $sort = $this->getSort();
+        $sorting = $this->getSorting();
 
-        if (!empty($sort)) {
-            $this->idsQuery->addOrderBy($sort['field'], $sort['direction']);
+        if (!empty($sorting)) {
+            foreach ($sorting as $sort) {
+				$this->idsQuery->addOrderBy($sort->getField(), $sort->getDirection());
+			}
         } else {
             $this->idsQuery->addOrderBy($this->idsQuery->getRootAliases()[0] . '.' . $this->idField, 'asc');
-        }
-
-        foreach ($this->additionalSorting as $sorting) {
-            $this->idsQuery->addOrderBy($sorting['field'], $sorting['direction']);
         }
 
         return $this->idsQuery->getQuery()->getArrayResult();
@@ -148,7 +138,7 @@ class Paginator extends BasePaginator implements PaginatorInterface
      * @param QueryBuilder $idsQuery
      * @return $this
      */
-    public function setIdsQuery(QueryBuilder $idsQuery)
+    public function setIdsQuery(QueryBuilder $idsQuery): PaginatorInterface
     {
         $this->idsQuery = $idsQuery;
 
@@ -159,7 +149,7 @@ class Paginator extends BasePaginator implements PaginatorInterface
      * @param QueryBuilder $query
      * @return $this
      */
-    public function setQuery(QueryBuilder $query)
+    public function setQuery(QueryBuilder $query): PaginatorInterface
     {
         $this->query = $query;
 
@@ -167,12 +157,12 @@ class Paginator extends BasePaginator implements PaginatorInterface
     }
 
     /**
-     * @param QueryBuilder $query
+     * @param QueryBuilder $additionalQuery
      * @return $this
      */
-    public function setAdditionalQuery(QueryBuilder $query)
+    public function setAdditionalQuery(QueryBuilder $additionalQuery): PaginatorInterface
     {
-        $this->additionalInfoQuery = $query;
+        $this->additionalInfoQuery = $additionalQuery;
 
         return $this;
     }
@@ -180,22 +170,9 @@ class Paginator extends BasePaginator implements PaginatorInterface
     /**
      * @return array
      */
-    public function getSelectedIds()
+    public function getSelectedIds(): array
     {
         return $this->ids;
-    }
-
-    /**
-     * @param array $sort
-     * @return $this
-     */
-    public function addAdditionalSorting(array $sort = [])
-    {
-        if (isset($sort['field']) && isset($sort['direction'])) {
-            $this->additionalSorting[] = $sort;
-        }
-
-        return $this;
     }
 
     ####################################################
@@ -207,7 +184,7 @@ class Paginator extends BasePaginator implements PaginatorInterface
      * @param array $additions
      * @return array
      */
-    protected function arrayCombine(array $targets, array $additions)
+    protected function arrayCombine(array $targets, array $additions): array
     {
         $tmp = [];
         foreach ($targets as $target) {

@@ -23,7 +23,7 @@ class PaginatorSimple extends BasePaginator implements PaginatorSimpleInterface
     /**
      * @inheritdoc
      */
-    public function getCount()
+    public function getCount(): int
     {
         return count($this->ids);
     }
@@ -31,7 +31,7 @@ class PaginatorSimple extends BasePaginator implements PaginatorSimpleInterface
     /**
      * @inheritdoc
      */
-    public function getRecords()
+    public function getRecords(): array
     {
         if (count($this->ids) == 0) {
             return [];
@@ -47,9 +47,9 @@ class PaginatorSimple extends BasePaginator implements PaginatorSimpleInterface
     }
 
     /**
-     * @return null
+     * @return array
      */
-    public function getIds()
+    public function getIds(): array
     {
         return $this->ids;
     }
@@ -58,7 +58,7 @@ class PaginatorSimple extends BasePaginator implements PaginatorSimpleInterface
      * @param array $ids
      * @return $this
      */
-    public function setIds(array $ids)
+    public function setIds(array $ids): PaginatorSimpleInterface
     {
         $this->ids = array_map(function ($el) { return $el['id']; }, $ids);
 
@@ -69,7 +69,7 @@ class PaginatorSimple extends BasePaginator implements PaginatorSimpleInterface
      * @param QueryBuilder $query
      * @return $this
      */
-    public function setQuery(QueryBuilder $query)
+    public function setQuery(QueryBuilder $query): PaginatorSimpleInterface
     {
         $this->query = $query;
 

@@ -2,6 +2,7 @@
 
 namespace NetBull\CoreBundle\Paginator;
 
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
 
 /**
@@ -12,35 +13,35 @@ interface PaginatorSimpleInterface
 {
     /**
      * @return int|mixed
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function getCount();
 
     /**
      * @return array
      */
-    public function getRecords();
+    public function getRecords(): array;
 
     /**
      * Handle the pagination
      * @return array
      */
-    public function paginate();
+    public function paginate(): array;
 
     /**
      * @param array $ids
      * @return $this
      */
-    public function setIds(array $ids);
+    public function setIds(array $ids): PaginatorSimpleInterface;
 
     /**
      * @return array
      */
-    public function getIds();
+    public function getIds(): array;
 
     /**
      * @param QueryBuilder $query
      * @return $this
      */
-    public function setQuery(QueryBuilder $query);
+    public function setQuery(QueryBuilder $query): PaginatorSimpleInterface;
 }
