@@ -2,6 +2,7 @@
 
 namespace NetBull\CoreBundle\Paginator;
 
+use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -220,13 +221,47 @@ abstract class BasePaginator
     }
 
 	/**
-	 * @param Sorting[] $sorting
+	 * @param Sorting[]|Sorting|array $sorting
+     *  - array of Sorting instances
+     *  - single Sorting instance
+     *  - array in format ['field', 'direction']
 	 * @return $this
 	 */
-    public function setSorting(array $sorting): BasePaginator
+    public function setSorting($sorting): BasePaginator
     {
-        $this->sorting = $sorting;
+        $this->sorting = [];
+        if (is_array($sorting)) {
+            foreach ($sorting as $sort) {
+                try {
+                    $this->sorting[] = $this->normalizeSort($sort);
+                } catch (InvalidArgumentException $e) {}
+            }
+        } else {
+            try {
+                $this->sorting[] = $this->normalizeSort($sorting);
+            } catch (InvalidArgumentException $e) {}
+        }
+
         return $this;
+    }
+
+    /**
+     * @param $sort
+     * @return Sorting
+     * @throws InvalidArgumentException
+     */
+    private function normalizeSort($sort): Sorting
+    {
+        if ($sort instanceof Sorting) {
+            return $sort;
+        }
+
+        if (is_array($sort)) {
+            list($field, $direction) = array_values($sort);
+            return new Sorting($field, $direction);
+        }
+
+        throw new InvalidArgumentException("Value \"$sort\" is not a valid Sorting");
     }
 
 	/**
