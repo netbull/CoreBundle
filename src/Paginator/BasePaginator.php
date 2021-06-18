@@ -68,13 +68,10 @@ abstract class BasePaginator
         $this->queryFilter = (isset($params['query'])) ? $params['query'] : '';
 
         // Sniff the sorting options
-        if (isset($params['field']) && !empty($params['field'])) {
-            $direction = 'asc';
-            if( isset($params['direction']) && ($params['direction'] == 'asc' || $params['direction'] == 'desc') ){
-                $direction = $params['direction'];
-            }
-
-            $this->sorting[] = new Sorting($params['field'], $direction);
+        if (!empty($params['field'])) {
+            try {
+                $this->sorting[] = new Sorting($params['field'], $params['direction']);
+            } catch (InvalidArgumentException $e) {}
         }
 
         return $this;
@@ -220,16 +217,15 @@ abstract class BasePaginator
         return $this->sorting;
     }
 
-	/**
-	 * @param Sorting[]|Sorting|array $sorting
+    /**
+     * @param Sorting[]|Sorting|array $sorting
      *  - array of Sorting instances
      *  - single Sorting instance
      *  - array in format ['field', 'direction']
-	 * @return $this
-	 */
+     * @return $this
+     */
     public function setSorting($sorting): BasePaginator
     {
-        $this->sorting = [];
         if (is_array($sorting)) {
             foreach ($sorting as $sort) {
                 try {
@@ -264,15 +260,15 @@ abstract class BasePaginator
         throw new InvalidArgumentException("Value \"$sort\" is not a valid Sorting");
     }
 
-	/**
-	 * @param Sorting $sorting
-	 * @return $this
-	 */
+    /**
+     * @param Sorting $sorting
+     * @return $this
+     */
     public function addSorting(Sorting $sorting): BasePaginator
     {
-		$this->sorting[] = $sorting;
-		return $this;
-	}
+        $this->sorting[] = $sorting;
+        return $this;
+    }
 
     /**
      * @return int

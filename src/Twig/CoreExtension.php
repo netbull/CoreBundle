@@ -2,6 +2,7 @@
 
 namespace NetBull\CoreBundle\Twig;
 
+use NetBull\CoreBundle\Paginator\Sorting;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\DomCrawler\Crawler;
@@ -98,36 +99,37 @@ class CoreExtension extends AbstractExtension
         $activeClass = $this->parameterBag->get('netbull_core.paginator.sortable.active_class');
         $notActiveClass = $this->parameterBag->get('netbull_core.paginator.sortable.not_active_class');
 
-        if (in_array($field, $pagination['sort'])) {
-            $direction = 'asc';
-            if (isset($pagination['sort']['direction']) && ($pagination['sort']['direction'] == 'asc' || $pagination['sort']['direction'] == 'desc')) {
-                $direction = $pagination['sort']['direction'];
-            }
+        /** @var Sorting|null $sort */
+        $sort = $pagination['sorting'][0] ?? null;
+        if (!$sort) {
+            return $label;
+        }
 
-            $newDirection = ($direction == 'asc') ? 'desc' : 'asc';
-            $hint = 'asc' === $direction ? 'Descending' : 'Ascending';
+        if ($field === $sort->getField()) {
+            $direction = $sort->getDirection();
+
+            $newDirection = $direction === Sorting::DIRECTION_ASC ? Sorting::DIRECTION_DESC : Sorting::DIRECTION_ASC;
+            $hint = Sorting::DIRECTION_ASC === $direction ? 'Descending' : 'Ascending';
 
             // If we are on DESC sorting next should be the initial state to clear the sorting
-            if ('desc' === $direction) {
-                unset($pagination['sort']['field']);
-                unset($pagination['sort']['direction']);
+            if (Sorting::DIRECTION_DESC === $direction) {
                 unset($pagination['routeParams']['field']);
                 unset($pagination['routeParams']['direction']);
                 $hint = 'clear';
                 $params = [];
             } else {
-                $params = array_merge($pagination['sort'], [
-                    'field'     => $field,
+                $params = [
+                    'field' => $field,
                     'direction' => $newDirection
-                ]);
+                ];
             }
             $link = $this->router->generate($pagination['route'], array_merge($pagination['routeParams'], $params));
             $icon = $this->parameterBag->get('netbull_core.paginator.sortable.icons.'.$direction);
             $string = sprintf('<a class="%s" href="%s" title="Sort %s">%s <i class="%s"></i></a>', $activeClass, $link, $hint, $label, $icon);
         } else {
-            $link = $this->router->generate($pagination['route'], array_merge($pagination['routeParams'], $pagination['sort'], [
-                "field" => $field,
-                "direction" => "asc"
+            $link = $this->router->generate($pagination['route'], array_merge($pagination['routeParams'], [
+                'field' => $field,
+                'direction' => Sorting::DIRECTION_ASC
             ]));
             $icon = $this->parameterBag->get('netbull_core.paginator.sortable.icons.none');
             $string = sprintf('<a class="%s" href="%s" title="Sort Ascending">%s <i class="%s"></i></a>', $notActiveClass, $link, $label, $icon);
@@ -169,7 +171,7 @@ class CoreExtension extends AbstractExtension
      * @param int $length
      * @return string
      */
-    public function loremIpsum($length = 30): string
+    public function loremIpsum(int $length = 30): string
     {
         $string = [];
         $words = [
@@ -261,9 +263,8 @@ class CoreExtension extends AbstractExtension
     #########################################
     #                 Tests                 #
     #########################################
-
     /**
-     * {@inheritdoc}
+     * @return string
      */
     public function getName(): string
     {
