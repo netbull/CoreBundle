@@ -219,9 +219,9 @@ class CoreExtension extends AbstractExtension
      * @param int $pluralize
      * @return string
      */
-    public function inflect(string $string, $pluralize = 0) : string
+    public function inflect(string $string, int $pluralize = 0) : string
     {
-        return ($pluralize) ? Inflect::pluralize($string) : Inflect::singularize($string);
+        return $pluralize ? Inflect::pluralize($string) : Inflect::singularize($string);
     }
 
     /**
@@ -240,6 +240,9 @@ class CoreExtension extends AbstractExtension
      */
     public function getCountryName(string $code, string $locale = '') : string
     {
+        if (empty($code)) {
+            return '';
+        }
         return Countries::getName($code, $locale);
     }
 
