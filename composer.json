@@ -15,7 +15,7 @@
     "require": {
         "beberlei/doctrineextensions": "1.3.*",
         "symfony/templating": "5.2.*|5.3.*|5.4",
-        "symfony/framework-bundle": "5.2.*|5.3.*|5.4",
+        "symfony/framework-bundle": "5.2.*|5.3.*|5.4.*",
         "symfony/orm-pack": "2.*",
         "giggsey/libphonenumber-for-php": "8.12.*"
     },
