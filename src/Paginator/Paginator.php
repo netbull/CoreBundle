@@ -17,6 +17,11 @@ class Paginator extends BasePaginator implements PaginatorInterface
     protected $ids = [];
 
     /**
+     * @var int|null
+     */
+    protected ?int $totalCount = null;
+
+    /**
      * @var string
      */
     protected $idField = 'id';
@@ -58,7 +63,11 @@ class Paginator extends BasePaginator implements PaginatorInterface
      */
     public function getCount(): int
     {
-        return $this->countQuery->getQuery()->getSingleScalarResult();
+        if (is_null($this->totalCount)) {
+            $this->totalCount = $this->countQuery->getQuery()->getSingleScalarResult();
+        }
+
+        return $this->totalCount;
     }
 
     /**
@@ -125,8 +134,8 @@ class Paginator extends BasePaginator implements PaginatorInterface
 
         if (!empty($sorting)) {
             foreach ($sorting as $sort) {
-				$this->idsQuery->addOrderBy($sort->getField(), $sort->getDirection());
-			}
+                $this->idsQuery->addOrderBy($sort->getField(), $sort->getDirection());
+            }
         } else {
             $this->idsQuery->addOrderBy($this->idsQuery->getRootAliases()[0] . '.' . $this->idField, 'asc');
         }
