@@ -4,10 +4,6 @@ namespace NetBull\CoreBundle\Paginator;
 
 use Doctrine\ORM\QueryBuilder;
 
-/**
- * Class PaginatorSimple
- * @package NetBull\CoreBundle\Paginator
- */
 class PaginatorSimple extends BasePaginator implements PaginatorSimpleInterface
 {
     /**

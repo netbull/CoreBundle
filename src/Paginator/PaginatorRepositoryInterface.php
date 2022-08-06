@@ -2,10 +2,6 @@
 
 namespace NetBull\CoreBundle\Paginator;
 
-/**
- * Interface PaginatorRepositoryInterface
- * @package NetBull\CoreBundle\Paginator
- */
 interface PaginatorRepositoryInterface
 {
     /**

@@ -6,10 +6,6 @@ use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-/**
- * Class BasePaginator
- * @package NetBull\CoreBundle\Paginator
- */
 abstract class BasePaginator
 {
     const ALL_PARAMETER = 'all';
@@ -50,8 +46,8 @@ abstract class BasePaginator
     protected $queryFilter = '';
 
     /**
-     * Paginator constructor.
      * @param RequestStack $requestStack
+     *
      */
     public function __construct(RequestStack $requestStack)
     {
@@ -78,10 +74,10 @@ abstract class BasePaginator
     }
 
     /**
-     * Handle the pagination
+     * @param bool $reset
      * @return array
      */
-    public function paginate(): array
+    public function paginate(bool $reset = false): array
     {
         $totalCount = $this->getCount();
 
@@ -156,16 +152,22 @@ abstract class BasePaginator
         $pagination['lastPageInRange'] = max($pages);
 
         $items = $this->getRecords();
-        if ($items !== null) {
-            $pagination['currentItemCount'] = (int)$totalCount;
-            $pagination['firstItemNumber'] = $this->maxResults ? (($current - 1) * $this->maxResults) + 1 : 1;
-            $pagination['lastItemNumber'] =  $pagination['firstItemNumber'] + $pagination['currentItemCount'] - 1;
+        $pagination['currentItemCount'] = $totalCount;
+        $pagination['firstItemNumber'] = $this->maxResults ? (($current - 1) * $this->maxResults) + 1 : 1;
+        $pagination['lastItemNumber'] =  $pagination['firstItemNumber'] + $pagination['currentItemCount'] - 1;
+
+        if ($reset) {
+            $this->reset();
         }
 
         return [
             'items' => $items,
             'pagination' => $pagination
         ];
+    }
+
+    public function reset()
+    {
     }
 
     /**

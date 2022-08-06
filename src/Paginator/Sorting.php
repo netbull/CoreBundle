@@ -4,10 +4,6 @@ namespace NetBull\CoreBundle\Paginator;
 
 use InvalidArgumentException;
 
-/**
- * Class Sorting
- * @package NetBull\CoreBundle\Paginator
- */
 class Sorting
 {
     const DIRECTION_ASC = 'asc';

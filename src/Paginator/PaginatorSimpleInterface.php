@@ -5,10 +5,6 @@ namespace NetBull\CoreBundle\Paginator;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
 
-/**
- * Interface PaginatorSimpleInterface
- * @package NetBull\CoreBundle\Paginator
- */
 interface PaginatorSimpleInterface
 {
     /**

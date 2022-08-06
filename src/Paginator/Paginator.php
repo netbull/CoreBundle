@@ -5,10 +5,6 @@ namespace NetBull\CoreBundle\Paginator;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
 
-/**
- * Class Paginator
- * @package NetBull\CoreBundle\Paginator
- */
 class Paginator extends BasePaginator implements PaginatorInterface
 {
     /**
@@ -182,6 +178,11 @@ class Paginator extends BasePaginator implements PaginatorInterface
     public function getSelectedIds(): array
     {
         return $this->ids;
+    }
+
+    public function reset()
+    {
+        $this->totalCount = null;
     }
 
     ####################################################
