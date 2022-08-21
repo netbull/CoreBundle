@@ -10,10 +10,6 @@ use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use libphonenumber\PhoneNumber as PhoneNumberBase;
 
-/**
- * Class PhoneNumberType
- * @package NetBull\CoreBundle\ORM\Types
- */
 class PhoneNumber extends Type
 {
     /**
@@ -22,28 +18,30 @@ class PhoneNumber extends Type
     const NAME = 'phone_number';
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return self::NAME;
     }
 
     /**
-     * {@inheritdoc}
+     * @param array $fieldDeclaration
+     * @param AbstractPlatform $platform
+     * @return string
      */
-    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
+    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
     {
-        return $platform->getVarcharTypeDeclarationSQL(array('length' => 35));
+        return $platform->getStringTypeDeclarationSQL(['length' => 35]);
     }
 
     /**
-     * @param mixed $value
+     * @param $value
      * @param AbstractPlatform $platform
-     * @return mixed|null
+     * @return string|null
      * @throws ConversionException
      */
-    public function convertToDatabaseValue($value, AbstractPlatform $platform)
+    public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
     {
         if (null === $value) {
             return null;
@@ -80,9 +78,10 @@ class PhoneNumber extends Type
     }
 
     /**
-     * {@inheritdoc}
+     * @param AbstractPlatform $platform
+     * @return bool
      */
-    public function requiresSQLCommentHint(AbstractPlatform $platform)
+    public function requiresSQLCommentHint(AbstractPlatform $platform): bool
     {
         return true;
     }

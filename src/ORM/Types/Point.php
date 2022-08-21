@@ -4,37 +4,36 @@ namespace NetBull\CoreBundle\ORM\Types;
 
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-
 use NetBull\CoreBundle\ORM\Objects\Point as BasePoint;
 
-/**
- * Class Point
- * @package NetBull\CoreBundle\ORM\Types
- */
 class Point extends Type
 {
     const POINT = 'point';
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return self::POINT;
     }
 
     /**
-     * {@inheritdoc}
+     * @param array $fieldDeclaration
+     * @param AbstractPlatform $platform
+     * @return string
      */
-    public function getSqlDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
+    public function getSqlDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
     {
         return "POINT";
     }
 
     /**
-     * {@inheritdoc}
+     * @param $value
+     * @param AbstractPlatform $platform
+     * @return BasePoint
      */
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue($value, AbstractPlatform $platform): BasePoint
     {
         list($longitude, $latitude) = sscanf($value, 'POINT(%f %f)');
 
@@ -42,7 +41,9 @@ class Point extends Type
     }
 
     /**
-     * {@inheritdoc}
+     * @param $value
+     * @param AbstractPlatform $platform
+     * @return mixed|string
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
@@ -54,33 +55,38 @@ class Point extends Type
     }
 
     /**
-     * {@inheritdoc}
+     * @return bool
      */
-    public function canRequireSQLConversion()
+    public function canRequireSQLConversion(): bool
     {
         return true;
     }
 
     /**
-     * {@inheritdoc}
+     * @param $sqlExpr
+     * @param AbstractPlatform $platform
+     * @return string
      */
-    public function convertToDatabaseValueSQL($sqlExpr, AbstractPlatform $platform)
+    public function convertToDatabaseValueSQL($sqlExpr, AbstractPlatform $platform): string
     {
         return sprintf('ST_PointFromText(%s)', $sqlExpr);
     }
 
     /**
-     * {@inheritdoc}
+     * @param $sqlExpr
+     * @param $platform
+     * @return string
      */
-    public function convertToPHPValueSQL($sqlExpr, $platform)
+    public function convertToPHPValueSQL($sqlExpr, $platform): string
     {
         return sprintf('ST_AsText(%s)', $sqlExpr);
     }
 
     /**
-     * @inheritDoc
+     * @param AbstractPlatform $platform
+     * @return bool
      */
-    public function requiresSQLCommentHint(AbstractPlatform $platform)
+    public function requiresSQLCommentHint(AbstractPlatform $platform): bool
     {
         return true;
     }

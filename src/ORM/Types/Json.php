@@ -5,16 +5,14 @@ namespace NetBull\CoreBundle\ORM\Types;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 
-/**
- * Class Json
- * @package NetBull\CoreBundle\ORM\Types
- */
 class Json extends Type
 {
     const JSON = 'json';
 
     /**
-     * {@inheritdoc}
+     * @param $value
+     * @param AbstractPlatform $platform
+     * @return mixed
      */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
@@ -22,7 +20,9 @@ class Json extends Type
     }
 
     /**
-     * {@inheritdoc}
+     * @param $value
+     * @param AbstractPlatform $platform
+     * @return false|string
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
@@ -30,25 +30,28 @@ class Json extends Type
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return self::JSON;
     }
 
     /**
-     * {@inheritdoc}
+     * @param array $fieldDeclaration
+     * @param AbstractPlatform $platform
+     * @return string
      */
-    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
+    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
     {
         return $platform->getClobTypeDeclarationSQL($fieldDeclaration);
     }
 
     /**
-     * {@inheritdoc}
+     * @param AbstractPlatform $platform
+     * @return bool
      */
-    public function requiresSQLCommentHint(AbstractPlatform $platform)
+    public function requiresSQLCommentHint(AbstractPlatform $platform): bool
     {
         return true;
     }

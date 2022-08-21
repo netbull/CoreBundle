@@ -2,28 +2,23 @@
 
 namespace NetBull\CoreBundle\ORM\Objects;
 
-/**
- * Class Range
- * @package NetBull\CoreBundle\ORM\Objects
- */
 class Range
 {
     /**
-     * @var integer
+     * @var int
      */
-    private $min;
+    private int $min;
 
     /**
-     * @var integer
+     * @var int
      */
-    private $max;
+    private int $max;
 
     /**
-     * Range constructor.
-     * @param $min
-     * @param $max
+     * @param int $min
+     * @param int $max
      */
-    public function __construct($min, $max)
+    public function __construct(int $min, int $max)
     {
         $this->min = $min;
         $this->max = $max;

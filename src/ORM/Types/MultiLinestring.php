@@ -4,19 +4,19 @@ namespace NetBull\CoreBundle\ORM\Types;
 
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Exception;
+use geoPHP;
 
-/**
- * Class MultiLinestring
- * @package NetBull\CoreBundle\ORM\Types
- */
 class MultiLinestring extends Type
 {
     const MULTILINESTRING = 'multilinestring';
 
     /**
-     * {@inheritdoc}
+     * @param array $fieldDeclaration
+     * @param AbstractPlatform $platform
+     * @return string
      */
-    public function getSqlDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
+    public function getSqlDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
     {
         return 'MULTILINESTRING';
     }
@@ -25,7 +25,7 @@ class MultiLinestring extends Type
      * @param mixed $value
      * @param AbstractPlatform $platform
      * @return mixed|string
-     * @throws \Exception
+     * @throws Exception
      */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
@@ -33,13 +33,13 @@ class MultiLinestring extends Type
             return '';
         }
         if (false === strpos(strtolower($value), 'multilinestring')) {
-            throw new \Exception('This is not a MultiLine!');
+            throw new Exception('This is not a MultiLine!');
         }
 
-        $poly = \geoPHP::load($value);
+        $poly = geoPHP::load($value);
 
         if (!$poly->checkValidity()) {
-            throw new \Exception('The shape is not a valid MultiLine ' . $value);
+            throw new Exception('The shape is not a valid MultiLine ' . $value);
         }
 
         return $poly;
@@ -49,7 +49,7 @@ class MultiLinestring extends Type
      * @param mixed $value
      * @param AbstractPlatform $platform
      * @return mixed|string
-     * @throws \Exception
+     * @throws Exception
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
@@ -58,46 +58,50 @@ class MultiLinestring extends Type
         }
 
         if (false === strpos(strtolower($value), 'multilinestring')) {
-            throw new \Exception("This is not a polygon!");
+            throw new Exception("This is not a polygon!");
         }
 
-        $poly = \geoPHP::load($value);
+        $poly = geoPHP::load($value);
 
         if (!$poly->checkValidity()) {
-            throw new \Exception('The shape is not a valid MultiLine ' . $value);
+            throw new Exception('The shape is not a valid MultiLine ' . $value);
         }
 
         return $value;
     }
 
     /**
-     * {@inheritdoc}
+     * @return bool
      */
-    public function canRequireSQLConversion()
+    public function canRequireSQLConversion(): bool
     {
         return true;
     }
 
     /**
-     * {@inheritdoc}
+     * @param $sqlExpr
+     * @param AbstractPlatform $platform
+     * @return string
      */
-    public function convertToDatabaseValueSQL($sqlExpr, AbstractPlatform $platform)
+    public function convertToDatabaseValueSQL($sqlExpr, AbstractPlatform $platform): string
     {
         return sprintf('ST_GeomFromText(%s)', $sqlExpr);
     }
 
     /**
-     * {@inheritdoc}
+     * @param $sqlExpr
+     * @param $platform
+     * @return string
      */
-    public function convertToPHPValueSQL($sqlExpr, $platform)
+    public function convertToPHPValueSQL($sqlExpr, $platform): string
     {
         return sprintf('ST_AsText(%s)', $sqlExpr);
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return self::MULTILINESTRING; // modify to match your constant name
     }

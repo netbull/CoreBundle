@@ -4,19 +4,19 @@ namespace NetBull\CoreBundle\ORM\Types;
 
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Exception;
+use geoPHP;
 
-/**
- * Class Multipolygon
- * @package NetBull\CoreBundle\ORM\Types
- */
 class Multipolygon extends Type
 {
     const MULTIPOLYGON = 'multipolygon';
 
     /**
-     * {@inheritdoc}
+     * @param array $fieldDeclaration
+     * @param AbstractPlatform $platform
+     * @return string
      */
-    public function getSqlDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
+    public function getSqlDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
     {
         return 'MULTIPOLYGON';
     }
@@ -25,7 +25,7 @@ class Multipolygon extends Type
      * @param mixed $value
      * @param AbstractPlatform $platform
      * @return mixed|string
-     * @throws \Exception
+     * @throws Exception
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
@@ -34,13 +34,13 @@ class Multipolygon extends Type
         }
 
         if (false === strpos(strtolower($value), 'multipolygon') && false === strpos(strtolower($value), 'polygon')) {
-            throw new \Exception('This is not a MultiPolygon!');
+            throw new Exception('This is not a MultiPolygon!');
         }
 
-        $poly = \geoPHP::load($value);
+        $poly = geoPHP::load($value);
 
         if (!$poly->checkValidity() && !is_null($poly->checkValidity())) {
-            throw new \Exception('The shape is not a valid MultiPolygon ' . $value);
+            throw new Exception('The shape is not a valid MultiPolygon ' . $value);
         }
 
         return $value;
@@ -50,7 +50,7 @@ class Multipolygon extends Type
      * @param mixed $value
      * @param AbstractPlatform $platform
      * @return mixed|string
-     * @throws \Exception
+     * @throws Exception
      */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
@@ -59,46 +59,50 @@ class Multipolygon extends Type
         }
 
         if (false === strpos(strtolower($value), 'multipolygon') && false === strpos(strtolower($value), 'polygon')) {
-            throw new \Exception('This is not a MultiPolygon!');
+            throw new Exception('This is not a MultiPolygon!');
         }
 
-        $poly = \geoPHP::load($value);
+        $poly = geoPHP::load($value);
 
         if (!$poly->checkValidity() && !is_null($poly->checkValidity())) {
-            throw new \Exception('The shape is not a valid MultiPolygon' . $value);
+            throw new Exception('The shape is not a valid MultiPolygon' . $value);
         }
 
         return $poly;
     }
 
     /**
-     * {@inheritdoc}
+     * @return bool
      */
-    public function canRequireSQLConversion()
+    public function canRequireSQLConversion(): bool
     {
         return true;
     }
 
     /**
-     * {@inheritdoc}
+     * @param $sqlExpr
+     * @param AbstractPlatform $platform
+     * @return string
      */
-    public function convertToDatabaseValueSQL($sqlExpr, AbstractPlatform $platform)
+    public function convertToDatabaseValueSQL($sqlExpr, AbstractPlatform $platform): string
     {
         return sprintf('ST_GeomFromText(%s)', $sqlExpr);
     }
 
     /**
-     * {@inheritdoc}
+     * @param $sqlExpr
+     * @param $platform
+     * @return string
      */
-    public function convertToPHPValueSQL($sqlExpr, $platform)
+    public function convertToPHPValueSQL($sqlExpr, $platform): string
     {
         return sprintf('ST_AsText(%s)', $sqlExpr);
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return self::MULTIPOLYGON;
     }

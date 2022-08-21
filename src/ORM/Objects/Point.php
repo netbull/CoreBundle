@@ -2,28 +2,23 @@
 
 namespace NetBull\CoreBundle\ORM\Objects;
 
-/**
- * Class Point
- * @package NetBull\CoreBundle\ORM\Objects
- */
 class Point
 {
     /**
      * @var float
      */
-    private $latitude;
+    private float $latitude;
 
     /**
      * @var float
      */
-    private $longitude;
+    private float $longitude;
 
     /**
-     * Point constructor.
      * @param float $latitude
      * @param float $longitude
      */
-    public function __construct($latitude, $longitude)
+    public function __construct(float $latitude, float $longitude)
     {
         $this->latitude = $latitude;
         $this->longitude = $longitude;
@@ -32,7 +27,7 @@ class Point
     /**
      * @return float
      */
-    public function getLatitude()
+    public function getLatitude(): float
     {
         return $this->latitude;
     }
@@ -40,7 +35,7 @@ class Point
     /**
      * @return float
      */
-    public function getLongitude()
+    public function getLongitude(): float
     {
         return $this->longitude;
     }

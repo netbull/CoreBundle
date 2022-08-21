@@ -7,34 +7,34 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 
 use NetBull\CoreBundle\ORM\Objects\Range as BaseRange;
 
-/**
- * Class Range
- * @package NetBull\CoreBundle\ORM\Types
- */
 class Range extends Type
 {
     const RANGE = 'range';
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return self::RANGE;
     }
 
     /**
-     * {@inheritdoc}
+     * @param array $fieldDeclaration
+     * @param AbstractPlatform $platform
+     * @return string
      */
-    public function getSqlDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
+    public function getSqlDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
     {
         return '';
     }
 
     /**
-     * {@inheritdoc}
+     * @param $value
+     * @param AbstractPlatform $platform
+     * @return BaseRange
      */
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue($value, AbstractPlatform $platform): BaseRange
     {
         list($min, $max) = sscanf($value, '%d-%d');
 
@@ -42,7 +42,9 @@ class Range extends Type
     }
 
     /**
-     * {@inheritdoc}
+     * @param $value
+     * @param AbstractPlatform $platform
+     * @return mixed|string
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
