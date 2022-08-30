@@ -10,26 +10,21 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-/**
- * Class CompoundRangeType
- * @package NetBull\CoreBundle\Form\Type
- */
 class CompoundRangeType extends AbstractType implements DataTransformerInterface
 {
     /**
-     * {@inheritdoc}
+     * @param FormBuilderInterface $builder
+     * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('min', IntegerType::class, [
-                'required' => false,
-            ])
-            ->add('max', IntegerType::class, [
-                'required' => false,
-            ])
-            ->addViewTransformer($this)
-        ;
+        $builder->add('min', IntegerType::class, [
+            'required' => false,
+        ])
+        ->add('max', IntegerType::class, [
+            'required' => false,
+        ])
+        ->addViewTransformer($this);
     }
 
     /**
@@ -45,8 +40,7 @@ class CompoundRangeType extends AbstractType implements DataTransformerInterface
         }
 
         if ((empty($value['min']) && 0 !== $value['min']) || (empty($value['max']) && 0 !== $value['max'])) {
-            $context
-                ->buildViolation('Both values "Min" and "Max" should be entered')
+            $context->buildViolation('Both values "Min" and "Max" should be entered')
                 ->addViolation();
         }
 
@@ -54,8 +48,7 @@ class CompoundRangeType extends AbstractType implements DataTransformerInterface
         $max = intval($value['max']);
 
         if ($min > $max) {
-            $context
-                ->buildViolation('The max value has to be higher than the min value')
+            $context->buildViolation('The max value has to be higher than the min value')
                 ->addViolation();
         }
     }
@@ -71,7 +64,7 @@ class CompoundRangeType extends AbstractType implements DataTransformerInterface
 
         $parts = explode('-', $value);
 
-        if (2 !== \count($parts)) {
+        if (2 !== count($parts)) {
             return [
                 'min' => null,
                 'max' => null,
@@ -85,11 +78,12 @@ class CompoundRangeType extends AbstractType implements DataTransformerInterface
     }
 
     /**
-     * @inheritdoc
+     * @param $value
+     * @return string|null
      */
-    public function reverseTransform($value)
+    public function reverseTransform($value): ?string
     {
-        if (!$value || !\is_array($value) || 2 !== \count($value)) {
+        if (!$value || !is_array($value) || 2 !== count($value)) {
             return null;
         }
 
@@ -97,7 +91,7 @@ class CompoundRangeType extends AbstractType implements DataTransformerInterface
     }
 
     /**
-     * @inheritdoc
+     * @param OptionsResolver $resolver
      */
     public function configureOptions(OptionsResolver $resolver)
     {
@@ -108,9 +102,9 @@ class CompoundRangeType extends AbstractType implements DataTransformerInterface
     }
 
     /**
-     * @inheritdoc
+     * @return string
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'compound_range';
     }

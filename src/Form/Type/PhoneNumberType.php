@@ -13,21 +13,18 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Intl\Countries;
-use Symfony\Component\Intl\Intl;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Phone number form type.
- */
 class PhoneNumberType extends AbstractType
 {
 	const WIDGET_SINGLE_TEXT = 'single_text';
 	const WIDGET_COUNTRY_CHOICE = 'country_choice';
 
-	/**
-	 * {@inheritdoc}
-	 */
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		if (self::WIDGET_COUNTRY_CHOICE === $options['widget']) {
@@ -53,7 +50,7 @@ class PhoneNumberType extends AbstractType
 
 			$countryChoices = [];
 
-			foreach ($this->getCountryNames() as $region => $name) {
+			foreach (Countries::getNames() as $region => $name) {
 				if (false === isset($countries[$region])) {
 					continue;
 				}
@@ -95,18 +92,20 @@ class PhoneNumberType extends AbstractType
 		}
 	}
 
-	/**
-	 * {@inheritdoc}
-	 */
+    /**
+     * @param FormView $view
+     * @param FormInterface $form
+     * @param array $options
+     */
 	public function buildView(FormView $view, FormInterface $form, array $options)
 	{
 		$view->vars['type'] = 'tel';
 		$view->vars['widget'] = $options['widget'];
 	}
 
-	/**
-	 * {@inheritdoc}
-	 */
+    /**
+     * @param OptionsResolver $resolver
+     */
 	public function configureOptions(OptionsResolver $resolver)
 	{
 		$resolver->setDefaults([
@@ -135,31 +134,19 @@ class PhoneNumberType extends AbstractType
 		$resolver->setAllowedTypes('number_options', 'array');
 	}
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getName()
-	{
+    /**
+     * @return string
+     */
+	public function getName(): string
+    {
 		return $this->getBlockPrefix();
 	}
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getBlockPrefix()
-	{
+    /**
+     * @return string
+     */
+	public function getBlockPrefix(): string
+    {
 		return 'phone_number';
-	}
-
-	/**
-	 * When we'll use sf ^4.3, remove this method to simply use `Countries::getNames`.
-	 */
-	private function getCountryNames(): array
-	{
-		if (!class_exists(Countries::class)) {
-			return Intl::getRegionBundle()->getCountryNames();
-		}
-
-		return Countries::getNames();
 	}
 }

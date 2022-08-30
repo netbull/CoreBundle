@@ -4,16 +4,12 @@ namespace NetBull\CoreBundle\Form\Type;
 
 use Symfony\Component\Form\Extension\Core\Type\CollectionType as BaseCollectionType;
 
-/**
- * Class AutoCollectionType
- * @package NetBull\CoreBundle\Form\Type
- */
 class AutoCollectionType extends BaseCollectionType
 {
     /**
-     * @inheritdoc
+     * @return string
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'auto_collection';
     }

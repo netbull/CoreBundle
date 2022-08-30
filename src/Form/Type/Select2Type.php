@@ -9,10 +9,6 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
-/**
- * Class Select2Type
- * @package NetBull\CoreBundle\Form\Type
- */
 class Select2Type extends AjaxType
 {
     /**
@@ -36,7 +32,6 @@ class Select2Type extends AjaxType
     protected $cache;
 
     /**
-     * Select2Type constructor.
      * @param EntityManagerInterface $em
      * @param RouterInterface $router
      * @param ParameterBagInterface $parameterBag
@@ -52,7 +47,9 @@ class Select2Type extends AjaxType
     }
 
     /**
-     * {@inheritdoc}
+     * @param FormView $view
+     * @param FormInterface $form
+     * @param array $options
      */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
@@ -70,7 +67,7 @@ class Select2Type extends AjaxType
     }
 
     /**
-     * {@inheritdoc}
+     * @param OptionsResolver $resolver
      */
     public function configureOptions(OptionsResolver $resolver)
     {
@@ -83,9 +80,9 @@ class Select2Type extends AjaxType
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'select2_type';
     }

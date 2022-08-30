@@ -7,14 +7,11 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 use NetBull\CoreBundle\Form\DataTransformer\PointToStringTransformer;
 
-/**
- * Class PointType
- * @package NetBull\CoreBundle\Form\Type
- */
 class PointType extends HiddenType
 {
     /**
-     * {@inheritdoc}
+     * @param FormBuilderInterface $builder
+     * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

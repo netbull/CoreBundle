@@ -12,19 +12,14 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 use NetBull\CoreBundle\Form\DataTransformer\EntityToPropertySimpleTransformer;
 
-/**
- * Class EntityHiddenType
- * @package NetBull\CoreBundle\Form\Type
- */
 class EntityHiddenType extends AbstractType
 {
     /**
      * @var EntityManagerInterface
      */
-    private $em;
+    private EntityManagerInterface $em;
 
     /**
-     * EntityHiddenType constructor.
      * @param EntityManagerInterface $em
      */
     public function __construct(EntityManagerInterface $em)
@@ -33,7 +28,8 @@ class EntityHiddenType extends AbstractType
     }
 
     /**
-     * @inheritDoc
+     * @param FormBuilderInterface $builder
+     * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -43,7 +39,7 @@ class EntityHiddenType extends AbstractType
     }
 
     /**
-     * @inheritdoc
+     * @param OptionsResolver $resolver
      */
     public function configureOptions(OptionsResolver $resolver)
     {
@@ -51,7 +47,9 @@ class EntityHiddenType extends AbstractType
     }
 
     /**
-     * @inheritdoc
+     * @param FormView $view
+     * @param FormInterface $form
+     * @param array $options
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
@@ -61,17 +59,17 @@ class EntityHiddenType extends AbstractType
     }
 
     /**
-     * @inheritDoc
+     * @return string|null
      */
-    public function getParent()
+    public function getParent(): ?string
     {
         return HiddenType::class;
     }
 
     /**
-     * @inheritDoc
+     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return 'entity_hidden';
     }

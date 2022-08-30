@@ -9,14 +9,11 @@ use Symfony\Component\Form\Extension\Core\DataTransformer\MoneyToLocalizedString
 
 use NetBull\CoreBundle\Form\DataTransformer\MoneyToStringTransformer;
 
-/**
- * Class MoneyType
- * @package NetBull\CoreBundle\Form\Type
- */
 class MoneyType extends BaseType
 {
     /**
-     * {@inheritdoc}
+     * @param FormBuilderInterface $builder
+     * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -40,7 +37,7 @@ class MoneyType extends BaseType
     }
 
     /**
-     * {@inheritdoc}
+     * @param OptionsResolver $resolver
      */
     public function configureOptions(OptionsResolver $resolver)
     {
@@ -53,9 +50,9 @@ class MoneyType extends BaseType
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'money';
     }

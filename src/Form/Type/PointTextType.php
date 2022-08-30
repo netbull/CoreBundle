@@ -7,14 +7,11 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 use NetBull\CoreBundle\Form\DataTransformer\PointToStringTransformer;
 
-/**
- * Class PointTextType
- * @package NetBull\CoreBundle\Form\Type
- */
 class PointTextType extends TextType
 {
     /**
-     * {@inheritdoc}
+     * @param FormBuilderInterface $builder
+     * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

@@ -2,6 +2,7 @@
 
 namespace NetBull\CoreBundle\Form\Type;
 
+use Exception;
 use Symfony\Component\Form\FormView;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
@@ -9,23 +10,17 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
 use NetBull\CoreBundle\Form\DataTransformer\EntityToPropertyTransformer;
 use NetBull\CoreBundle\Form\DataTransformer\EntitiesToPropertyTransformer;
 
-/**
- * Class DynamicType
- * @package NetBull\CoreBundle\Form\Type
- */
 class DynamicType extends AbstractType
 {
     /**
      * @var EntityManagerInterface
      */
-    protected $em;
+    protected EntityManagerInterface $em;
 
     /**
-     * DynamicType constructor.
      * @param EntityManagerInterface $em
      */
     public function __construct(EntityManagerInterface $em)
@@ -36,21 +31,21 @@ class DynamicType extends AbstractType
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
-     * @throws \Exception
+     * @throws Exception
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         // add custom data transformer
         if ($options['transformer']) {
             if (!is_string($options['transformer'])) {
-                throw new \Exception('The option transformer must be a string');
+                throw new Exception('The option transformer must be a string');
             }
             if (!class_exists($options['transformer'])) {
-                throw new \Exception('Unable to load class: '.$options['transformer']);
+                throw new Exception('Unable to load class: '.$options['transformer']);
             }
             $transformer = new $options['transformer']($this->em, $options['class']);
             if (!$transformer instanceof DataTransformerInterface) {
-                throw new \Exception(sprintf('The custom transformer %s must implement %s', get_class($transformer), DataTransformerInterface::class));
+                throw new Exception(sprintf('The custom transformer %s must implement %s', get_class($transformer), DataTransformerInterface::class));
             }
             // add the default data transformer
         } else {
@@ -62,7 +57,9 @@ class DynamicType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+     * @param FormView $view
+     * @param FormInterface $form
+     * @param array $options
      */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
@@ -80,7 +77,7 @@ class DynamicType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+     * @param OptionsResolver $resolver
      */
     public function configureOptions(OptionsResolver $resolver)
     {
@@ -98,9 +95,9 @@ class DynamicType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'dynamic_type';
     }

@@ -9,10 +9,6 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
-/**
- * Class AjaxType
- * @package NetBull\CoreBundle\Form\Type
- */
 class AjaxType extends DynamicType
 {
     /**
@@ -46,24 +42,7 @@ class AjaxType extends DynamicType
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function finishView(FormView $view, FormInterface $form, array $options)
-    {
-        parent::finishView($view, $form, $options);
-
-        // make variables available to the view
-        $view->vars['remote_path'] = ( !$options['remote_route'] ) ? null : $this->router->generate($options['remote_route'], array_merge($options['remote_params'], [ 'perPage' => $options['perPage'] ]));
-
-        $varNames = ['minimum_input_length', 'placeholder'];
-
-        foreach ($varNames as $varName) {
-            $view->vars[$varName] = $options[$varName];
-        }
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param OptionsResolver $resolver
      */
     public function configureOptions(OptionsResolver $resolver)
     {
@@ -80,9 +59,28 @@ class AjaxType extends DynamicType
     }
 
     /**
-     * {@inheritdoc}
+     * @param FormView $view
+     * @param FormInterface $form
+     * @param array $options
      */
-    public function getBlockPrefix()
+    public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        parent::finishView($view, $form, $options);
+
+        // make variables available to the view
+        $view->vars['remote_path'] = ( !$options['remote_route'] ) ? null : $this->router->generate($options['remote_route'], array_merge($options['remote_params'], [ 'perPage' => $options['perPage'] ]));
+
+        $varNames = ['minimum_input_length', 'placeholder'];
+
+        foreach ($varNames as $varName) {
+            $view->vars[$varName] = $options[$varName];
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function getBlockPrefix(): string
     {
         return 'ajax_type';
     }
