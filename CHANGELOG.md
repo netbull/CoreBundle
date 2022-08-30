@@ -1,3 +1,10 @@
+## [5.4.5](https://github.com/netbull/CoreBundle/compare/v5.4.4...v5.4.5) (2022-08-21)
+
+
+### Bug Fixes
+
+* cleared php warnings ([fec65f4](https://github.com/netbull/CoreBundle/commit/fec65f4c53b279091dda8c29228217f8b4db2c2d))
+
 ## [5.4.4](https://github.com/netbull/CoreBundle/compare/v5.4.3...v5.4.4) (2022-08-06)
 
 
