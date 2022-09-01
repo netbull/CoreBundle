@@ -31,10 +31,13 @@ class Point extends Type
     /**
      * @param $value
      * @param AbstractPlatform $platform
-     * @return BasePoint
+     * @return BasePoint|null
      */
-    public function convertToPHPValue($value, AbstractPlatform $platform): BasePoint
+    public function convertToPHPValue($value, AbstractPlatform $platform): ?BasePoint
     {
+        if (!$value) {
+            return null;
+        }
         list($longitude, $latitude) = sscanf($value, 'POINT(%f %f)');
 
         return new BasePoint($latitude, $longitude);
