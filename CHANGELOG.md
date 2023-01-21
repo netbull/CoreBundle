@@ -1,3 +1,12 @@
+## [5.4.8](https://github.com/netbull/CoreBundle/compare/v5.4.7...v5.4.8) (2023-01-21)
+
+
+### Bug Fixes
+
+* clear deprecations ([283efdc](https://github.com/netbull/CoreBundle/commit/283efdc626b6faa328bcf5b5b84d2bfe36b69c1b))
+* clear deprecations ([671c160](https://github.com/netbull/CoreBundle/commit/671c1606523a8fe2a96dbb90ecd0e727e996dbce))
+* clear deprecations ([5df9032](https://github.com/netbull/CoreBundle/commit/5df90326233b04aa15bb2d1d32e5ae5e213c8dd7))
+
 ## [5.4.7](https://github.com/netbull/CoreBundle/compare/v5.4.6...v5.4.7) (2022-09-01)
 
 
