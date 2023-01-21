@@ -2,41 +2,34 @@
 
 namespace NetBull\CoreBundle\Routing;
 
+use Symfony\Component\Config\Resource\ResourceInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RouterInterface;
 
-/**
- * Class Extractor
- * @package NetBull\CoreBundle\Routing
- */
 class Extractor implements ExtractorInterface
 {
     /**
      * @var RouterInterface
      */
-    protected $router;
+    protected RouterInterface $router;
 
     /**
-     * Base cache directory
-     *
      * @var string
      */
-    protected $cacheDir;
+    protected string $cacheDir;
 
     /**
      * @var array
      */
-    protected $bundles;
+    protected array $bundles;
 
     /**
-     * Default constructor.
-     *
-     * @param RouterInterface $router         The router.
-     * @param string          $cacheDir
-     * @param array           $bundles        list of loaded bundles to check when generating the prefix
+     * @param RouterInterface $router
+     * @param string $cacheDir
+     * @param array $bundles
      */
-    public function __construct(RouterInterface $router, $cacheDir, $bundles = [])
+    public function __construct(RouterInterface $router, string $cacheDir, array $bundles = [])
     {
         $this->router = $router;
         $this->cacheDir = $cacheDir;
@@ -46,12 +39,12 @@ class Extractor implements ExtractorInterface
     /**
      * @return RouteCollection
      */
-    public function getRoutes()
+    public function getRoutes(): RouteCollection
     {
         $collection = $this->router->getRouteCollection();
-        $routes     = new RouteCollection();
-        /** @var Route $route */
-        foreach ( $collection->all() as $name => $route ) {
+        $routes = new RouteCollection();
+
+        foreach ($collection->all() as $name => $route) {
             if ($this->isRouteExposed($route)) {
                 $routes->add($name, $route);
             }
@@ -62,7 +55,7 @@ class Extractor implements ExtractorInterface
     /**
      * @return string
      */
-    public function getBaseUrl()
+    public function getBaseUrl(): string
     {
         return $this->router->getContext()->getBaseUrl() ?: '';
     }
@@ -70,7 +63,7 @@ class Extractor implements ExtractorInterface
     /**
      * @return string
      */
-    public function getHost()
+    public function getHost(): string
     {
         $requestContext = $this->router->getContext();
         $host = $requestContext->getHost();
@@ -84,9 +77,9 @@ class Extractor implements ExtractorInterface
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getScheme()
+    public function getScheme(): string
     {
         return $this->router->getContext()->getScheme();
     }
@@ -94,22 +87,20 @@ class Extractor implements ExtractorInterface
     /**
      * @return string
      */
-    public function getCachePath()
+    public function getCachePath(): string
     {
         $cachePath = $this->cacheDir . DIRECTORY_SEPARATOR . 'netbullCore';
         if ( !file_exists($cachePath) ) {
             mkdir($cachePath);
         }
 
-        $cachePath = $cachePath . DIRECTORY_SEPARATOR . 'data.json';
-
-        return $cachePath;
+        return $cachePath . DIRECTORY_SEPARATOR . 'data.json';
     }
 
     /**
-     * @return \Symfony\Component\Config\Resource\ResourceInterface[]
+     * @return ResourceInterface[]
      */
-    public function getResources()
+    public function getResources(): array
     {
         return $this->router->getRouteCollection()->getResources();
     }
@@ -119,7 +110,7 @@ class Extractor implements ExtractorInterface
      *
      * @return bool
      */
-    public function isRouteExposed( Route $route )
+    public function isRouteExposed( Route $route ): bool
     {
         return true === $route->getOption('expose')
             || 'true' === $route->getOption('expose');
@@ -130,7 +121,7 @@ class Extractor implements ExtractorInterface
      *
      * @return bool
      */
-    private function usesNonStandardPort()
+    private function usesNonStandardPort(): bool
     {
         return $this->usesNonStandardHttpPort() || $this->usesNonStandardHttpsPort();
     }
@@ -140,7 +131,7 @@ class Extractor implements ExtractorInterface
      *
      * @return bool
      */
-    private function usesNonStandardHttpPort()
+    private function usesNonStandardHttpPort(): bool
     {
         return 'http' === $this->getScheme() && '80' != $this->router->getContext()->getHttpPort();
     }
@@ -150,7 +141,7 @@ class Extractor implements ExtractorInterface
      *
      * @return bool
      */
-    private function usesNonStandardHttpsPort()
+    private function usesNonStandardHttpsPort(): bool
     {
         return 'https' === $this->getScheme() && '443' != $this->router->getContext()->getHttpsPort();
     }

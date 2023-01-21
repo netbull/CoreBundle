@@ -7,10 +7,6 @@ use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-/**
- * Class NetBullCoreExtension
- * @package NetBull\CoreBundle\DependencyInjection
- */
 class NetBullCoreExtension extends Extension
 {
     /**
@@ -57,7 +53,7 @@ class NetBullCoreExtension extends Extension
     {
         if (is_array($value)) {
             foreach ($value as $k => $v) {
-                $this->setParameters($container, $k, $value[$k], $suffix.'.'.$key);
+                $this->setParameters($container, $k, $v, $suffix.'.'.$key);
             }
         } else {
             $container->setParameter('netbull_core'.$suffix.'.'.$key, $value);

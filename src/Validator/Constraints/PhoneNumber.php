@@ -7,10 +7,7 @@ use Doctrine\Common\Annotations\Annotation;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Class PhoneNumber
- *
  * @Annotation
- * @package NetBull\CoreBundle\Validator\Constraints
  */
 class PhoneNumber extends Constraint
 {

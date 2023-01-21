@@ -4,7 +4,6 @@ namespace NetBull\CoreBundle\ORM\Types;
 
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-
 use NetBull\CoreBundle\ORM\Objects\Range as BaseRange;
 
 class Range extends Type
@@ -20,11 +19,11 @@ class Range extends Type
     }
 
     /**
-     * @param array $fieldDeclaration
+     * @param array $column
      * @param AbstractPlatform $platform
      * @return string
      */
-    public function getSqlDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
+    public function getSqlDeclaration(array $column, AbstractPlatform $platform): string
     {
         return '';
     }

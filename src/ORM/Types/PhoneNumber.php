@@ -26,13 +26,20 @@ class PhoneNumber extends Type
     }
 
     /**
-     * @param array $fieldDeclaration
+     * @param array $column
      * @param AbstractPlatform $platform
      * @return string
      */
-    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
+    public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
-        return $platform->getStringTypeDeclarationSQL(['length' => 35]);
+        if (method_exists($platform, 'getStringTypeDeclarationSQL')) {
+            return $platform->getStringTypeDeclarationSQL(['length' => 35]);
+        }
+        if (method_exists($platform, 'getVarcharTypeDeclarationSQL')) {
+            return $platform->getVarcharTypeDeclarationSQL(['length' => 35]);
+        }
+
+        return '';
     }
 
     /**

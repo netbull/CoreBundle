@@ -2,10 +2,6 @@
 
 namespace NetBull\CoreBundle\Repository;
 
-/**
- * Class RepositoryUtilsTrait
- * @package NetBull\CoreBundle\Repository
- */
 trait RepositoryUtilsTrait
 {
     ###################################################
@@ -17,7 +13,7 @@ trait RepositoryUtilsTrait
      * @param array $additions
      * @return array|null
      */
-    protected function arrayCombine(array $target, array $additions)
+    protected function arrayCombine(array $target, array $additions): ?array
     {
         $tmp = null;
         foreach ($additions as $addition) {

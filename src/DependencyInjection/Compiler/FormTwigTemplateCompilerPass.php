@@ -5,14 +5,10 @@ namespace NetBull\CoreBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 
-/**
- * Class FormTwigTemplateCompilerPass
- * @package NetBull\CoreBundle\DependencyInjection\Compiler
- */
 class FormTwigTemplateCompilerPass implements CompilerPassInterface
 {
-    private $telLayout = '@NetBullCore/Form/tel.html.twig';
-    private $telBootstrapLayout = '@NetBullCore/Form/tel_bootstrap.html.twig';
+    private string $telLayout = '@NetBullCore/Form/tel.html.twig';
+    private string $telBootstrapLayout = '@NetBullCore/Form/tel_bootstrap.html.twig';
 
     /**
      * {@inheritdoc}

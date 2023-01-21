@@ -12,11 +12,11 @@ class Geometry extends Type
     const GEOMETRY = 'geometry';
 
     /**
-     * @param array $fieldDeclaration
+     * @param array $column
      * @param AbstractPlatform $platform
      * @return string
      */
-    public function getSqlDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
+    public function getSqlDeclaration(array $column, AbstractPlatform $platform): string
     {
         return 'GEOMETRY';
     }

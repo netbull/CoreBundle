@@ -9,36 +9,25 @@ use libphonenumber\PhoneNumberUtil;
 use libphonenumber\PhoneNumberFormat;
 use Symfony\Component\Templating\Helper\HelperInterface;
 
-/**
- * Class PhoneNumberHelper
- * @package NetBull\CoreBundle\Templating\Helper
- */
 class PhoneNumberHelper implements HelperInterface
 {
     /**
-     * Phone number utility.
-     *
      * @var PhoneNumberUtil
      */
-    protected $phoneNumberUtil;
+    protected PhoneNumberUtil $phoneNumberUtil;
 
     /**
-     * Charset.
-     *
      * @var string
      */
-    protected $charset = 'UTF-8';
+    protected string $charset = 'UTF-8';
 
-    /**
-     * PhoneNumberHelper constructor.
-     */
     public function __construct()
     {
         $this->phoneNumberUtil = PhoneNumberUtil::getInstance();
     }
 
     /**
-     * {@inheritdoc}
+     * @param $charset
      */
     public function setCharset($charset)
     {
@@ -46,17 +35,17 @@ class PhoneNumberHelper implements HelperInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
-    public function getCharset()
+    public function getCharset(): string
     {
         return $this->charset;
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return 'phone_number_helper';
     }
@@ -71,7 +60,7 @@ class PhoneNumberHelper implements HelperInterface
      *
      * @throws InvalidArgumentException If an argument is invalid.
      */
-    public function format(PhoneNumber $phoneNumber, $format = PhoneNumberFormat::INTERNATIONAL)
+    public function format(PhoneNumber $phoneNumber, $format = PhoneNumberFormat::INTERNATIONAL): string
     {
         if (true === is_string($format)) {
             $constant = '\libphonenumber\PhoneNumberFormat::' . $format;
@@ -94,7 +83,7 @@ class PhoneNumberHelper implements HelperInterface
      *
      * @throws InvalidArgumentException If type argument is invalid.
      */
-    public function isType(PhoneNumber $phoneNumber, $type = PhoneNumberType::UNKNOWN)
+    public function isType(PhoneNumber $phoneNumber, $type = PhoneNumberType::UNKNOWN): bool
     {
         if (true === is_string($type)) {
             $constant = '\libphonenumber\PhoneNumberType::' . $type;
@@ -106,6 +95,6 @@ class PhoneNumberHelper implements HelperInterface
             $type = constant('\libphonenumber\PhoneNumberType::' . $type);
         }
 
-        return $this->phoneNumberUtil->getNumberType($phoneNumber) === $type ? true : false;
+        return $this->phoneNumberUtil->getNumberType($phoneNumber) === $type;
     }
 }

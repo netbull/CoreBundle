@@ -8,10 +8,6 @@ use LogicException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- * Class BaseCommand
- * @package NetBull\CoreBundle\Command
- */
 abstract class BaseCommand extends Command
 {
     /**

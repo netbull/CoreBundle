@@ -2,10 +2,6 @@
 
 namespace NetBull\CoreBundle\Utils;
 
-/**
- * Class Arrays
- * @package NetBull\CoreBundle\Utils
- */
 class Arrays
 {
     /**
@@ -13,7 +9,7 @@ class Arrays
      * @param array $haystack
      * @return bool|int|string
      */
-    public static function arraySearchRecursive($needle, array $haystack = [])
+    public static function arraySearchRecursive(string $needle, array $haystack = [])
     {
         foreach ($haystack as $key => $value) {
             if ($needle === $value) {

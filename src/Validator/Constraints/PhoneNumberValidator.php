@@ -11,15 +11,11 @@ use libphonenumber\PhoneNumber as PhoneNumberObject;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-
-/**
- * Class PhoneNumberValidator
- * @package NetBull\CoreBundle\Constraints
- */
 class PhoneNumberValidator extends ConstraintValidator
 {
     /**
-     * {@inheritdoc}
+     * @param $value
+     * @param Constraint $constraint
      */
     public function validate($value, Constraint $constraint)
     {

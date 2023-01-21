@@ -12,11 +12,11 @@ class Linestring extends Type
     const LINESTRING = 'linestring';
 
     /**
-     * @param array $fieldDeclaration
+     * @param array $column
      * @param AbstractPlatform $platform
      * @return string
      */
-    public function getSqlDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
+    public function getSqlDeclaration(array $column, AbstractPlatform $platform): string
     {
         return 'LINESTRING';
     }
@@ -100,9 +100,9 @@ class Linestring extends Type
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return self::LINESTRING; // modify to match your constant name
     }

@@ -180,7 +180,7 @@ class PDFLabelFormat
      * @param $field
      * @return bool
      */
-    public function isMetric( $field )
+    public function isMetric( $field ): bool
     {
         if ( array_key_exists($field, $this->defaults) ){
             return ( isset($this->defaults[$field]['metric']) ) ? $this->defaults[$field]['metric'] : false;

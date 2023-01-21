@@ -7,23 +7,15 @@ use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigTest;
 
-/**
- * Class PhoneNumberExtension
- * @package NetBull\CoreBundle\Twig
- */
 class PhoneNumberExtension extends AbstractExtension
 {
     /**
-     * Phone number helper.
-     *
      * @var PhoneNumberHelper
      */
-    protected $helper;
+    protected PhoneNumberHelper $helper;
 
     /**
-     * Constructor.
-     *
-     * @param PhoneNumberHelper $helper Phone number helper.
+     * @param PhoneNumberHelper $helper
      */
     public function __construct(PhoneNumberHelper $helper)
     {
@@ -31,29 +23,29 @@ class PhoneNumberExtension extends AbstractExtension
     }
 
     /**
-     * {@inheritdoc}
+     * @return TwigFilter[]
      */
-    public function getFilters()
+    public function getFilters(): array
     {
         return array(
-            new TwigFilter('phone_number_format', array($this->helper, 'format')),
+            new TwigFilter('phone_number_format', [$this->helper, 'format']),
         );
     }
 
     /**
-     * {@inheritdoc}
+     * @return TwigTest[]
      */
-    public function getTests()
+    public function getTests(): array
     {
         return array(
-            new TwigTest('phone_number_of_type', array($this->helper, 'isType')),
+            new TwigTest('phone_number_of_type', [$this->helper, 'isType']),
         );
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return 'phone_number_helper';
     }

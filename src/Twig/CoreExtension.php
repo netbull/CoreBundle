@@ -14,29 +14,24 @@ use Twig\TwigFilter;
 use Twig\TwigFunction;
 use Twig\TwigTest;
 
-/**
- * Class CoreExtension
- * @package NetBull\CoreBundle\Twig
- */
 class CoreExtension extends AbstractExtension
 {
     /**
      * @var RouterInterface
      */
-    private $router;
+    private RouterInterface $router;
 
     /**
      * @var RequestStack
      */
-    private $requestStack;
+    private RequestStack $requestStack;
 
     /**
      * @var ParameterBagInterface
      */
-    private $parameterBag;
+    private ParameterBagInterface $parameterBag;
 
     /**
-     * CoreExtension constructor.
      * @param RouterInterface $router
      * @param RequestStack $requestStack
      * @param ParameterBagInterface $parameterBag
@@ -49,7 +44,7 @@ class CoreExtension extends AbstractExtension
     }
 
     /**
-     * {@inheritdoc}
+     * @return array
      */
     public function getFunctions(): array
     {
@@ -62,7 +57,7 @@ class CoreExtension extends AbstractExtension
     }
 
     /**
-     * {@inheritdoc}
+     * @return TwigFilter[]
      */
     public function getFilters(): array
     {
@@ -76,7 +71,7 @@ class CoreExtension extends AbstractExtension
     }
 
     /**
-     * {@inheritdoc}
+     * @return TwigTest[]
      */
     public function getTests(): array
     {
