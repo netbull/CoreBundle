@@ -1,3 +1,10 @@
+## [5.4.7](https://github.com/netbull/CoreBundle/compare/v5.4.6...v5.4.7) (2022-09-01)
+
+
+### Bug Fixes
+
+* nullable value ([5057e95](https://github.com/netbull/CoreBundle/commit/5057e95f69f54991dc3daaf7bdfd5a7f11d7058a))
+
 ## [5.4.6](https://github.com/netbull/CoreBundle/compare/v5.4.5...v5.4.6) (2022-08-30)
 
 
