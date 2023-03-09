@@ -1,3 +1,10 @@
+## [5.4.10](https://github.com/netbull/CoreBundle/compare/v5.4.9...v5.4.10) (2023-03-09)
+
+
+### Bug Fixes
+
+* added paginateShort method to skip calculations ([2da6758](https://github.com/netbull/CoreBundle/commit/2da67582e4ea24f5b4b94d309b32f35337701730))
+
 ## [5.4.9](https://github.com/netbull/CoreBundle/compare/v5.4.8...v5.4.9) (2023-03-09)
 
 
