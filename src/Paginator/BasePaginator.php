@@ -11,19 +11,19 @@ abstract class BasePaginator
     const ALL_PARAMETER = 'all';
 
     /**
-     * @var Request
+     * @var Request|null
      */
-    protected $request;
-
-    /**
-     * @var int
-     */
-    protected $maxResults = null;
+    protected ?Request $request;
 
     /**
      * @var int|null
      */
-    protected $page = 1;
+    protected ?int $maxResults = null;
+
+    /**
+     * @var int|null
+     */
+    protected ?int $page = 1;
 
     /**
      * @var mixed
@@ -31,14 +31,14 @@ abstract class BasePaginator
     protected $route;
 
     /**
-     * @var array
+     * @var array|null
      */
-    protected $routeParams;
+    protected ?array $routeParams;
 
     /**
      * @var array
      */
-    protected $sorting = [];
+    protected array $sorting = [];
 
     /**
      * @var string|null
@@ -58,14 +58,23 @@ abstract class BasePaginator
 
         $params = ($this->request) ? array_merge($this->request->query->all(),$this->request->request->all()) : [];
         $this->maxResults = 20;
-        if (array_key_exists('perPage', $params)) {
-            $this->maxResults = (int)$params['perPage'] ?? 20;
-        }
-        if (strtolower($params['perPage']) === self::ALL_PARAMETER) {
-            $this->maxResults = null;
+        foreach (['perPage', 'pageSize'] as $maxResultsParam) {
+            if (array_key_exists($maxResultsParam, $params)) {
+                $this->maxResults = (int)$params[$maxResultsParam] ?? 20;
+                break;
+            }
+            if (strtolower($params[$maxResultsParam]) === self::ALL_PARAMETER) {
+                $this->maxResults = null;
+                break;
+            }
         }
 
-        $this->page = (isset($params['page']) && (int)$params['page']) ? (int)$params['page'] : 1;
+        foreach (['page', 'currentPage'] as $pageParam) {
+            if (array_key_exists($pageParam, $params)) {
+                $this->page = (int)$params[$pageParam] ?? 1;
+                break;
+            }
+        }
         $this->queryFilter = (isset($params['query'])) ? $params['query'] : '';
 
         // Sniff the sorting options
@@ -194,8 +203,8 @@ abstract class BasePaginator
         list($itemsCount, $items) = $this->doPaginate($reset);
 
         $pagination = [
-            'page' => (int)$this->page,
-            'perPage' => $this->maxResults ?? ucfirst(self::ALL_PARAMETER),
+            'currentPage' => (int)$this->page,
+            'pageSize' => $this->maxResults ?? ucfirst(self::ALL_PARAMETER),
             'totalItems' => $itemsCount,
         ];
 
