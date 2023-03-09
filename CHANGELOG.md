@@ -1,3 +1,10 @@
+## [5.4.11](https://github.com/netbull/CoreBundle/compare/v5.4.10...v5.4.11) (2023-03-09)
+
+
+### Bug Fixes
+
+* added itemNormalizer ([d14ff36](https://github.com/netbull/CoreBundle/commit/d14ff3657dfd09aac91485a9be3cc006783955bc))
+
 ## [5.4.10](https://github.com/netbull/CoreBundle/compare/v5.4.9...v5.4.10) (2023-03-09)
 
 
