@@ -194,8 +194,8 @@ abstract class BasePaginator
         list($itemsCount, $items) = $this->doPaginate($reset);
 
         $pagination = [
-            'currentPage' => (int)$this->page,
-            'pageSize' => $this->maxResults ?? ucfirst(self::ALL_PARAMETER),
+            'page' => (int)$this->page,
+            'perPage' => $this->maxResults ?? ucfirst(self::ALL_PARAMETER),
             'totalItems' => $itemsCount,
         ];
 
