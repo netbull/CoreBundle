@@ -2,6 +2,7 @@
 
 namespace NetBull\CoreBundle\Paginator;
 
+use Closure;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -46,6 +47,11 @@ abstract class BasePaginator
     protected $queryFilter = '';
 
     /**
+     * @var Closure|null
+     */
+    protected ?Closure $itemNormalizer = null;
+
+    /**
      * @param RequestStack $requestStack
      *
      */
@@ -59,7 +65,10 @@ abstract class BasePaginator
         $params = ($this->request) ? array_merge($this->request->query->all(),$this->request->request->all()) : [];
         $this->maxResults = 20;
         foreach (['perPage', 'pageSize'] as $maxResultsParam) {
-            if (array_key_exists($maxResultsParam, $params)) {
+            if (!array_key_exists($maxResultsParam, $params)) {
+                continue;
+            }
+            if (is_numeric($params[$maxResultsParam])) {
                 $this->maxResults = (int)$params[$maxResultsParam] ?? 20;
                 break;
             }
@@ -189,13 +198,14 @@ abstract class BasePaginator
         $pagination['lastItemNumber'] =  $pagination['firstItemNumber'] + $pagination['currentItemCount'] - 1;
 
         return [
-            'items' => $items,
+            'items' => $this->itemNormalizer ? array_map($this->itemNormalizer, $items) : $items,
             'pagination' => $pagination
         ];
     }
 
     /**
      * @param bool $reset
+     * @param $callback
      * @return array
      */
     public function paginateShort(bool $reset = false): array
@@ -209,7 +219,7 @@ abstract class BasePaginator
         ];
 
         return [
-            'items' => $items,
+            'items' => $this->itemNormalizer ? array_map($this->itemNormalizer, $items) : $items,
             'pagination' => $pagination
         ];
     }
@@ -330,6 +340,24 @@ abstract class BasePaginator
         }
 
         return ($this->page == 1) ? 0 : ($this->page - 1) * $this->maxResults;
+    }
+
+    /**
+     * @return Closure|null
+     */
+    public function getItemNormalizer(): ?Closure
+    {
+        return $this->itemNormalizer;
+    }
+
+    /**
+     * @param Closure|null $itemNormalizer
+     * @return BasePaginator
+     */
+    public function setItemNormalizer(?Closure $itemNormalizer): BasePaginator
+    {
+        $this->itemNormalizer = $itemNormalizer;
+        return $this;
     }
 
     /**
