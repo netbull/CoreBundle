@@ -9,15 +9,15 @@ class PaginatorSimple extends BasePaginator implements PaginatorSimpleInterface
     /**
      * @var array
      */
-    protected $ids = [];
+    protected array $ids = [];
 
     /**
      * @var QueryBuilder|null
      */
-    protected $query = null;
+    protected ?QueryBuilder $query = null;
 
     /**
-     * @inheritdoc
+     * @return int
      */
     public function getCount(): int
     {
@@ -25,7 +25,7 @@ class PaginatorSimple extends BasePaginator implements PaginatorSimpleInterface
     }
 
     /**
-     * @inheritdoc
+     * @return array
      */
     public function getRecords(): array
     {

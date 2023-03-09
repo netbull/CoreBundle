@@ -3,6 +3,7 @@
 namespace NetBull\CoreBundle\Paginator;
 
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 
 class Paginator extends BasePaginator implements PaginatorInterface
@@ -10,7 +11,7 @@ class Paginator extends BasePaginator implements PaginatorInterface
     /**
      * @var array
      */
-    protected $ids = [];
+    protected array $ids = [];
 
     /**
      * @var int|null
@@ -20,27 +21,27 @@ class Paginator extends BasePaginator implements PaginatorInterface
     /**
      * @var string
      */
-    protected $idField = 'id';
+    protected string $idField = 'id';
 
     /**
      * @var QueryBuilder|null
      */
-    protected $countQuery = null;
+    protected ?QueryBuilder $countQuery = null;
 
     /**
      * @var QueryBuilder|null
      */
-    protected $idsQuery = null;
+    protected ?QueryBuilder $idsQuery = null;
 
     /**
      * @var QueryBuilder|null
      */
-    protected $query = null;
+    protected ?QueryBuilder $query = null;
 
     /**
      * @var QueryBuilder|null
      */
-    protected $additionalInfoQuery = null;
+    protected ?QueryBuilder $additionalInfoQuery = null;
 
     /**
      * @param string $field
@@ -54,8 +55,9 @@ class Paginator extends BasePaginator implements PaginatorInterface
     }
 
     /**
-     * @return int|mixed
+     * @return int
      * @throws NonUniqueResultException
+     * @throws NoResultException
      */
     public function getCount(): int
     {
@@ -67,7 +69,7 @@ class Paginator extends BasePaginator implements PaginatorInterface
     }
 
     /**
-     * @inheritdoc
+     * @return array
      */
     public function getRecords(): array
     {

@@ -54,12 +54,17 @@ abstract class BasePaginator
         $this->request = $requestStack->getCurrentRequest();
 
         $this->route = ($this->request) ? $this->request->attributes->get('_route') : null;
-        $this->routeParams = ($this->request) ? array_merge($this->request->query->all(), $this->request->attributes->get('_route_params', [])) : null;
+        $this->routeParams = ($this->request) ? array_merge($this->request->query->all(), $this->request->attributes->get('_route_params') ?? []) : null;
 
         $params = ($this->request) ? array_merge($this->request->query->all(),$this->request->request->all()) : [];
-        if (isset($params['perPage']) && $params['perPage'] && strtolower($params['perPage']) !== self::ALL_PARAMETER) {
+        $this->maxResults = 20;
+        if (array_key_exists('perPage', $params)) {
             $this->maxResults = (int)$params['perPage'] ?? 20;
         }
+        if (strtolower($params['perPage']) === self::ALL_PARAMETER) {
+            $this->maxResults = null;
+        }
+
         $this->page = (isset($params['page']) && (int)$params['page']) ? (int)$params['page'] : 1;
         $this->queryFilter = (isset($params['query'])) ? $params['query'] : '';
 
@@ -77,11 +82,27 @@ abstract class BasePaginator
      * @param bool $reset
      * @return array
      */
+    private function doPaginate(bool $reset = false): array
+    {
+        $itemsCount = $this->getCount();
+        $records = $this->getRecords();
+
+        if ($reset) {
+            $this->reset();
+        }
+
+        return [ $itemsCount, $records ];
+    }
+
+    /**
+     * @param bool $reset
+     * @return array
+     */
     public function paginate(bool $reset = false): array
     {
-        $totalCount = $this->getCount();
+        list($itemsCount, $items) = $this->doPaginate($reset);
 
-        $pageCount = $this->maxResults ? intval(ceil($totalCount / $this->maxResults)) : 1;
+        $pageCount = $this->maxResults ? intval(ceil($itemsCount / $this->maxResults)) : 1;
         $current = $this->page;
         $pageRange = 5;
 
@@ -123,11 +144,14 @@ abstract class BasePaginator
 
         $pagination = [
             'last' => $pageCount,
-            'current' => (int)$current,
-            'numItemsPerPage' => $this->maxResults ?? ucfirst(self::ALL_PARAMETER),
+            'current' => (int)$current, // @deprecated: use currentPage as this will be removed in future
+            'currentPage' => (int)$current,
+            'numItemsPerPage' => $this->maxResults ?? ucfirst(self::ALL_PARAMETER), // @deprecated: use pageSize as this will be removed in future
+            'pageSize' => $this->maxResults ?? ucfirst(self::ALL_PARAMETER),
             'first' => 1,
             'pageCount' => $pageCount,
-            'totalCount' => $totalCount,
+            'totalCount' => $itemsCount, // @deprecated: use totalItems as this will be removed in future
+            'totalItems' => $itemsCount,
             'pageRange' => $pageRange,
             'startPage' => (int)$startPage,
             'endPage' => (int)$endPage,
@@ -151,14 +175,29 @@ abstract class BasePaginator
         $pagination['firstPageInRange'] = min($pages);
         $pagination['lastPageInRange'] = max($pages);
 
-        $items = $this->getRecords();
-        $pagination['currentItemCount'] = $totalCount;
+        $pagination['currentItemCount'] = $itemsCount;
         $pagination['firstItemNumber'] = $this->maxResults ? (($current - 1) * $this->maxResults) + 1 : 1;
         $pagination['lastItemNumber'] =  $pagination['firstItemNumber'] + $pagination['currentItemCount'] - 1;
 
-        if ($reset) {
-            $this->reset();
-        }
+        return [
+            'items' => $items,
+            'pagination' => $pagination
+        ];
+    }
+
+    /**
+     * @param bool $reset
+     * @return array
+     */
+    public function paginateShort(bool $reset = false): array
+    {
+        list($itemsCount, $items) = $this->doPaginate($reset);
+
+        $pagination = [
+            'currentPage' => (int)$this->page,
+            'pageSize' => $this->maxResults ?? ucfirst(self::ALL_PARAMETER),
+            'totalItems' => $itemsCount,
+        ];
 
         return [
             'items' => $items,

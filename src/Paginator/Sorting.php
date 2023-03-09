@@ -12,20 +12,19 @@ class Sorting
     /**
      * @var string|null
      */
-    private $field = null;
+    private ?string $field = null;
 
     /**
-     * @var string
+     * @var string|null
      */
-    private $direction;
+    private ?string $direction;
 
     /**
      * @var string[]
      */
-    private $allowedDirections = [self::DIRECTION_ASC, self::DIRECTION_DESC];
+    private array $allowedDirections = [self::DIRECTION_ASC, self::DIRECTION_DESC];
 
     /**
-     * Sorting constructor.
      * @param string|null $field
      * @param string|null $direction
      */
