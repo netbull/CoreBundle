@@ -205,7 +205,6 @@ abstract class BasePaginator
 
     /**
      * @param bool $reset
-     * @param $callback
      * @return array
      */
     public function paginateShort(bool $reset = false): array
@@ -286,6 +285,7 @@ abstract class BasePaginator
      */
     public function setSorting($sorting): BasePaginator
     {
+        $this->sorting = [];
         if (is_array($sorting)) {
             foreach ($sorting as $sort) {
                 try {
@@ -298,6 +298,16 @@ abstract class BasePaginator
             } catch (InvalidArgumentException $e) {}
         }
 
+        return $this;
+    }
+
+    /**
+     * @param Sorting $sorting
+     * @return $this
+     */
+    public function addSorting(Sorting $sorting): BasePaginator
+    {
+        $this->sorting[] = $sorting;
         return $this;
     }
 
@@ -318,16 +328,6 @@ abstract class BasePaginator
         }
 
         throw new InvalidArgumentException("Value \"$sort\" is not a valid Sorting");
-    }
-
-    /**
-     * @param Sorting $sorting
-     * @return $this
-     */
-    public function addSorting(Sorting $sorting): BasePaginator
-    {
-        $this->sorting[] = $sorting;
-        return $this;
     }
 
     /**
