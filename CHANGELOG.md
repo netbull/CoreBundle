@@ -1,3 +1,21 @@
+# [6.0.0](https://github.com/netbull/CoreBundle/compare/v5.4.12...v6.0.0) (2023-09-28)
+
+
+### Performance Improvements
+
+* **pencil:** bump versions ([22d1cef](https://github.com/netbull/CoreBundle/commit/22d1cef8d53fd906408b3ce19562ddf097875a6f))
+* **pencil:** bump versions ([6653f40](https://github.com/netbull/CoreBundle/commit/6653f408132a593a9473e7f89f19ce23803a6e22))
+* **pencil:** bump versions ([0e99740](https://github.com/netbull/CoreBundle/commit/0e997402d0bf52594c791f7f14cb070ef9b455d8))
+* **pencil:** bump versions ([bbde3c9](https://github.com/netbull/CoreBundle/commit/bbde3c9a30af79fdceab0c4ef459117bc8bd32fe))
+* **pencil:** bump versions ([a5e28be](https://github.com/netbull/CoreBundle/commit/a5e28be4a272c02951b7aedb0b3ae6a424123aca))
+* **pencil:** bump versions ([82b6b58](https://github.com/netbull/CoreBundle/commit/82b6b58866b628d28fa472bde54d7bab631828e3))
+* **pencil:** bump versions ([4e89fc9](https://github.com/netbull/CoreBundle/commit/4e89fc920fd2534c4adc9ab6adc1e325d0898e21))
+
+
+### BREAKING CHANGES
+
+* **pencil:** bump to Symfony 6.3
+
 ## [5.4.12](https://github.com/netbull/CoreBundle/compare/v5.4.11...v5.4.12) (2023-05-03)
 
 
