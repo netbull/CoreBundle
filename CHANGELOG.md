@@ -1,3 +1,10 @@
+## [5.4.12](https://github.com/netbull/CoreBundle/compare/v5.4.11...v5.4.12) (2023-05-03)
+
+
+### Bug Fixes
+
+* sorting resset ([f82d4f0](https://github.com/netbull/CoreBundle/commit/f82d4f03b8b8c562debd44cbcac39c607a532e63))
+
 ## [5.4.11](https://github.com/netbull/CoreBundle/compare/v5.4.10...v5.4.11) (2023-03-09)
 
 
