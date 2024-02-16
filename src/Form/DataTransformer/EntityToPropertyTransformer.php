@@ -104,7 +104,7 @@ class EntityToPropertyTransformer implements DataTransformerInterface
         }
 
         $repo = $this->em->getRepository($this->className);
-        $entity = $repo->find($value);
+        $entity = $repo->findOneBy([$this->primaryKey => $value]);
 
         if (!$entity) {
             return null;

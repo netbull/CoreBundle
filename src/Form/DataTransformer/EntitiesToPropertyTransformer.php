@@ -78,12 +78,12 @@ class EntitiesToPropertyTransformer implements DataTransformerInterface
     /**
      * Transform array to a collection of entities
      * @param array $values
-     * @return ArrayCollection
+     * @return array
      */
-    public function reverseTransform($values)
+    public function reverseTransform($values): array
     {
         if (!is_array($values) || count($values) === 0) {
-            return new ArrayCollection();
+            return [];
         }
 
         // get multiple entities with one query
