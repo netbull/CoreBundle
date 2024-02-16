@@ -1,3 +1,10 @@
+## [6.0.1](https://github.com/netbull/CoreBundle/compare/v6.0.0...v6.0.1) (2024-02-16)
+
+
+### Bug Fixes
+
+* added property reverseTransform query ([4d4db65](https://github.com/netbull/CoreBundle/commit/4d4db65fb6f232578ec432fb7b41f18547f73a01))
+
 # [6.0.0](https://github.com/netbull/CoreBundle/compare/v5.4.12...v6.0.0) (2023-09-28)
 
 
