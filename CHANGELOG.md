@@ -1,3 +1,11 @@
+## [6.0.4](https://github.com/netbull/CoreBundle/compare/v6.0.3...v6.0.4) (2024-02-16)
+
+
+### Bug Fixes
+
+* restored branch ([db57fff](https://github.com/netbull/CoreBundle/commit/db57fff40ca4600af29a9edd123f2126c840c01a))
+* restored versions ([b0a5631](https://github.com/netbull/CoreBundle/commit/b0a56318ce6f501a53808bf11ab7341688ef182d))
+
 ## [6.0.3](https://github.com/netbull/CoreBundle/compare/v6.0.2...v6.0.3) (2024-02-16)
 
 
