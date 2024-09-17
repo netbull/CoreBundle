@@ -144,8 +144,14 @@ class CoreExtension extends AbstractExtension
         $fields = '';
         foreach ($request->query->all() as $field => $value) {
             // Exclude the current field and the PAGE parameter
-            if($field !== $currentField && $field !== 'page'){
-                $fields .= sprintf('<input type="hidden" name="%s" value="%s">', $field, $value);
+            if ($field !== $currentField && $field !== 'page') {
+                if (is_array($value)) {
+                    foreach($value as $val) {
+                        $fields .= sprintf('<input type="hidden" name="%s" value="%s">', $field.'[]', $val);
+                    }
+                } else {
+                    $fields .= sprintf('<input type="hidden" name="%s" value="%s">', $field, $value);
+                }
             }
         }
 
