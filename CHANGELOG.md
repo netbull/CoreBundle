@@ -1,3 +1,10 @@
+## [6.0.5](https://github.com/netbull/CoreBundle/compare/v6.0.4...v6.0.5) (2024-09-17)
+
+
+### Bug Fixes
+
+* array query string ([6b573bf](https://github.com/netbull/CoreBundle/commit/6b573bf461240a56defabfea40a17f3d1d63c5f5))
+
 ## [6.0.4](https://github.com/netbull/CoreBundle/compare/v6.0.3...v6.0.4) (2024-02-16)
 
 
