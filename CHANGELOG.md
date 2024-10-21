@@ -1,3 +1,10 @@
+# [6.1.0](https://github.com/netbull/CoreBundle/compare/v6.0.5...v6.1.0) (2024-10-21)
+
+
+### Features
+
+* bump symfony versions ([9cee985](https://github.com/netbull/CoreBundle/commit/9cee985f04761775cc90b5f062af1bf4f09e87e7))
+
 ## [6.0.5](https://github.com/netbull/CoreBundle/compare/v6.0.4...v6.0.5) (2024-09-17)
 
 
