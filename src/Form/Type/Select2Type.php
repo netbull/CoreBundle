@@ -12,24 +12,24 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 class Select2Type extends AjaxType
 {
     /**
-     * @var boolean
+     * @var bool
      */
-    protected $allowClear;
+    protected bool $allowClear;
 
     /**
-     * @var integer
+     * @var int
      */
-    protected $delay;
+    protected int $delay;
 
     /**
      * @var string
      */
-    protected $language;
+    protected string $language;
 
     /**
-     * @var boolean
+     * @var bool
      */
-    protected $cache;
+    protected bool $cache;
 
     /**
      * @param EntityManagerInterface $em
@@ -50,8 +50,9 @@ class Select2Type extends AjaxType
      * @param FormView $view
      * @param FormInterface $form
      * @param array $options
+     * @return void
      */
-    public function finishView(FormView $view, FormInterface $form, array $options)
+    public function finishView(FormView $view, FormInterface $form, array $options): void
     {
         parent::finishView($view, $form, $options);
 
@@ -68,8 +69,9 @@ class Select2Type extends AjaxType
 
     /**
      * @param OptionsResolver $resolver
+     * @return void
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'allow_clear' => $this->allowClear,

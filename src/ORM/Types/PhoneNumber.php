@@ -43,12 +43,12 @@ class PhoneNumber extends Type
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      * @param AbstractPlatform $platform
      * @return string|null
      * @throws ConversionException
      */
-    public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
+    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
     {
         if (null === $value) {
             return null;
@@ -69,7 +69,7 @@ class PhoneNumber extends Type
      * @return mixed
      * @throws ConversionException
      */
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): mixed
     {
         if (null === $value || $value instanceof PhoneNumberBase) {
             return $value;

@@ -29,11 +29,11 @@ class Point extends Type
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      * @param AbstractPlatform $platform
      * @return BasePoint|null
      */
-    public function convertToPHPValue($value, AbstractPlatform $platform): ?BasePoint
+    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?BasePoint
     {
         if (!$value) {
             return null;
@@ -44,11 +44,11 @@ class Point extends Type
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      * @param AbstractPlatform $platform
      * @return mixed|string
      */
-    public function convertToDatabaseValue($value, AbstractPlatform $platform)
+    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): mixed
     {
         if ($value instanceof BasePoint) {
             $value = sprintf('POINT(%F %F)', $value->getLongitude(), $value->getLatitude());

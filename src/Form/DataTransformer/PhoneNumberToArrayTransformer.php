@@ -9,16 +9,12 @@ use libphonenumber\NumberParseException;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
-/**
- * Class PhoneNumberToArrayTransformer
- * @package NetBull\CoreBundle\Form\DataTransformer
- */
 class PhoneNumberToArrayTransformer implements DataTransformerInterface
 {
     /**
      * @var array
      */
-    private $countryChoices;
+    private array $countryChoices;
 
     /**
      * Constructor.
@@ -31,32 +27,37 @@ class PhoneNumberToArrayTransformer implements DataTransformerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param mixed $value
+     * @return array|string[]
      */
-    public function transform($phoneNumber)
+    public function transform(mixed $value): array
     {
-        if (null === $phoneNumber) {
-            return array('country' => '', 'number' => '');
-        } elseif (false === $phoneNumber instanceof PhoneNumber) {
+        if (null === $value) {
+            return [
+                'country' => '',
+                'number' => '',
+            ];
+        } elseif (false === $value instanceof PhoneNumber) {
             throw new TransformationFailedException('Expected a \libphonenumber\PhoneNumber.');
         }
 
         $util = PhoneNumberUtil::getInstance();
 
-        if (false === in_array($util->getRegionCodeForNumber($phoneNumber), $this->countryChoices)) {
+        if (false === in_array($util->getRegionCodeForNumber($value), $this->countryChoices)) {
             throw new TransformationFailedException('Invalid country.');
         }
 
-        return array(
-            'country' => $util->getRegionCodeForNumber($phoneNumber),
-            'number' => $util->format($phoneNumber, PhoneNumberFormat::NATIONAL),
-        );
+        return [
+            'country' => $util->getRegionCodeForNumber($value),
+            'number' => $util->format($value, PhoneNumberFormat::NATIONAL),
+        ];
     }
 
     /**
-     * {@inheritdoc}
+     * @param mixed $value
+     * @return mixed
      */
-    public function reverseTransform($value)
+    public function reverseTransform(mixed $value): mixed
     {
         if (!$value) {
             return null;

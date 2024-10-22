@@ -29,11 +29,11 @@ class Range extends Type
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      * @param AbstractPlatform $platform
      * @return BaseRange
      */
-    public function convertToPHPValue($value, AbstractPlatform $platform): BaseRange
+    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): BaseRange
     {
         list($min, $max) = sscanf($value, '%d-%d');
 
@@ -41,11 +41,11 @@ class Range extends Type
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      * @param AbstractPlatform $platform
-     * @return mixed|string
+     * @return mixed
      */
-    public function convertToDatabaseValue($value, AbstractPlatform $platform)
+    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): mixed
     {
         if ($value instanceof BaseRange) {
             $value = sprintf('%d-%d', $value->getMin(), $value->getMax());

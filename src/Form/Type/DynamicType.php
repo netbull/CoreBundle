@@ -31,9 +31,10 @@ class DynamicType extends AbstractType
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
+     * @return void
      * @throws Exception
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         // add custom data transformer
         if ($options['transformer']) {
@@ -60,8 +61,9 @@ class DynamicType extends AbstractType
      * @param FormView $view
      * @param FormInterface $form
      * @param array $options
+     * @return void
      */
-    public function finishView(FormView $view, FormInterface $form, array $options)
+    public function finishView(FormView $view, FormInterface $form, array $options): void
     {
         parent::finishView($view, $form, $options);
 
@@ -78,8 +80,9 @@ class DynamicType extends AbstractType
 
     /**
      * @param OptionsResolver $resolver
+     * @return void
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'class' => null,

@@ -15,8 +15,9 @@ class CompoundRangeType extends AbstractType implements DataTransformerInterface
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
+     * @return void
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('min', IntegerType::class, [
             'required' => false,
@@ -30,8 +31,9 @@ class CompoundRangeType extends AbstractType implements DataTransformerInterface
     /**
      * @param $value
      * @param ExecutionContextInterface $context
+     * @return void
      */
-    public function validateRange($value, ExecutionContextInterface $context)
+    public function validateRange($value, ExecutionContextInterface $context): void
     {
         $value = $this->transform($value);
 
@@ -54,9 +56,10 @@ class CompoundRangeType extends AbstractType implements DataTransformerInterface
     }
 
     /**
-     * @inheritdoc
+     * @param $value
+     * @return array|null
      */
-    public function transform($value)
+    public function transform($value): ?array
     {
         if (null === $value) {
             return null;
@@ -92,8 +95,9 @@ class CompoundRangeType extends AbstractType implements DataTransformerInterface
 
     /**
      * @param OptionsResolver $resolver
+     * @return void
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'compound' => true,

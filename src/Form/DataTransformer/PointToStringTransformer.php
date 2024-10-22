@@ -4,56 +4,44 @@ namespace NetBull\CoreBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
-
 use NetBull\CoreBundle\ORM\Objects\Point;
 
-/**
- * Class PointToStringTransformer
- * @package NetBull\CoreBundle\Form\DataTransformer
- */
 class PointToStringTransformer implements DataTransformerInterface
 {
     /**
-     * @param Point $point
-     * @return string
+     * @param mixed $value
+     * @return mixed
      */
-    public function transform($point)
+    public function transform(mixed $value): mixed
     {
-        if (!(string)$point) {
-            return $point;
+        if (!(string)$value) {
+            return $value;
         }
 
-        return $point->getLatitude() . ', ' . $point->getLongitude();
+        return $value->getLatitude() . ', ' . $value->getLongitude();
     }
 
     /**
      * Transforms a string to an object.
-     * @param mixed $stringPoint
-     * @return null|string
+     * @param mixed $value
+     * @return mixed
      */
-    public function reverseTransform($stringPoint)
+    public function reverseTransform(mixed $value): mixed
     {
-        if (!$stringPoint) {
+        if (!$value) {
             return null;
         }
 
-        if (null === $stringPoint) {
-            throw new TransformationFailedException(sprintf(
-                'An area with number "%s" does not exist!',
-                $stringPoint
-            ));
+        if (is_array($value)) {
+            $value = $value['gpsCoordinate'];
         }
 
-        if (is_array($stringPoint)) {
-            $stringPoint = $stringPoint['gpsCoordinate'];
-        }
-
-        $coordinates = explode(', ', $stringPoint);
+        $coordinates = explode(', ', $value);
 
         if (count($coordinates) !== 2) {
             throw new TransformationFailedException(sprintf(
                 'The Coordinates should contain latitude and longitude!',
-                $stringPoint
+                $value
             ));
         }
 

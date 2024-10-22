@@ -2,6 +2,7 @@
 
 namespace NetBull\CoreBundle\DependencyInjection;
 
+use Exception;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -10,9 +11,12 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 class NetBullCoreExtension extends Extension
 {
     /**
-     * {@inheritdoc}
+     * @param array $configs
+     * @param ContainerBuilder $container
+     * @return void
+     * @throws Exception
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
@@ -48,8 +52,9 @@ class NetBullCoreExtension extends Extension
      * @param string $key
      * @param array|string $value
      * @param string $suffix
+     * @return void
      */
-    private function setParameters(ContainerBuilder $container, string $key, $value, string $suffix = '')
+    private function setParameters(ContainerBuilder $container, string $key, array|string $value, string $suffix = ''): void
     {
         if (is_array($value)) {
             foreach ($value as $k => $v) {

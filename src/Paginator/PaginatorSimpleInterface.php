@@ -8,10 +8,10 @@ use Doctrine\ORM\QueryBuilder;
 interface PaginatorSimpleInterface
 {
     /**
-     * @return int|mixed
+     * @return int
      * @throws NonUniqueResultException
      */
-    public function getCount();
+    public function getCount(): int;
 
     /**
      * @return array

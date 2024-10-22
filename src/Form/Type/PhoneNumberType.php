@@ -24,9 +24,10 @@ class PhoneNumberType extends AbstractType
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
+     * @return void
      */
-	public function buildForm(FormBuilderInterface $builder, array $options)
-	{
+	public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
 		if (self::WIDGET_COUNTRY_CHOICE === $options['widget']) {
 			$util = PhoneNumberUtil::getInstance();
 
@@ -96,18 +97,20 @@ class PhoneNumberType extends AbstractType
      * @param FormView $view
      * @param FormInterface $form
      * @param array $options
+     * @return void
      */
-	public function buildView(FormView $view, FormInterface $form, array $options)
-	{
+	public function buildView(FormView $view, FormInterface $form, array $options): void
+    {
 		$view->vars['type'] = 'tel';
 		$view->vars['widget'] = $options['widget'];
 	}
 
     /**
      * @param OptionsResolver $resolver
+     * @return void
      */
-	public function configureOptions(OptionsResolver $resolver)
-	{
+	public function configureOptions(OptionsResolver $resolver): void
+    {
 		$resolver->setDefaults([
 			'widget' => self::WIDGET_SINGLE_TEXT,
 			'compound' => function (Options $options): bool {

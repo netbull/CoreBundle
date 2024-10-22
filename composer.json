@@ -13,6 +13,7 @@
     ],
     "license": "AGPL-3.0-or-later",
     "require": {
+        "php": "8.*",
         "ext-json": "*",
         "beberlei/doctrineextensions": "1.3.*",
         "symfony/templating": "6.4.*",

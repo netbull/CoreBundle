@@ -2,10 +2,6 @@
 
 namespace NetBull\CoreBundle\Utils;
 
-/**
- * Class CRM_Utils_PDF_Utils
- * @package NetBull\CoreBundle\Utils
- */
 class PDFUtils
 {
     /**
@@ -18,7 +14,8 @@ class PDFUtils
      *
      * @return float|int
      */
-    public static function convertMetric( $value, $from, $to, $precision = null ) {
+    public static function convertMetric($value, $from, $to, $precision = null): float|int
+    {
         switch ($from . $to) {
             case 'incm':
                 $value *= 2.54;
@@ -58,7 +55,7 @@ class PDFUtils
                 break;
         }
 
-        if ( !is_null($precision) ) {
+        if (!is_null($precision)) {
             $value = round($value, $precision);
         }
 

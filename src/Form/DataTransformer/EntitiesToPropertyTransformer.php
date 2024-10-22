@@ -17,31 +17,30 @@ class EntitiesToPropertyTransformer implements DataTransformerInterface
     /**
      * @var EntityManagerInterface
      */
-    protected $em;
+    protected EntityManagerInterface $em;
 
     /**
      * @var string
      */
-    protected $className;
+    protected string $className;
+
+    /**
+     * @var string|null
+     */
+    protected ?string $textProperty;
 
     /**
      * @var string
      */
-    protected $textProperty;
+    protected string $primaryKey;
 
     /**
-     * @var string
-     */
-    protected $primaryKey;
-
-    /**
-     * EntitiesToPropertyTransformer constructor.
      * @param EntityManagerInterface $em
-     * @param $class
-     * @param null $textProperty
+     * @param string $class
+     * @param string|null $textProperty
      * @param string $primaryKey
      */
-    public function __construct(EntityManagerInterface $em, $class, $textProperty = null, $primaryKey = 'id')
+    public function __construct(EntityManagerInterface $em, string $class, string $textProperty = null, string $primaryKey = 'id')
     {
         $this->em = $em;
         $this->className = $class;
@@ -52,9 +51,9 @@ class EntitiesToPropertyTransformer implements DataTransformerInterface
     /**
      * Transform initial entities to array
      * @param mixed $entities
-     * @return array
+     * @return mixed
      */
-    public function transform($entities)
+    public function transform(mixed $entities): mixed
     {
         if (is_null($entities) || count($entities) === 0) {
             return [];
@@ -77,10 +76,10 @@ class EntitiesToPropertyTransformer implements DataTransformerInterface
 
     /**
      * Transform array to a collection of entities
-     * @param array $values
-     * @return array
+     * @param mixed $values
+     * @return mixed
      */
-    public function reverseTransform($values): array
+    public function reverseTransform(mixed $values): mixed
     {
         if (!is_array($values) || count($values) === 0) {
             return [];

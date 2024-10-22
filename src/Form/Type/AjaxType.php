@@ -14,20 +14,19 @@ class AjaxType extends DynamicType
     /**
      * @var RouterInterface
      */
-    protected $router;
+    protected RouterInterface $router;
 
     /**
-     * @var integer
+     * @var int
      */
-    protected $minimumInputLength;
+    protected int $minimumInputLength;
 
     /**
-     * @var  integer
+     * @var int
      */
-    protected $perPage;
+    protected int $perPage;
 
     /**
-     * AjaxType constructor.
      * @param EntityManagerInterface $em
      * @param RouterInterface $router
      * @param ParameterBagInterface $parameterBag
@@ -44,7 +43,7 @@ class AjaxType extends DynamicType
     /**
      * @param OptionsResolver $resolver
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
@@ -63,7 +62,7 @@ class AjaxType extends DynamicType
      * @param FormInterface $form
      * @param array $options
      */
-    public function finishView(FormView $view, FormInterface $form, array $options)
+    public function finishView(FormView $view, FormInterface $form, array $options): void
     {
         parent::finishView($view, $form, $options);
 

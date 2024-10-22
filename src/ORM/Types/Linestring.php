@@ -24,16 +24,16 @@ class Linestring extends Type
     /**
      * @param mixed $value
      * @param AbstractPlatform $platform
-     * @return mixed|string
+     * @return mixed
      * @throws Exception
      */
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): mixed
     {
         if (is_null($value)) {
             return '';
         }
 
-        if (false === strpos(strtolower($value), 'linestring')) {
+        if (!str_contains(strtolower($value), 'linestring')) {
             throw new Exception('This is not a polygon!');
         }
 
@@ -49,16 +49,16 @@ class Linestring extends Type
     /**
      * @param mixed $value
      * @param AbstractPlatform $platform
-     * @return mixed|string
+     * @return mixed
      * @throws Exception
      */
-    public function convertToDatabaseValue($value, AbstractPlatform $platform)
+    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): mixed
     {
         if (is_null($value)) {
             return '';
         }
 
-        if (false === strpos(strtolower($value), 'linestring')) {
+        if (!str_contains(strtolower($value), 'linestring')) {
             throw new Exception('This is not a Line!');
         }
 

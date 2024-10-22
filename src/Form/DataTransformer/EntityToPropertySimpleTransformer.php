@@ -16,12 +16,12 @@ class EntityToPropertySimpleTransformer implements DataTransformerInterface
     /**
      * @var EntityManagerInterface
      */
-    protected $em;
+    protected EntityManagerInterface $em;
 
     /**
      * @var string
      */
-    protected $className;
+    protected string $className;
 
     /**
      * EntityToPropertySimpleTransformer constructor.
@@ -37,9 +37,9 @@ class EntityToPropertySimpleTransformer implements DataTransformerInterface
     /**
      * Transform entity to array
      * @param mixed $entity
-     * @return array
+     * @return mixed
      */
-    public function transform($entity)
+    public function transform(mixed $entity): mixed
     {
         if (null === $entity) {
             return $entity;
@@ -52,10 +52,10 @@ class EntityToPropertySimpleTransformer implements DataTransformerInterface
 
     /**
      * Transform to single id value to an entity
-     * @param string $value
-     * @return mixed|null|object
+     * @param mixed $value
+     * @return mixed
      */
-    public function reverseTransform($value)
+    public function reverseTransform(mixed $value): mixed
     {
         if (null === $value) {
             return null;

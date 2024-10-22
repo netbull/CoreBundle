@@ -6,7 +6,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType as BaseType;
 use Symfony\Component\Form\Extension\Core\DataTransformer\MoneyToLocalizedStringTransformer;
-
 use NetBull\CoreBundle\Form\DataTransformer\MoneyToStringTransformer;
 
 class MoneyType extends BaseType
@@ -14,8 +13,9 @@ class MoneyType extends BaseType
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
+     * @return void
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $transformer = $options['localize'] ?
             new MoneyToLocalizedStringTransformer(
@@ -38,8 +38,9 @@ class MoneyType extends BaseType
 
     /**
      * @param OptionsResolver $resolver
+     * @return void
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
         $resolver->setDefaults([

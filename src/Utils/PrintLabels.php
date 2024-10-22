@@ -2,16 +2,12 @@
 
 namespace NetBull\CoreBundle\Utils;
 
-/**
- * Class PrintLabels
- * @package NetBull\CoreBundle\Utils
- */
 class PrintLabels extends \TCPDF
 {
     /**
      * @var PDFLabelFormat
      */
-    public $format;
+    public PDFLabelFormat $format;
 
     // Left margin of labels
     public $marginLeft;

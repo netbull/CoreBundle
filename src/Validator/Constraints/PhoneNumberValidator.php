@@ -17,7 +17,7 @@ class PhoneNumberValidator extends ConstraintValidator
      * @param $value
      * @param Constraint $constraint
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (null === $value || '' === $value) {
             return;
@@ -64,51 +64,26 @@ class PhoneNumberValidator extends ConstraintValidator
             return;
         }
 
-        switch ($constraint->getType()) {
-            case PhoneNumber::FIXED_LINE:
-                $validTypes = array(PhoneNumberType::FIXED_LINE, PhoneNumberType::FIXED_LINE_OR_MOBILE);
-                break;
-            case PhoneNumber::MOBILE:
-                $validTypes = array(PhoneNumberType::MOBILE, PhoneNumberType::FIXED_LINE_OR_MOBILE);
-                break;
-            case PhoneNumber::PAGER:
-                $validTypes = array(PhoneNumberType::PAGER);
-                break;
-            case PhoneNumber::PERSONAL_NUMBER:
-                $validTypes = array(PhoneNumberType::PERSONAL_NUMBER);
-                break;
-            case PhoneNumber::PREMIUM_RATE:
-                $validTypes = array(PhoneNumberType::PREMIUM_RATE);
-                break;
-            case PhoneNumber::SHARED_COST:
-                $validTypes = array(PhoneNumberType::SHARED_COST);
-                break;
-            case PhoneNumber::TOLL_FREE:
-                $validTypes = array(PhoneNumberType::TOLL_FREE);
-                break;
-            case PhoneNumber::UAN:
-                $validTypes = array(PhoneNumberType::UAN);
-                break;
-            case PhoneNumber::VOIP:
-                $validTypes = array(PhoneNumberType::VOIP);
-                break;
-            case PhoneNumber::VOICEMAIL:
-                $validTypes = array(PhoneNumberType::VOICEMAIL);
-                break;
-            default:
-                $validTypes = array();
-                break;
-        }
+        $validTypes = match ($constraint->getType()) {
+            PhoneNumber::FIXED_LINE => [PhoneNumberType::FIXED_LINE, PhoneNumberType::FIXED_LINE_OR_MOBILE],
+            PhoneNumber::MOBILE => [PhoneNumberType::MOBILE, PhoneNumberType::FIXED_LINE_OR_MOBILE],
+            PhoneNumber::PAGER => [PhoneNumberType::PAGER],
+            PhoneNumber::PERSONAL_NUMBER => [PhoneNumberType::PERSONAL_NUMBER],
+            PhoneNumber::PREMIUM_RATE => [PhoneNumberType::PREMIUM_RATE],
+            PhoneNumber::SHARED_COST => [PhoneNumberType::SHARED_COST],
+            PhoneNumber::TOLL_FREE => [PhoneNumberType::TOLL_FREE],
+            PhoneNumber::UAN => [PhoneNumberType::UAN],
+            PhoneNumber::VOIP => [PhoneNumberType::VOIP],
+            PhoneNumber::VOICEMAIL => [PhoneNumberType::VOICEMAIL],
+            default => [],
+        };
 
         if (count($validTypes)) {
             $type = $phoneUtil->getNumberType($phoneNumber);
 
             if (false === in_array($type, $validTypes)) {
                 $this->addViolation($value, $constraint);
-
-                return;
             }
-
         }
     }
 
@@ -116,7 +91,7 @@ class PhoneNumberValidator extends ConstraintValidator
      * @param $value
      * @param Constraint $constraint
      */
-    private function addViolation($value, Constraint $constraint)
+    private function addViolation($value, Constraint $constraint): void
     {
         $this->context->addViolation(
             $constraint->getMessage(),

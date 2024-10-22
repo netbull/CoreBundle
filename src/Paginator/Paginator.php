@@ -182,7 +182,10 @@ class Paginator extends BasePaginator implements PaginatorInterface
         return $this->ids;
     }
 
-    public function reset()
+    /**
+     * @return void
+     */
+    public function reset(): void
     {
         $this->totalCount = null;
     }

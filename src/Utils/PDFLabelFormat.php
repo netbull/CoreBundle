@@ -2,20 +2,16 @@
 
 namespace NetBull\CoreBundle\Utils;
 
-/**
- * Class PDFLabelFormat
- * @package NetBull\CoreBundle\Utils
- */
 class PDFLabelFormat
 {
-    const TYPE_STRING   = 0;
-    const TYPE_INT      = 1;
-    const TYPE_FLOAT    = 2;
+    const TYPE_STRING = 0;
+    const TYPE_INT = 1;
+    const TYPE_FLOAT = 2;
 
     /**
      * Label Format fields stored in the 'value' field of the Option Value table.
      */
-    private $defaults = [
+    private array $defaults = [
         'paper-size' => [
             // Paper size: names defined in option_value table (option_group = 'paper_size')
             'name' => 'paper-size',
@@ -59,7 +55,7 @@ class PDFLabelFormat
             'default' => 10,
         ],
         'metric' => [
-            // Unit of measurement for all of the following fields
+            // Unit of measurement for all the following fields
             'name' => 'metric',
             'type' => self::TYPE_STRING,
             'default' => 'mm',
@@ -125,39 +121,39 @@ class PDFLabelFormat
     /**
      * @var array
      */
-    protected $values = [];
+    protected array $values = [];
 
     /**
-     * PDFLabelFormat constructor.
      * @param array $options
      */
     public function __construct( array $options = [])
     {
-        if ( !empty($options) ) {
+        if (!empty($options)) {
             $this->setOptions($options);
         }
     }
 
     /**
-     * Set options
      * @param array $options
+     * @return void
      */
-    public function setOptions( array $options )
+    public function setOptions(array $options): void
     {
-        foreach ( $this->defaults as $option => $defaults ) {
-            $this->values[$option] = ( array_key_exists($defaults['name'], $options) ) ? $options[$option] : $defaults['default'];
+        foreach ($this->defaults as $option => $defaults) {
+            $this->values[$option] = (array_key_exists($defaults['name'], $options)) ? $options[$option] : $defaults['default'];
         }
     }
 
     /**
      * Get Label Format field from associative array.
      *
-     * @param string        $field Name of a label format field.
-     * @param null|string   $default
+     * @param string $field Name of a label format field.
+     * @param string|null $default
      * @return float|int|mixed|null
      */
-    public function getValue( $field, $default = null ) {
-        if ( array_key_exists($field, $this->defaults) ){
+    public function getValue(string $field, string $default = null): mixed
+    {
+        if (array_key_exists($field, $this->defaults)) {
             switch ($this->defaults[$field]['type']) {
                 case self::TYPE_INT:
                     return (int) $this->values[$field];
@@ -180,10 +176,10 @@ class PDFLabelFormat
      * @param $field
      * @return bool
      */
-    public function isMetric( $field ): bool
+    public function isMetric($field): bool
     {
         if ( array_key_exists($field, $this->defaults) ){
-            return ( isset($this->defaults[$field]['metric']) ) ? $this->defaults[$field]['metric'] : false;
+            return (isset($this->defaults[$field]['metric'])) ? $this->defaults[$field]['metric'] : false;
         }
         return false;
     }

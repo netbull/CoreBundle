@@ -27,9 +27,10 @@ class PhoneNumberHelper implements HelperInterface
     }
 
     /**
-     * @param $charset
+     * @param string $charset
+     * @return void
      */
-    public function setCharset($charset)
+    public function setCharset(string $charset): void
     {
         $this->charset = $charset;
     }
@@ -54,13 +55,13 @@ class PhoneNumberHelper implements HelperInterface
      * Format a phone number.
      *
      * @param PhoneNumber $phoneNumber Phone number.
-     * @param int|string  $format      Format, or format constant name.
+     * @param int|string $format Format, or format constant name.
      *
      * @return string Formatted phone number.
      *
      * @throws InvalidArgumentException If an argument is invalid.
      */
-    public function format(PhoneNumber $phoneNumber, $format = PhoneNumberFormat::INTERNATIONAL): string
+    public function format(PhoneNumber $phoneNumber, int|string $format = PhoneNumberFormat::INTERNATIONAL): string
     {
         if (true === is_string($format)) {
             $constant = '\libphonenumber\PhoneNumberFormat::' . $format;
@@ -77,13 +78,13 @@ class PhoneNumberHelper implements HelperInterface
 
     /**
      * @param PhoneNumber $phoneNumber Phone number.
-     * @param int|string  $type      PhoneNumberType, or PhoneNumberType constant name.
+     * @param int|string $type PhoneNumberType, or PhoneNumberType constant name.
      *
      * @return bool
      *
      * @throws InvalidArgumentException If type argument is invalid.
      */
-    public function isType(PhoneNumber $phoneNumber, $type = PhoneNumberType::UNKNOWN): bool
+    public function isType(PhoneNumber $phoneNumber, int|string $type = PhoneNumberType::UNKNOWN): bool
     {
         if (true === is_string($type)) {
             $constant = '\libphonenumber\PhoneNumberType::' . $type;

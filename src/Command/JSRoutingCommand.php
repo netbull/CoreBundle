@@ -2,6 +2,8 @@
 
 namespace NetBull\CoreBundle\Command;
 
+use RuntimeException;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
@@ -10,34 +12,30 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use NetBull\CoreBundle\Routing\Extractor;
 use NetBull\CoreBundle\Routing\ExtractorInterface;
 
-/**
- * Class JSRoutingCommand
- * @package NetBull\CoreBundle\Command
- */
+#[AsCommand(name: 'netbull:core:js-routing', description: 'Dumps exposed routes to the filesystem')]
 class JSRoutingCommand extends Command
 {
     /**
      * @var string
      */
-    private $targetPath;
+    private string $targetPath;
 
     /**
-     * @var Extractor
+     * @var Extractor|ExtractorInterface|null
      */
-    private $extractor;
+    private Extractor|null|ExtractorInterface $extractor;
 
     /**
      * @var bool
      */
-    private $canExecute = true;
+    private bool $canExecute = true;
 
     /**
-     * @var ParameterBagInterface
+     * @var ParameterBagInterface|null
      */
-    private $parameterBag;
+    private ?ParameterBagInterface $parameterBag;
 
     /**
-     * JSRoutingCommand constructor.
      * @param string|null $name
      * @param ParameterBagInterface|null $parameterBag
      * @param ExtractorInterface|null $extractor
@@ -51,21 +49,19 @@ class JSRoutingCommand extends Command
     }
 
     /**
-     * {@inheritdoc}
+     * @return void
      */
-    protected function configure()
+    protected function configure(): void
     {
-        $this
-            ->setName('core:js-routing')
-            ->setDescription('Dumps exposed routes to the filesystem')
-            ->addOption('target', null, InputOption::VALUE_OPTIONAL, 'Override the target directory to dump routes in.')
-        ;
+        $this->addOption('target', null, InputOption::VALUE_OPTIONAL, 'Override the target directory to dump routes in.');
     }
 
     /**
-     * {@inheritdoc}
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return void
      */
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         parent::initialize($input, $output);
 
@@ -79,19 +75,21 @@ class JSRoutingCommand extends Command
     }
 
     /**
-     * {@inheritdoc}
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (!$this->canExecute) {
-            return 0;
+            return Command::SUCCESS;
         }
 
         $output->writeln('Dumping exposed routes.');
         $output->writeln('');
         $this->doDump($output);
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     /**
@@ -99,12 +97,12 @@ class JSRoutingCommand extends Command
      *
      * @param OutputInterface $output The command output
      */
-    private function doDump(OutputInterface $output)
+    private function doDump(OutputInterface $output): void
     {
         if (!is_dir($dir = dirname($this->targetPath))) {
             $output->writeln('<info>[dir+]</info>  ' . $dir);
             if (false === @mkdir($dir, 0777, true)) {
-                throw new \RuntimeException('Unable to create directory ' . $dir);
+                throw new RuntimeException('Unable to create directory ' . $dir);
             }
         }
 
@@ -135,7 +133,7 @@ class JSRoutingCommand extends Command
         $content = str_replace('//<ROUTES>', $routes, $source);
 
         if (false === @file_put_contents($this->targetPath, $content)) {
-            throw new \RuntimeException('Unable to write file ' . $this->targetPath);
+            throw new RuntimeException('Unable to write file ' . $this->targetPath);
         }
     }
 }

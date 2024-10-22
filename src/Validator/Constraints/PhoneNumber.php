@@ -6,9 +6,6 @@ use libphonenumber\PhoneNumberUtil;
 use Doctrine\Common\Annotations\Annotation;
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- */
 class PhoneNumber extends Constraint
 {
     const ANY = 'any';
@@ -23,31 +20,27 @@ class PhoneNumber extends Constraint
     const VOIP = 'voip';
     const VOICEMAIL = 'voicemail';
 
-    public $message = null;
-    public $type = self::ANY;
-    public $defaultRegion = PhoneNumberUtil::UNKNOWN_REGION;
-    public $defaultRegions = [];
+    public ?string $message = null;
+    public string $type = self::ANY;
+    public string $defaultRegion = PhoneNumberUtil::UNKNOWN_REGION;
+    public array $defaultRegions = [];
 
-    public function getType()
+    /**
+     * @return string
+     */
+    public function getType(): string
     {
-        switch ($this->type) {
-            case self::FIXED_LINE:
-            case self::MOBILE:
-            case self::PAGER:
-            case self::PERSONAL_NUMBER:
-            case self::PREMIUM_RATE:
-            case self::SHARED_COST:
-            case self::TOLL_FREE:
-            case self::UAN:
-            case self::VOIP:
-            case self::VOICEMAIL:
-                return $this->type;
-        }
+        return match ($this->type) {
+            self::FIXED_LINE, self::MOBILE, self::PAGER, self::PERSONAL_NUMBER, self::PREMIUM_RATE, self::SHARED_COST, self::TOLL_FREE, self::UAN, self::VOIP, self::VOICEMAIL => $this->type,
+            default => self::ANY,
+        };
 
-        return self::ANY;
     }
 
-    public function getMessage()
+    /**
+     * @return string|null
+     */
+    public function getMessage(): ?string
     {
         if (null !== $this->message) {
             return $this->message;

@@ -4,14 +4,17 @@ namespace NetBull\CoreBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\Extension\Core\DataTransformer\NumberToLocalizedStringTransformer;
 
-/**
- * Class NumberToStringTransformer
- * @package NetBull\CoreBundle\Form\DataTransformer
- */
 class NumberToStringTransformer extends NumberToLocalizedStringTransformer
 {
-    protected $thousandsSeparator;
-    protected $decimalSeparator;
+    /**
+     * @var string
+     */
+    protected string $thousandsSeparator;
+
+    /**
+     * @var string
+     */
+    protected string $decimalSeparator;
 
     /**
      * NumberToStringTransformer constructor.
@@ -21,7 +24,7 @@ class NumberToStringTransformer extends NumberToLocalizedStringTransformer
      * @param bool|null $grouping
      * @param int|null $roundingMode
      */
-    public function __construct(string $thousandsSeparator = '.', string $decimalSeparator = ',', int $scale = null, ?bool $grouping = false, ?int $roundingMode = self::ROUND_HALF_UP)
+    public function __construct(string $thousandsSeparator = '.', string $decimalSeparator = ',', int $scale = null, ?bool $grouping = false, ?int $roundingMode = PHP_ROUND_HALF_UP)
     {
         parent::__construct($scale, $grouping, $roundingMode);
 
@@ -34,7 +37,7 @@ class NumberToStringTransformer extends NumberToLocalizedStringTransformer
      *
      * @return \NumberFormatter
      */
-    protected function getNumberFormatter()
+    protected function getNumberFormatter(): \NumberFormatter
     {
         $formatter = parent::getNumberFormatter();
 

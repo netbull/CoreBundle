@@ -24,16 +24,16 @@ class Geometry extends Type
     /**
      * @param mixed $value
      * @param AbstractPlatform $platform
-     * @return mixed|string
+     * @return mixed
      * @throws Exception
      */
-    public function convertToDatabaseValue($value, AbstractPlatform $platform)
+    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): mixed
     {
         if (is_null($value)) {
             return '';
         }
 
-        if (false === strpos(strtolower($value), 'multipolygon') && false === strpos(strtolower($value), 'polygon')) {
+        if (!str_contains(strtolower($value), 'multipolygon') && !str_contains(strtolower($value), 'polygon')) {
             throw new Exception('This is not a Geometry!');
         }
 
@@ -49,10 +49,10 @@ class Geometry extends Type
     /**
      * @param mixed $value
      * @param AbstractPlatform $platform
-     * @return mixed|string
+     * @return mixed
      * @throws Exception
      */
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): mixed
     {
         if (is_null($value)) {
             return '';

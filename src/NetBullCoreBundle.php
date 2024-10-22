@@ -9,7 +9,7 @@ use NetBull\CoreBundle\DependencyInjection\NetBullCoreExtension;
 class NetBullCoreBundle extends Bundle
 {
     /**
-     * @return NetBullCoreExtension
+     * @return ExtensionInterface|null
      */
     public function getContainerExtension(): ?ExtensionInterface
     {

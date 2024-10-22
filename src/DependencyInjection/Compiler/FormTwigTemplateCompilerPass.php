@@ -11,9 +11,10 @@ class FormTwigTemplateCompilerPass implements CompilerPassInterface
     private string $telBootstrapLayout = '@NetBullCore/Form/tel_bootstrap.html.twig';
 
     /**
-     * {@inheritdoc}
+     * @param ContainerBuilder $container
+     * @return void
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (false === $container->hasParameter('twig.form.resources')) {
             return;

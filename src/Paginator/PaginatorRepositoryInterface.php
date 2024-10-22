@@ -2,26 +2,25 @@
 
 namespace NetBull\CoreBundle\Paginator;
 
+use Doctrine\ORM\QueryBuilder;
+
 interface PaginatorRepositoryInterface
 {
     /**
-     * Build Count Query
      * @param array $params
      * @return mixed
      */
-    public function getPaginationCount(array $params = []);
+    public function getPaginationCount(array $params = []): QueryBuilder;
 
     /**
-     * Build Query to get the Ids
      * @param array $params
-     * @return mixed
+     * @return QueryBuilder
      */
-    public function getPaginationIds(array $params = []);
+    public function getPaginationIds(array $params = []): QueryBuilder;
 
     /**
-     * Main Query
      * @param array $params
-     * @return mixed
+     * @return QueryBuilder
      */
-    public function getPaginationQuery(array $params = []);
+    public function getPaginationQuery(array $params = []): QueryBuilder;
 }

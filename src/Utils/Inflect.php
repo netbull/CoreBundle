@@ -59,7 +59,7 @@ namespace NetBull\CoreBundle\Utils;
 
 class Inflect
 {
-    public static $plural = [
+    public static array $plural = [
         '/(quiz)$/i'               => "$1zes",
         '/^(ox)$/i'                => "$1en",
         '/([m|l])ouse$/i'          => "$1ice",
@@ -81,7 +81,7 @@ class Inflect
         '/$/'                      => "s",
     ];
 
-    public static $singular = [
+    public static array $singular = [
         '/(quiz)zes$/i'             => "$1",
         '/(matr)ices$/i'            => "$1ix",
         '/(vert|ind)ices$/i'        => "$1ex",
@@ -112,7 +112,7 @@ class Inflect
         '/s$/i'                     => "",
     ];
 
-    public static $irregular = [
+    public static array $irregular = [
         'move'   => 'moves',
         'foot'   => 'feet',
         'goose'  => 'geese',
@@ -124,7 +124,7 @@ class Inflect
         'valve'  => 'valves',
     ];
 
-    public static $uncountable = [
+    public static array $uncountable = [
         'sheep',
         'fish',
         'deer',
@@ -140,63 +140,65 @@ class Inflect
      * @param $string
      * @return null|string|string[]
      */
-    public static function pluralize($string)
+    public static function pluralize($string): array|string|null
     {
         // save some time in the case that singular and plural are the same
-        if ( in_array( strtolower( $string ), self::$uncountable ) )
+        if (in_array(strtolower($string), self::$uncountable)) {
             return $string;
+        }
 
 
         // check for irregular singular forms
-        foreach ( self::$irregular as $pattern => $result )
-        {
+        foreach (self::$irregular as $pattern => $result) {
             $pattern = '/' . $pattern . '$/i';
 
-            if ( preg_match( $pattern, $string ) )
+            if (preg_match($pattern, $string)) {
                 return preg_replace( $pattern, $result, $string);
+            }
         }
 
         // check for matches using regular expressions
-        foreach ( self::$plural as $pattern => $result )
-        {
-            if ( preg_match( $pattern, $string ) )
+        foreach (self::$plural as $pattern => $result) {
+            if (preg_match($pattern, $string)) {
                 return preg_replace( $pattern, $result, $string );
+            }
         }
 
         return $string;
     }
 
-    public static function singularize( $string )
+    public static function singularize($string)
     {
         // save some time in the case that singular and plural are the same
-        if ( in_array( strtolower( $string ), self::$uncountable ) )
+        if (in_array(strtolower($string), self::$uncountable)) {
             return $string;
+        }
 
         // check for irregular plural forms
-        foreach ( self::$irregular as $result => $pattern )
-        {
+        foreach (self::$irregular as $result => $pattern) {
             $pattern = '/' . $pattern . '$/i';
 
-            if ( preg_match( $pattern, $string ) )
-                return preg_replace( $pattern, $result, $string);
+            if (preg_match( $pattern, $string)) {
+                return preg_replace($pattern, $result, $string);
+            }
         }
 
         // check for matches using regular expressions
-        foreach ( self::$singular as $pattern => $result )
-        {
-            if ( preg_match( $pattern, $string ) )
+        foreach (self::$singular as $pattern => $result) {
+            if (preg_match( $pattern, $string)) {
                 return preg_replace( $pattern, $result, $string );
+            }
         }
 
         return $string;
     }
 
     /**
-     * @param $count
-     * @param $string
+     * @param int $count
+     * @param string $string
      * @return string
      */
-    public static function pluralizeIf($count, $string)
+    public static function pluralizeIf(int $count, string $string): string
     {
         if (1 === $count) {
             return "1 $string";
@@ -207,9 +209,9 @@ class Inflect
 
     /**
      * @param string $string
-     * @return mixed|null|string|string[]
+     * @return mixed
      */
-    public static function titleize(string $string)
+    public static function titleize(string $string): mixed
     {
         $string = self::underscore($string);
         $string = self::humanize($string);
@@ -220,12 +222,12 @@ class Inflect
     }
 
     /**
-     * @param $camel_cased_word
+     * @param string $value
      * @return mixed|null|string|string[]
      */
-    public static function underscore($camel_cased_word)
+    public static function underscore(string $value): mixed
     {
-        $word = (string) $camel_cased_word;
+        $word = $value;
         $word = str_replace('\\', '/', $word);
         $word = preg_replace_callback('/(?:([[:alpha:]\d])|^)(1(?=a)b)(?=\b|[^[:lower:]])/u', function($matches) {
             list(, $m1, $m2) = $matches;
@@ -234,17 +236,17 @@ class Inflect
         $word = preg_replace('/([[:upper:]\d]+)([[:upper:]][[:lower:]])/u', '\1_\2', $word);
         $word = preg_replace('/([[:lower:]\d])([[:upper:]])/u','\1_\2', $word);
         $word = preg_replace('/\-+|\s+/', '_', $word);
-        $word = mb_strtolower($word);
-        return $word;
+
+        return mb_strtolower($word);
     }
 
     /**
-     * @param $lower_case_and_underscored_word
+     * @param string $value
      * @return null|string|string[]
      */
-    public static function humanize($lower_case_and_underscored_word)
+    public static function humanize(string $value): array|string|null
     {
-        $result = (string) $lower_case_and_underscored_word;
+        $result = $value;
 
         $result = preg_replace('/_id$/', "", $result);
         $result = strtr($result, '_', ' ');
@@ -252,9 +254,9 @@ class Inflect
             list($m) = $matches;
             return mb_strtolower($m);
         }, $result);
-        $result = preg_replace_callback('/^[[:lower:]]/u', function($matches) {
+
+        return preg_replace_callback('/^[[:lower:]]/u', function($matches) {
             return mb_strtoupper($matches[0]);
         }, $result);
-        return $result;
     }
 }

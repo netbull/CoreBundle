@@ -18,37 +18,36 @@ class EntityToPropertyTransformer implements DataTransformerInterface
     /**
      * @var EntityManagerInterface
      */
-    protected $em;
+    protected EntityManagerInterface $em;
 
     /**
      * @var string
      */
-    protected $className;
+    protected string $className;
+
+    /**
+     * @var string|null
+     */
+    protected ?string $textProperty;
 
     /**
      * @var string
      */
-    protected $textProperty;
-
-    /**
-     * @var string
-     */
-    protected $primaryKey;
+    protected string $primaryKey;
 
     /**
      * @var array
      */
-    protected $data;
+    protected array $data;
 
     /**
-     * EntityToPropertyTransformer constructor.
      * @param EntityManagerInterface $em
      * @param string $class
-     * @param null $textProperty
+     * @param string|null $textProperty
      * @param string $primaryKey
      * @param array $data
      */
-    public function __construct(EntityManagerInterface $em, string $class, $textProperty = null, $primaryKey = 'id', $data = [])
+    public function __construct(EntityManagerInterface $em, string $class, string $textProperty = null, string $primaryKey = 'id', array $data = [])
     {
         $this->em = $em;
         $this->className = $class;
@@ -60,9 +59,9 @@ class EntityToPropertyTransformer implements DataTransformerInterface
     /**
      * Transform entity to array
      * @param mixed $entity
-     * @return array
+     * @return mixed
      */
-    public function transform($entity)
+    public function transform(mixed $entity): mixed
     {
         $data = [];
 
@@ -94,10 +93,10 @@ class EntityToPropertyTransformer implements DataTransformerInterface
 
     /**
      * Transform to single id value to an entity
-     * @param string $value
-     * @return mixed|null|object
+     * @param mixed $value
+     * @return mixed
      */
-    public function reverseTransform($value)
+    public function reverseTransform(mixed $value): mixed
     {
         if (null === $value) {
             return null;

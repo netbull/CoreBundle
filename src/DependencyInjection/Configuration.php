@@ -54,8 +54,9 @@ class Configuration implements ConfigurationInterface
 
     /**
      * @param ArrayNodeDefinition $node
+     * @return void
      */
-    private function addFilesystemSection(ArrayNodeDefinition $node)
+    private function addFilesystemSection(ArrayNodeDefinition $node): void
     {
         $node
             ->children()
@@ -121,8 +122,9 @@ class Configuration implements ConfigurationInterface
 
     /**
      * @param ArrayNodeDefinition $node
+     * @return void
      */
-    private function addPaginatorSection(ArrayNodeDefinition $node)
+    private function addPaginatorSection(ArrayNodeDefinition $node): void
     {
         $node
             ->children()

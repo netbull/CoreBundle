@@ -30,8 +30,9 @@ class EntityHiddenType extends AbstractType
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
+     * @return void
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         // attach the specified model transformer for this entity list field
         // this will convert data between object and string formats
@@ -40,8 +41,9 @@ class EntityHiddenType extends AbstractType
 
     /**
      * @param OptionsResolver $resolver
+     * @return void
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired(['class']);
     }
@@ -50,8 +52,9 @@ class EntityHiddenType extends AbstractType
      * @param FormView $view
      * @param FormInterface $form
      * @param array $options
+     * @return void
      */
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         parent::buildView($view, $form, $options);
 

@@ -9,10 +9,6 @@ use libphonenumber\NumberParseException;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
-/**
- * Class PhoneNumberToStringTransformer
- * @package NetBull\CoreBundle\Form\DataTransformer
- */
 class PhoneNumberToStringTransformer implements DataTransformerInterface
 {
     /**
@@ -20,30 +16,28 @@ class PhoneNumberToStringTransformer implements DataTransformerInterface
      *
      * @var string
      */
-    private $defaultRegion;
+    private string $defaultRegion;
 
     /**
      * Default region codes.
      *
      * @var array
      */
-    private $defaultRegions;
+    private array $defaultRegions;
 
     /**
      * Display format.
      *
      * @var int
      */
-    private $format;
+    private int $format;
 
     /**
-     * Constructor.
-     *
-     * @param string $defaultRegion Default region code.
+     * @param string $defaultRegion
      * @param array $defaultRegions
-     * @param int $format Display format.
+     * @param int $format
      */
-    public function __construct($defaultRegion = PhoneNumberUtil::UNKNOWN_REGION, $defaultRegions = [], $format = PhoneNumberFormat::INTERNATIONAL)
+    public function __construct(string $defaultRegion = PhoneNumberUtil::UNKNOWN_REGION, array $defaultRegions = [], int $format = PhoneNumberFormat::INTERNATIONAL)
     {
         $this->defaultRegion = $defaultRegion;
         $this->defaultRegions = $defaultRegions;
@@ -51,31 +45,33 @@ class PhoneNumberToStringTransformer implements DataTransformerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param mixed $value
+     * @return mixed|string|null
      */
-    public function transform($phoneNumber)
+    public function transform(mixed $value): mixed
     {
-        if (null === $phoneNumber) {
+        if (null === $value) {
             return '';
-        } elseif (false === $phoneNumber instanceof PhoneNumber) {
+        } elseif (false === $value instanceof PhoneNumber) {
             throw new TransformationFailedException('Expected a \libphonenumber\PhoneNumber.');
         }
 
         $util = PhoneNumberUtil::getInstance();
 
         if (PhoneNumberFormat::NATIONAL === $this->format) {
-            return $util->formatOutOfCountryCallingNumber($phoneNumber, $this->defaultRegion);
+            return $util->formatOutOfCountryCallingNumber($value, $this->defaultRegion);
         }
 
-        return $util->format($phoneNumber, $this->format);
+        return $util->format($value, $this->format);
     }
 
     /**
-     * {@inheritdoc}
+     * @param mixed $value
+     * @return mixed
      */
-    public function reverseTransform($string)
+    public function reverseTransform(mixed $value): mixed
     {
-        if (!$string && $string !== '0') {
+        if (!$value && '0' !== $value) {
             return null;
         }
 
@@ -85,7 +81,7 @@ class PhoneNumberToStringTransformer implements DataTransformerInterface
             $exception = null;
             foreach ($constraint->defaultRegions as $defaultRegion) {
                 try {
-                    return $util->parse($string, $defaultRegion);
+                    return $util->parse($value, $defaultRegion);
                 } catch (NumberParseException $e) {
                     $exception = new TransformationFailedException($e->getMessage(), $e->getCode(), $e);
                 }
@@ -96,7 +92,7 @@ class PhoneNumberToStringTransformer implements DataTransformerInterface
             }
         } else {
             try {
-                return $util->parse($string, $this->defaultRegion);
+                return $util->parse($value, $this->defaultRegion);
             } catch (NumberParseException $e) {
                 throw new TransformationFailedException($e->getMessage(), $e->getCode(), $e);
             }

@@ -27,9 +27,9 @@ abstract class BasePaginator
     protected ?int $page = 1;
 
     /**
-     * @var mixed
+     * @var string|null
      */
-    protected $route;
+    protected ?string $route;
 
     /**
      * @var array|null
@@ -44,7 +44,7 @@ abstract class BasePaginator
     /**
      * @var string|null
      */
-    protected $queryFilter = '';
+    protected ?string $queryFilter = null;
 
     /**
      * @var Closure|null
@@ -84,13 +84,13 @@ abstract class BasePaginator
                 break;
             }
         }
-        $this->queryFilter = (isset($params['query'])) ? $params['query'] : '';
+        $this->queryFilter = (isset($params['query'])) ? $params['query'] : null;
 
         // Sniff the sorting options
         if (!empty($params['field'])) {
             try {
                 $this->sorting[] = new Sorting($params['field'], $params['direction']);
-            } catch (InvalidArgumentException $e) {}
+            } catch (InvalidArgumentException) {}
         }
 
         return $this;
@@ -228,7 +228,7 @@ abstract class BasePaginator
     }
 
     /**
-     * @return int
+     * @return int|null
      */
     public function getPage(): ?int
     {
@@ -246,7 +246,7 @@ abstract class BasePaginator
     }
 
     /**
-     * @return int
+     * @return int|null
      */
     public function getMaxResults(): ?int
     {
@@ -254,13 +254,13 @@ abstract class BasePaginator
     }
 
     /**
-     * @param $maxResults
+     * @param int|string $maxResults
      * @return $this
      */
-    public function setMaxResults($maxResults): BasePaginator
+    public function setMaxResults(int|string $maxResults): BasePaginator
     {
         if (strtolower($maxResults) !== self::ALL_PARAMETER) {
-            $this->maxResults = $maxResults;
+            $this->maxResults = (int)$maxResults;
         } else {
             $this->maxResults = null;
         }
@@ -277,25 +277,25 @@ abstract class BasePaginator
     }
 
     /**
-     * @param Sorting[]|Sorting|array $sorting
+     * @param array|Sorting|Sorting[] $sorting
      *  - array of Sorting instances
      *  - single Sorting instance
      *  - array in format ['field', 'direction']
      * @return $this
      */
-    public function setSorting($sorting): BasePaginator
+    public function setSorting(Sorting|array $sorting): BasePaginator
     {
         $this->sorting = [];
         if (is_array($sorting)) {
             foreach ($sorting as $sort) {
                 try {
                     $this->sorting[] = $this->normalizeSort($sort);
-                } catch (InvalidArgumentException $e) {}
+                } catch (InvalidArgumentException) {}
             }
         } else {
             try {
                 $this->sorting[] = $this->normalizeSort($sorting);
-            } catch (InvalidArgumentException $e) {}
+            } catch (InvalidArgumentException) {}
         }
 
         return $this;
@@ -333,7 +333,7 @@ abstract class BasePaginator
     /**
      * @return int
      */
-    public function getFirstResult()
+    public function getFirstResult(): int
     {
         if (!$this->maxResults) {
             return 0;

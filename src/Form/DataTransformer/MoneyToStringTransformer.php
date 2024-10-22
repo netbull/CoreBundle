@@ -4,16 +4,11 @@ namespace NetBull\CoreBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
-/**
- * Class MoneyToStringTransformer
- * @package NetBull\CoreBundle\Form\DataTransformer
- */
 class MoneyToStringTransformer extends NumberToStringTransformer
 {
-    private $divisor;
+    private ?int $divisor;
 
     /**
-     * MoneyToStringTransformer constructor.
      * @param string $thousandsSeparator
      * @param string $decimalSeparator
      * @param int|null $scale
@@ -21,7 +16,7 @@ class MoneyToStringTransformer extends NumberToStringTransformer
      * @param int|null $roundingMode
      * @param int|null $divisor
      */
-    public function __construct(string $thousandsSeparator = '.', string $decimalSeparator = ',', ?int $scale = 2, ?bool $grouping = true, ?int $roundingMode = self::ROUND_HALF_UP, ?int $divisor = 1)
+    public function __construct(string $thousandsSeparator = '.', string $decimalSeparator = ',', ?int $scale = 2, ?bool $grouping = true, ?int $roundingMode = PHP_ROUND_HALF_UP, ?int $divisor = 1)
     {
         if (null === $grouping) {
             $grouping = true;
@@ -50,7 +45,7 @@ class MoneyToStringTransformer extends NumberToStringTransformer
      * @throws TransformationFailedException if the given value is not numeric or
      *                                       if the value can not be transformed
      */
-    public function transform($value)
+    public function transform($value): string
     {
         if (null !== $value && 1 !== $this->divisor) {
             if (!is_numeric($value)) {
@@ -67,12 +62,12 @@ class MoneyToStringTransformer extends NumberToStringTransformer
      *
      * @param string $value Localized money string
      *
-     * @return int|float Normalized number
+     * @return int|float|null Normalized number
      *
      * @throws TransformationFailedException if the given value is not a string
      *                                       or if the value can not be transformed
      */
-    public function reverseTransform($value)
+    public function reverseTransform($value): float|int|null
     {
         $value = parent::reverseTransform($value);
 

@@ -163,7 +163,7 @@ class CoreExtension extends AbstractExtension
      * @param $text
      * @return mixed
      */
-    public function buildHelperText($text)
+    public function buildHelperText($text): mixed
     {
         return sprintf('<i class="fa fa-question-circle text-primary helper-text" title="%s"></i>', $text);
     }
@@ -229,7 +229,7 @@ class CoreExtension extends AbstractExtension
      * @param string $string
      * @return mixed|null|string|string[]
      */
-    public function titleize(string $string)
+    public function titleize(string $string): mixed
     {
         return Inflect::titleize($string);
     }
@@ -253,7 +253,7 @@ class CoreExtension extends AbstractExtension
      */
     public function stripTagsSuper(string $string) : string
     {
-        if (false === strpos($string, '<body')) {
+        if (!str_contains($string, '<body')) {
             $text = $string;
         } else {
             $crawler = new Crawler($string);
