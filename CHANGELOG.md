@@ -1,3 +1,10 @@
+# [6.4.0](https://github.com/netbull/CoreBundle/compare/v6.3.0...v6.4.0) (2024-10-22)
+
+
+### Features
+
+* moved to php 8 ([6215b3b](https://github.com/netbull/CoreBundle/commit/6215b3b47dd8bf3ce993ff0d97b60356839413f2))
+
 # [6.1.0](https://github.com/netbull/CoreBundle/compare/v6.0.5...v6.1.0) (2024-10-21)
 
 
