@@ -88,7 +88,7 @@ class PhoneNumberType extends AbstractType
 				->addViewTransformer(new PhoneNumberToArrayTransformer($transformerChoices));
 		} else {
 			$builder->addViewTransformer(
-				new PhoneNumberToStringTransformer($options['default_region'], $options['format'])
+				new PhoneNumberToStringTransformer($options['default_region'], $options['default_regions'], $options['format'])
 			);
 		}
 	}
@@ -117,6 +117,7 @@ class PhoneNumberType extends AbstractType
 				return self::WIDGET_SINGLE_TEXT !== $options['widget'];
 			},
 			'default_region' => PhoneNumberUtil::UNKNOWN_REGION,
+			'default_regions' => [],
 			'format' => PhoneNumberFormat::INTERNATIONAL,
 			'invalid_message' => 'This value is not a valid phone number.',
 			'by_reference' => false,
