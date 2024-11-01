@@ -1,3 +1,10 @@
+## [6.4.1](https://github.com/netbull/CoreBundle/compare/v6.4.0...v6.4.1) (2024-10-28)
+
+
+### Bug Fixes
+
+* phone number util ([6cb5503](https://github.com/netbull/CoreBundle/commit/6cb55034a2333933960870b869401ecf21123dcf))
+
 # [6.4.0](https://github.com/netbull/CoreBundle/compare/v6.3.0...v6.4.0) (2024-10-22)
 
 
