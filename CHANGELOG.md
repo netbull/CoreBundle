@@ -1,3 +1,10 @@
+## [6.4.2](https://github.com/netbull/CoreBundle/compare/v6.4.1...v6.4.2) (2024-11-01)
+
+
+### Bug Fixes
+
+* bump version ([d61962e](https://github.com/netbull/CoreBundle/commit/d61962ec2c01ded26fab79bcd1cfcdf36a77cf3c))
+
 ## [6.4.1](https://github.com/netbull/CoreBundle/compare/v6.4.0...v6.4.1) (2024-10-28)
 
 
