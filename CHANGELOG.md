@@ -1,3 +1,10 @@
+## [6.4.3](https://github.com/netbull/CoreBundle/compare/v6.4.2...v6.4.3) (2024-11-01)
+
+
+### Bug Fixes
+
+* removed symfony/templating usage ([f2e1861](https://github.com/netbull/CoreBundle/commit/f2e1861f151ea74c6a359b37a46a1f042227a36e))
+
 ## [6.4.2](https://github.com/netbull/CoreBundle/compare/v6.4.1...v6.4.2) (2024-11-01)
 
 
