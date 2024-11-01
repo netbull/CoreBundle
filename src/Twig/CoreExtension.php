@@ -272,6 +272,6 @@ class CoreExtension extends AbstractExtension
      */
     public function getName(): string
     {
-        return 'core.extension';
+        return 'netbull_core.extension';
     }
 }
