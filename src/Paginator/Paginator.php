@@ -39,9 +39,9 @@ class Paginator extends BasePaginator implements PaginatorInterface
     protected ?QueryBuilder $query = null;
 
     /**
-     * @var QueryBuilder|null
+     * @var QueryBuilder[]
      */
-    protected ?QueryBuilder $additionalInfoQuery = null;
+    protected array $additionalInfoQueries = [];
 
     /**
      * @param string $field
@@ -86,14 +86,12 @@ class Paginator extends BasePaginator implements PaginatorInterface
 
         $records = $this->query->getQuery()->getArrayResult();
 
-        if ($this->additionalInfoQuery) {
-            $qb = $this->additionalInfoQuery;
+        foreach ($this->additionalInfoQueries as $qb) {
             $alias = $qb->getRootAliases()[0];
             $qb->andWhere($qb->expr()->in($alias . '.' . $idField, ':ids'))
-                ->orderBy('FIELD(' . $alias . '.' . $idField . ', :ids)')
                 ->setParameter('ids', $this->ids);
 
-            $additionalInfo = $this->additionalInfoQuery->getQuery()->getArrayResult();
+            $additionalInfo = $qb->getQuery()->getArrayResult();
             $records = $this->arrayCombine($records, $additionalInfo);
         }
 
@@ -169,7 +167,18 @@ class Paginator extends BasePaginator implements PaginatorInterface
      */
     public function setAdditionalQuery(QueryBuilder $additionalQuery): PaginatorInterface
     {
-        $this->additionalInfoQuery = $additionalQuery;
+        $this->additionalInfoQueries = [$additionalQuery];
+
+        return $this;
+    }
+
+    /**
+     * @param QueryBuilder $additionalQuery
+     * @return $this
+     */
+    public function addAdditionalQuery(QueryBuilder $additionalQuery): PaginatorInterface
+    {
+        $this->additionalInfoQueries[] = $additionalQuery;
 
         return $this;
     }
