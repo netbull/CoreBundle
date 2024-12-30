@@ -1,3 +1,13 @@
+## [6.4.4](https://github.com/netbull/CoreBundle/compare/v6.4.3...v6.4.4) (2024-12-30)
+
+
+### Bug Fixes
+
+* additional queries option ([b0894d0](https://github.com/netbull/CoreBundle/commit/b0894d0ab5835f4381e4362db3529b760d35279e))
+* query strings ([40bd16d](https://github.com/netbull/CoreBundle/commit/40bd16d9f4b3190a635262fde7b616bd78bf9286))
+* restored versions ([733e3d9](https://github.com/netbull/CoreBundle/commit/733e3d922e0bb08e47277d38fc21b01e21c1f4ad))
+* restored versions ([8ecd338](https://github.com/netbull/CoreBundle/commit/8ecd338240434e50cdedb5998e018d4cfc25a958))
+
 ## [6.4.3](https://github.com/netbull/CoreBundle/compare/v6.4.2...v6.4.3) (2024-11-01)
 
 
