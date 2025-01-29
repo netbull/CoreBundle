@@ -1,3 +1,10 @@
+## [6.4.5](https://github.com/netbull/CoreBundle/compare/v6.4.4...v6.4.5) (2025-01-29)
+
+
+### Bug Fixes
+
+* added UnorderedCollectionType ([d2f87f7](https://github.com/netbull/CoreBundle/commit/d2f87f7938f5ff4a9557308614ccf306f3827b2c))
+
 ## [6.4.4](https://github.com/netbull/CoreBundle/compare/v6.4.3...v6.4.4) (2024-12-30)
 
 
