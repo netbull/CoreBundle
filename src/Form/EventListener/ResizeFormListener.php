@@ -226,7 +226,7 @@ class ResizeFormListener implements EventSubscriberInterface
 	 * @param ArrayAccess|array $item
 	 * @return mixed|null
 	 */
-	private function getPropertyValue($item): mixed
+	private function getPropertyValue($item)
     {
 		return $this->propertyAccessor->getValue($item, is_array($item) ? '['.$this->property.']' : $this->property);
 	}
