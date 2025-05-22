@@ -1,3 +1,15 @@
+# [7.0.0](https://github.com/netbull/CoreBundle/compare/v6.4.6...v7.0.0) (2025-05-22)
+
+
+### chore
+
+* bump versions ([370395b](https://github.com/netbull/CoreBundle/commit/370395b62307d546ee5b0c9d7a7ce47fd2b21171))
+
+
+### BREAKING CHANGES
+
+* bump versions
+
 ## [6.4.6](https://github.com/netbull/CoreBundle/compare/v6.4.5...v6.4.6) (2025-01-29)
 
 
