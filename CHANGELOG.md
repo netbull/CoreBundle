@@ -1,3 +1,46 @@
+# [7.0.0](https://github.com/netbull/CoreBundle/compare/v6.4.6...v7.0.0) (2025-05-22)
+
+
+### chore
+
+* bump versions ([370395b](https://github.com/netbull/CoreBundle/commit/370395b62307d546ee5b0c9d7a7ce47fd2b21171))
+
+
+### BREAKING CHANGES
+
+* bump versions
+
+## [6.4.6](https://github.com/netbull/CoreBundle/compare/v6.4.5...v6.4.6) (2025-01-29)
+
+
+### Bug Fixes
+
+* added UnorderedCollectionType ([7f49629](https://github.com/netbull/CoreBundle/commit/7f496293641b46d1128c17ad135e72ec4b55823f))
+
+## [6.4.5](https://github.com/netbull/CoreBundle/compare/v6.4.4...v6.4.5) (2025-01-29)
+
+
+### Bug Fixes
+
+* added UnorderedCollectionType ([d2f87f7](https://github.com/netbull/CoreBundle/commit/d2f87f7938f5ff4a9557308614ccf306f3827b2c))
+
+## [6.4.4](https://github.com/netbull/CoreBundle/compare/v6.4.3...v6.4.4) (2024-12-30)
+
+
+### Bug Fixes
+
+* additional queries option ([b0894d0](https://github.com/netbull/CoreBundle/commit/b0894d0ab5835f4381e4362db3529b760d35279e))
+* query strings ([40bd16d](https://github.com/netbull/CoreBundle/commit/40bd16d9f4b3190a635262fde7b616bd78bf9286))
+* restored versions ([733e3d9](https://github.com/netbull/CoreBundle/commit/733e3d922e0bb08e47277d38fc21b01e21c1f4ad))
+* restored versions ([8ecd338](https://github.com/netbull/CoreBundle/commit/8ecd338240434e50cdedb5998e018d4cfc25a958))
+
+## [6.4.3](https://github.com/netbull/CoreBundle/compare/v6.4.2...v6.4.3) (2024-11-01)
+
+
+### Bug Fixes
+
+* removed symfony/templating usage ([f2e1861](https://github.com/netbull/CoreBundle/commit/f2e1861f151ea74c6a359b37a46a1f042227a36e))
+
 ## [6.4.2](https://github.com/netbull/CoreBundle/compare/v6.4.1...v6.4.2) (2024-11-01)
 
 
