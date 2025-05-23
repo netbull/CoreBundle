@@ -1,3 +1,10 @@
+## [7.0.2](https://github.com/netbull/CoreBundle/compare/v7.0.1...v7.0.2) (2025-05-23)
+
+
+### Bug Fixes
+
+* adjustments ([aecfc9b](https://github.com/netbull/CoreBundle/commit/aecfc9b929d74fa8f92fda7d245391ef93f84012))
+
 ## [7.0.1](https://github.com/netbull/CoreBundle/compare/v7.0.0...v7.0.1) (2025-05-23)
 
 
