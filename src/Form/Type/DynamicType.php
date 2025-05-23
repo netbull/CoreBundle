@@ -16,16 +16,10 @@ use NetBull\CoreBundle\Form\DataTransformer\EntitiesToPropertyTransformer;
 class DynamicType extends AbstractType
 {
     /**
-     * @var EntityManagerInterface
-     */
-    protected EntityManagerInterface $em;
-
-    /**
      * @param EntityManagerInterface $em
      */
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(protected EntityManagerInterface $em)
     {
-        $this->em = $em;
     }
 
     /**

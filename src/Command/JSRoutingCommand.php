@@ -9,7 +9,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use NetBull\CoreBundle\Routing\Extractor;
 use NetBull\CoreBundle\Routing\ExtractorInterface;
 
 #[AsCommand(name: 'netbull:core:js-routing', description: 'Dumps exposed routes to the filesystem')]
@@ -21,31 +20,18 @@ class JSRoutingCommand extends Command
     private string $targetPath;
 
     /**
-     * @var Extractor|ExtractorInterface|null
-     */
-    private Extractor|null|ExtractorInterface $extractor;
-
-    /**
      * @var bool
      */
     private bool $canExecute = true;
-
-    /**
-     * @var ParameterBagInterface|null
-     */
-    private ?ParameterBagInterface $parameterBag;
 
     /**
      * @param string|null $name
      * @param ParameterBagInterface|null $parameterBag
      * @param ExtractorInterface|null $extractor
      */
-    public function __construct(string $name = null, ParameterBagInterface $parameterBag = null, ExtractorInterface $extractor = null)
+    public function __construct(string $name = null, private ?ParameterBagInterface $parameterBag = null, private ?ExtractorInterface $extractor = null)
     {
         parent::__construct($name);
-
-        $this->parameterBag = $parameterBag;
-        $this->extractor = $extractor;
     }
 
     /**

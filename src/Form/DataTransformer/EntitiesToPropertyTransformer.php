@@ -15,54 +15,30 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 class EntitiesToPropertyTransformer implements DataTransformerInterface
 {
     /**
-     * @var EntityManagerInterface
-     */
-    protected EntityManagerInterface $em;
-
-    /**
-     * @var string
-     */
-    protected string $className;
-
-    /**
-     * @var string|null
-     */
-    protected ?string $textProperty;
-
-    /**
-     * @var string
-     */
-    protected string $primaryKey;
-
-    /**
      * @param EntityManagerInterface $em
-     * @param string $class
+     * @param string $className
      * @param string|null $textProperty
      * @param string $primaryKey
      */
-    public function __construct(EntityManagerInterface $em, string $class, string $textProperty = null, string $primaryKey = 'id')
+    public function __construct(protected EntityManagerInterface $em, protected string $className, protected ?string $textProperty = null, protected string $primaryKey = 'id')
     {
-        $this->em = $em;
-        $this->className = $class;
-        $this->textProperty = $textProperty;
-        $this->primaryKey = $primaryKey;
     }
 
     /**
      * Transform initial entities to array
-     * @param mixed $entities
+     * @param mixed $value
      * @return mixed
      */
-    public function transform(mixed $entities): mixed
+    public function transform(mixed $value): mixed
     {
-        if (is_null($entities) || count($entities) === 0) {
+        if (is_null($value) || count($value) === 0) {
             return [];
         }
 
         $data = [];
         $accessor = PropertyAccess::createPropertyAccessor();
 
-        foreach ($entities as $entity) {
+        foreach ($value as $entity) {
             $text = is_null($this->textProperty)
                 ? (string)$entity
                 : $accessor->getValue($entity, $this->textProperty);
@@ -76,12 +52,12 @@ class EntitiesToPropertyTransformer implements DataTransformerInterface
 
     /**
      * Transform array to a collection of entities
-     * @param mixed $values
+     * @param mixed $value
      * @return mixed
      */
-    public function reverseTransform(mixed $values): mixed
+    public function reverseTransform(mixed $value): mixed
     {
-        if (!is_array($values) || count($values) === 0) {
+        if (!is_array($value) || count($value) === 0) {
             return [];
         }
 
@@ -92,7 +68,7 @@ class EntitiesToPropertyTransformer implements DataTransformerInterface
             ->select('entity')
             ->from($this->className, 'entity')
             ->where('entity.'.$this->primaryKey.' IN (:ids)')
-            ->setParameter('ids', $values)
+            ->setParameter('ids', $value)
             ->getQuery()
             ->getResult();
 

@@ -15,14 +15,13 @@
     "require": {
         "php": "8.*",
         "ext-json": "*",
-        "beberlei/doctrineextensions": "1.5.*",
-        "symfony/framework-bundle": "6.4.*",
-        "symfony/twig-bundle": "6.4.*",
+        "symfony/framework-bundle": "7.2.*",
+        "symfony/twig-bundle": "7.2.*",
         "symfony/orm-pack": "2.*",
         "giggsey/libphonenumber-for-php": "8.12.*",
-        "symfony/form": "6.4.*",
-        "symfony/validator": "6.4.*",
-        "symfony/intl": "6.4.*"
+        "symfony/form": "7.2.*",
+        "symfony/validator": "7.2.*",
+        "symfony/intl": "7.2.*"
     },
     "autoload": {
         "psr-4": {

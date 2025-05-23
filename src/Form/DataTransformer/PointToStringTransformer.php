@@ -22,11 +22,10 @@ class PointToStringTransformer implements DataTransformerInterface
     }
 
     /**
-     * Transforms a string to an object.
      * @param mixed $value
-     * @return mixed
+     * @return Point|null
      */
-    public function reverseTransform(mixed $value): mixed
+    public function reverseTransform(mixed $value): ?Point
     {
         if (!$value) {
             return null;
@@ -39,10 +38,7 @@ class PointToStringTransformer implements DataTransformerInterface
         $coordinates = explode(', ', $value);
 
         if (count($coordinates) !== 2) {
-            throw new TransformationFailedException(sprintf(
-                'The Coordinates should contain latitude and longitude!',
-                $value
-            ));
+            throw new TransformationFailedException('The Coordinates should contain latitude and longitude!');
         }
 
         return new Point($coordinates[0], $coordinates[1]);

@@ -35,9 +35,6 @@ class PhoneNumber extends Type
         if (method_exists($platform, 'getStringTypeDeclarationSQL')) {
             return $platform->getStringTypeDeclarationSQL(['length' => 35]);
         }
-        if (method_exists($platform, 'getVarcharTypeDeclarationSQL')) {
-            return $platform->getVarcharTypeDeclarationSQL(['length' => 35]);
-        }
 
         return '';
     }

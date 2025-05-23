@@ -12,18 +12,10 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 class PhoneNumberToArrayTransformer implements DataTransformerInterface
 {
     /**
-     * @var array
-     */
-    private array $countryChoices;
-
-    /**
-     * Constructor.
-     *
      * @param array $countryChoices
      */
-    public function __construct(array $countryChoices)
+    public function __construct(protected array $countryChoices)
     {
-        $this->countryChoices = $countryChoices;
     }
 
     /**

@@ -12,43 +12,23 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 class PhoneNumberToStringTransformer implements DataTransformerInterface
 {
     /**
-     * Default region code.
-     *
-     * @var string
-     */
-    private string $defaultRegion;
-
-    /**
-     * Default region codes.
-     *
-     * @var array
-     */
-    private array $defaultRegions;
-
-    /**
-     * Display format.
-     *
-     * @var int
-     */
-    private int $format;
-
-    /**
      * @param string $defaultRegion
      * @param array $defaultRegions
      * @param int $format
      */
-    public function __construct(string $defaultRegion = PhoneNumberUtil::UNKNOWN_REGION, array $defaultRegions = [], int $format = PhoneNumberFormat::INTERNATIONAL)
+    public function __construct(
+        protected string $defaultRegion = PhoneNumberUtil::UNKNOWN_REGION,
+        protected array $defaultRegions = [],
+        protected int $format = PhoneNumberFormat::INTERNATIONAL
+    )
     {
-        $this->defaultRegion = $defaultRegion;
-        $this->defaultRegions = $defaultRegions;
-        $this->format = $format;
     }
 
     /**
      * @param mixed $value
-     * @return mixed|string|null
+     * @return string
      */
-    public function transform(mixed $value): mixed
+    public function transform(mixed $value): string
     {
         if (null === $value) {
             return '';
@@ -67,9 +47,9 @@ class PhoneNumberToStringTransformer implements DataTransformerInterface
 
     /**
      * @param mixed $value
-     * @return mixed
+     * @return PhoneNumber|null
      */
-    public function reverseTransform(mixed $value): mixed
+    public function reverseTransform(mixed $value): ?PhoneNumber
     {
         if (!$value && '0' !== $value) {
             return null;

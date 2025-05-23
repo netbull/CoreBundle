@@ -5,23 +5,11 @@ namespace NetBull\CoreBundle\ORM\Objects;
 class Range
 {
     /**
-     * @var int
-     */
-    private int $min;
-
-    /**
-     * @var int
-     */
-    private int $max;
-
-    /**
      * @param int $min
      * @param int $max
      */
-    public function __construct(int $min, int $max)
+    public function __construct(private int $min, private int $max)
     {
-        $this->min = $min;
-        $this->max = $max;
     }
 
     /**

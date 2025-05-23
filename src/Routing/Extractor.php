@@ -10,30 +10,12 @@ use Symfony\Component\Routing\RouterInterface;
 class Extractor implements ExtractorInterface
 {
     /**
-     * @var RouterInterface
-     */
-    protected RouterInterface $router;
-
-    /**
-     * @var string
-     */
-    protected string $cacheDir;
-
-    /**
-     * @var array
-     */
-    protected array $bundles;
-
-    /**
      * @param RouterInterface $router
      * @param string $cacheDir
      * @param array $bundles
      */
-    public function __construct(RouterInterface $router, string $cacheDir, array $bundles = [])
+    public function __construct(protected RouterInterface $router, protected string $cacheDir, protected array $bundles = [])
     {
-        $this->router = $router;
-        $this->cacheDir = $cacheDir;
-        $this->bundles = $bundles;
     }
 
     /**

@@ -14,40 +14,27 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 class EntityToPropertySimpleTransformer implements DataTransformerInterface
 {
     /**
-     * @var EntityManagerInterface
-     */
-    protected EntityManagerInterface $em;
-
-    /**
-     * @var string
-     */
-    protected string $className;
-
-    /**
-     * EntityToPropertySimpleTransformer constructor.
      * @param EntityManagerInterface $em
-     * @param $class
+     * @param string $className
      */
-    public function __construct(EntityManagerInterface $em, $class)
+    public function __construct(protected EntityManagerInterface $em, protected string $className)
     {
-        $this->em = $em;
-        $this->className = $class;
     }
 
     /**
      * Transform entity to array
-     * @param mixed $entity
+     * @param mixed $value
      * @return mixed
      */
-    public function transform(mixed $entity): mixed
+    public function transform(mixed $value): mixed
     {
-        if (null === $entity) {
-            return $entity;
+        if (null === $value) {
+            return null;
         }
 
         $accessor = PropertyAccess::createPropertyAccessor();
 
-        return $accessor->getValue($entity, 'id');
+        return $accessor->getValue($value, 'id');
     }
 
     /**

@@ -5,23 +5,11 @@ namespace NetBull\CoreBundle\ORM\Objects;
 class Point
 {
     /**
-     * @var float
-     */
-    private float $latitude;
-
-    /**
-     * @var float
-     */
-    private float $longitude;
-
-    /**
      * @param float $latitude
      * @param float $longitude
      */
-    public function __construct(float $latitude, float $longitude)
+    public function __construct(private float $latitude, private float $longitude)
     {
-        $this->latitude = $latitude;
-        $this->longitude = $longitude;
     }
 
     /**

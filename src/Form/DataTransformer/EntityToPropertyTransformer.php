@@ -16,67 +16,42 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 class EntityToPropertyTransformer implements DataTransformerInterface
 {
     /**
-     * @var EntityManagerInterface
-     */
-    protected EntityManagerInterface $em;
-
-    /**
-     * @var string
-     */
-    protected string $className;
-
-    /**
-     * @var string|null
-     */
-    protected ?string $textProperty;
-
-    /**
-     * @var string
-     */
-    protected string $primaryKey;
-
-    /**
-     * @var array
-     */
-    protected array $data;
-
-    /**
      * @param EntityManagerInterface $em
-     * @param string $class
+     * @param string $className
      * @param string|null $textProperty
      * @param string $primaryKey
      * @param array $data
      */
-    public function __construct(EntityManagerInterface $em, string $class, string $textProperty = null, string $primaryKey = 'id', array $data = [])
+    public function __construct(
+        protected EntityManagerInterface $em,
+        protected string $className,
+        protected ?string $textProperty = null,
+        protected string $primaryKey = 'id',
+        protected array $data = [])
     {
-        $this->em = $em;
-        $this->className = $class;
-        $this->textProperty = $textProperty;
-        $this->primaryKey = $primaryKey;
-        $this->data = $data;
     }
 
     /**
      * Transform entity to array
-     * @param mixed $entity
-     * @return mixed
+     * @param mixed $value
+     * @return array
      */
-    public function transform(mixed $entity): mixed
+    public function transform(mixed $value): array
     {
         $data = [];
 
-        if (null === $entity) {
-            return $data;
+        if (null === $value) {
+            return [];
         }
 
         $accessor = PropertyAccess::createPropertyAccessor();
         $text = is_null($this->textProperty)
-            ? (string)$entity
-            : $accessor->getValue($entity, $this->textProperty);
+            ? (string)$value
+            : $accessor->getValue($value, $this->textProperty);
 
         $attr = [];
         foreach ( $this->data as $d ) {
-            $value = $accessor->getValue($entity, $d);
+            $value = $accessor->getValue($value, $d);
             if ( $value instanceof PersistentCollection || $value instanceof ArrayCollection ) {
                 $value = $value->first();
             }
@@ -84,7 +59,7 @@ class EntityToPropertyTransformer implements DataTransformerInterface
             $attr[$d] = $value;
         }
 
-        $data[$accessor->getValue($entity, $this->primaryKey)] = [
+        $data[$accessor->getValue($value, $this->primaryKey)] = [
             'text' => $text,
             'attr' => $attr
         ];

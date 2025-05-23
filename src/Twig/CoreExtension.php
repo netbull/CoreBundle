@@ -17,30 +17,12 @@ use Twig\TwigTest;
 class CoreExtension extends AbstractExtension
 {
     /**
-     * @var RouterInterface
-     */
-    private RouterInterface $router;
-
-    /**
-     * @var RequestStack
-     */
-    private RequestStack $requestStack;
-
-    /**
-     * @var ParameterBagInterface
-     */
-    private ParameterBagInterface $parameterBag;
-
-    /**
      * @param RouterInterface $router
      * @param RequestStack $requestStack
      * @param ParameterBagInterface $parameterBag
      */
-    public function __construct(RouterInterface $router, RequestStack $requestStack, ParameterBagInterface $parameterBag)
+    public function __construct(private RouterInterface $router, private RequestStack $requestStack, private ParameterBagInterface $parameterBag)
     {
-        $this->router = $router;
-        $this->requestStack = $requestStack;
-        $this->parameterBag = $parameterBag;
     }
 
     /**

@@ -12,11 +12,6 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 class AjaxType extends DynamicType
 {
     /**
-     * @var RouterInterface
-     */
-    protected RouterInterface $router;
-
-    /**
      * @var int
      */
     protected int $minimumInputLength;
@@ -31,11 +26,10 @@ class AjaxType extends DynamicType
      * @param RouterInterface $router
      * @param ParameterBagInterface $parameterBag
      */
-    public function __construct(EntityManagerInterface $em, RouterInterface $router, ParameterBagInterface $parameterBag)
+    public function __construct(protected EntityManagerInterface $em, protected RouterInterface $router, ParameterBagInterface $parameterBag)
     {
         parent::__construct($em);
 
-        $this->router = $router;
         $this->minimumInputLength = $parameterBag->get('netbull_core.form_types.ajax.minimum_input_length');
         $this->perPage = $parameterBag->get('netbull_core.form_types.ajax.page_limit');
     }
