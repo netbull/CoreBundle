@@ -1,3 +1,10 @@
+## [7.0.3](https://github.com/netbull/CoreBundle/compare/v7.0.2...v7.0.3) (2025-06-27)
+
+
+### Bug Fixes
+
+* inflect count ([c00283d](https://github.com/netbull/CoreBundle/commit/c00283dd341804893c42ceff530cb1cc96ba0ff9))
+
 ## [7.0.2](https://github.com/netbull/CoreBundle/compare/v7.0.1...v7.0.2) (2025-05-23)
 
 
