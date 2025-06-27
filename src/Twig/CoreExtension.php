@@ -204,7 +204,7 @@ class CoreExtension extends AbstractExtension
      */
     public function inflect(string $string, int $pluralize = 0) : string
     {
-        return $pluralize ? Inflect::pluralize($string) : Inflect::singularize($string);
+        return $pluralize === 0 || $pluralize > 1 ? Inflect::pluralize($string) : Inflect::singularize($string);
     }
 
     /**
