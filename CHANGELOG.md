@@ -1,3 +1,10 @@
+## [7.0.4](https://github.com/netbull/CoreBundle/compare/v7.0.3...v7.0.4) (2025-10-14)
+
+
+### Bug Fixes
+
+* small performance improvement ([f54018d](https://github.com/netbull/CoreBundle/commit/f54018dbdbb149089421dc7be09df6d838b79f7f))
+
 ## [7.0.3](https://github.com/netbull/CoreBundle/compare/v7.0.2...v7.0.3) (2025-06-27)
 
 
