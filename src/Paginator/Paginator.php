@@ -74,7 +74,7 @@ class Paginator extends BasePaginator implements PaginatorInterface
     public function getRecords(): array
     {
         $idField = $this->idField;
-        $this->ids = array_map(function ($el) use ($idField) { return $el[$idField]; }, $this->getIds());
+        $this->ids = array_map(fn ($el) => $el[$idField], $this->getIds());
 
         if (count($this->ids) == 0) {
             return [];

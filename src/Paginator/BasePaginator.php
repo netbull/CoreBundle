@@ -103,7 +103,7 @@ abstract class BasePaginator
     private function doPaginate(bool $reset = false): array
     {
         $itemsCount = $this->getCount();
-        $records = $this->getRecords();
+        $records = 0 < $itemsCount ? $this->getRecords() : [];
 
         if ($reset) {
             $this->reset();
