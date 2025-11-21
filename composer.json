@@ -16,13 +16,13 @@
         "php": "8.*",
         "ext-json": "*",
         "beberlei/doctrineextensions": "1.5.*",
-        "symfony/framework-bundle": "7.2.*",
-        "symfony/twig-bundle": "7.2.*",
+        "symfony/framework-bundle": "7.2.*|7.3.*|7.4.*",
+        "symfony/twig-bundle": "7.2.*|7.3.*|7.4.*",
         "symfony/orm-pack": "2.*",
         "giggsey/libphonenumber-for-php": "8.12.*",
-        "symfony/form": "7.2.*",
-        "symfony/validator": "7.2.*",
-        "symfony/intl": "7.2.*"
+        "symfony/form": "7.2.*|7.3.*|7.4.*",
+        "symfony/validator": "7.2.*|7.4.*|7.3.*",
+        "symfony/intl": "7.2.*|7.3.*|7.4.*"
     },
     "autoload": {
         "psr-4": {
