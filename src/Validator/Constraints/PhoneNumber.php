@@ -3,7 +3,6 @@
 namespace NetBull\CoreBundle\Validator\Constraints;
 
 use libphonenumber\PhoneNumberUtil;
-use Doctrine\Common\Annotations\Annotation;
 use Symfony\Component\Validator\Constraint;
 
 class PhoneNumber extends Constraint
@@ -24,6 +23,16 @@ class PhoneNumber extends Constraint
     public string $type = self::ANY;
     public string $defaultRegion = PhoneNumberUtil::UNKNOWN_REGION;
     public array $defaultRegions = [];
+
+    public function __construct(string $defaultRegion = null, array $defaultRegions = [], $type = null, ?string $message = null, ?array $groups = null, mixed $payload = null, ?array $options = null)
+    {
+        parent::__construct($options, $groups, $payload);
+
+        $this->defaultRegion = $defaultRegion ?? $this->defaultRegion;
+        $this->defaultRegions = $defaultRegions ?? $this->defaultRegions;
+        $this->type = $type ?? $this->type;
+        $this->message = $message ?? $this->message;
+    }
 
     /**
      * @return string
