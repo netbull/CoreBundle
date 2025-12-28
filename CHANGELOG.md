@@ -1,3 +1,10 @@
+## [7.0.6](https://github.com/netbull/CoreBundle/compare/v7.0.5...v7.0.6) (2025-12-27)
+
+
+### Bug Fixes
+
+* added named args ([06ea9b8](https://github.com/netbull/CoreBundle/commit/06ea9b8f5789bada46aa7233f3ad0f21bc3c055d))
+
 ## [7.0.5](https://github.com/netbull/CoreBundle/compare/v7.0.4...v7.0.5) (2025-11-21)
 
 
