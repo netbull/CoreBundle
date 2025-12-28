@@ -226,7 +226,12 @@ class CoreExtension extends AbstractExtension
         if (empty($code)) {
             return '';
         }
-        return Countries::getName($code, $locale);
+
+        try {
+            return Countries::getName($code, $locale);
+        } catch (\Exception) {
+            return $code;
+        }
     }
 
     /**
