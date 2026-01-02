@@ -1,3 +1,10 @@
+## [7.0.7](https://github.com/netbull/CoreBundle/compare/v7.0.6...v7.0.7) (2025-12-28)
+
+
+### Bug Fixes
+
+* catch exception for country names ([5c27777](https://github.com/netbull/CoreBundle/commit/5c27777b5be6574d0e66a4e33cf12c909552ac80))
+
 ## [7.0.6](https://github.com/netbull/CoreBundle/compare/v7.0.5...v7.0.6) (2025-12-27)
 
 
