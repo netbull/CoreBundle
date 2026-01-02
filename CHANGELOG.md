@@ -1,3 +1,10 @@
+## [7.0.8](https://github.com/netbull/CoreBundle/compare/v7.0.7...v7.0.8) (2026-01-02)
+
+
+### Bug Fixes
+
+* bump phonenumber lib ([606ed88](https://github.com/netbull/CoreBundle/commit/606ed88a0790c3fb9b8b8a714f034c77f2001064))
+
 ## [7.0.7](https://github.com/netbull/CoreBundle/compare/v7.0.6...v7.0.7) (2025-12-28)
 
 
