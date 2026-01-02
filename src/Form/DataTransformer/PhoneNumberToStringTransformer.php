@@ -14,12 +14,12 @@ class PhoneNumberToStringTransformer implements DataTransformerInterface
     /**
      * @param string $defaultRegion
      * @param array $defaultRegions
-     * @param int $format
+     * @param PhoneNumberFormat $format
      */
     public function __construct(
         protected string $defaultRegion = PhoneNumberUtil::UNKNOWN_REGION,
         protected array $defaultRegions = [],
-        protected int $format = PhoneNumberFormat::INTERNATIONAL
+        protected PhoneNumberFormat $format = PhoneNumberFormat::INTERNATIONAL
     )
     {
     }

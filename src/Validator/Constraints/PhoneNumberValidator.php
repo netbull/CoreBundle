@@ -39,7 +39,7 @@ class PhoneNumberValidator extends ConstraintValidator
                         $phoneNumber = $phoneUtil->parse($value, $defaultRegion);
                         $match = true;
                         break;
-                    } catch (NumberParseException $e) {}
+                    } catch (NumberParseException) {}
                 }
 
                 if (!$match) {
@@ -49,7 +49,7 @@ class PhoneNumberValidator extends ConstraintValidator
             } else {
                 try {
                     $phoneNumber = $phoneUtil->parse($value, $constraint->defaultRegion);
-                } catch (NumberParseException $e) {
+                } catch (NumberParseException) {
                     $this->addViolation($value, $constraint);
                     return;
                 }
