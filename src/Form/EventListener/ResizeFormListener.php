@@ -5,6 +5,7 @@ namespace NetBull\CoreBundle\Form\EventListener;
 use ArrayAccess;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
@@ -102,20 +103,18 @@ class ResizeFormListener implements EventSubscriberInterface
             $form->remove($name);
         }
 
-        // Then add all rows again in the correct order
+        // Then add all rows again in the correct order. Items without an
+        // identifier value (e.g. not yet persisted) get a synthetic key so
+        // they are not silently dropped.
+		$transformedData = [];
+		$newIndex = 0;
         foreach ($data as $value) {
-			$name = $this->getPropertyValue($value);
+			$name = $this->getPropertyValue($value) ?: '__new_'.$newIndex++;
+			$transformedData[$name] = $value;
 			$form->add($name, $this->type, array_replace([
                 'property_path' => '['.$name.']',
             ], $this->options));
         }
-
-		$transformedData = [];
-		foreach ($data as $item) {
-			if ($name = $this->getPropertyValue($item)) {
-				$transformedData[$name] = $item;
-			}
-		}
 		$event->setData($transformedData);
     }
 
@@ -133,10 +132,18 @@ class ResizeFormListener implements EventSubscriberInterface
         }
 
 		$transformedData = [];
+		$newIndex = 0;
 		foreach ($data as $item) {
-			if ($name = $this->getPropertyValue($item)) {
-				$transformedData[$name] = $item;
+			$name = $this->getPropertyValue($item);
+			if (!$name) {
+				// New items have no identifier yet - key them synthetically
+				// instead of silently dropping them.
+				$name = '__new_'.$newIndex++;
+			} elseif (isset($transformedData[$name])) {
+				$form->addError(new FormError(sprintf('Duplicate "%s" value "%s" submitted in the collection.', $this->property, $name)));
+				continue;
 			}
+			$transformedData[$name] = $item;
 		}
 
         // Remove all empty rows

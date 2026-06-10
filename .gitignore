@@ -2,3 +2,5 @@
 release.sh
 composer.lock
 vendor/
+.phpunit.result.cache
+.DS_Store

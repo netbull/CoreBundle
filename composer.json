@@ -28,5 +28,13 @@
         "psr-4": {
             "NetBull\\CoreBundle\\": "src/"
         }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "NetBull\\CoreBundle\\Tests\\": "tests/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^12"
     }
 }
