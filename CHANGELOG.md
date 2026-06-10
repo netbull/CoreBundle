@@ -1,3 +1,10 @@
+## [7.0.9](https://github.com/netbull/CoreBundle/compare/v7.0.8...v7.0.9) (2026-06-10)
+
+
+### Bug Fixes
+
+* improved resizeformlistener and added some tests ([2af4632](https://github.com/netbull/CoreBundle/commit/2af46325c1989fee4be886b081df1bcd7f85a7fa))
+
 ## [7.0.8](https://github.com/netbull/CoreBundle/compare/v7.0.7...v7.0.8) (2026-01-02)
 
 
