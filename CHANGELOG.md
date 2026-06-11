@@ -1,3 +1,10 @@
+## [7.0.10](https://github.com/netbull/CoreBundle/compare/v7.0.9...v7.0.10) (2026-06-11)
+
+
+### Bug Fixes
+
+* modernization ([12bf30c](https://github.com/netbull/CoreBundle/commit/12bf30c4d18c896484ef250412b2d7a33bd60704))
+
 ## [7.0.9](https://github.com/netbull/CoreBundle/compare/v7.0.8...v7.0.9) (2026-06-10)
 
 
