@@ -1,0 +1,157 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Call to an undefined method NetBull\\CoreBundle\\Routing\\ExtractorInterface\:\:getRoutes\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Command/JSRoutingCommand.php
+
+		-
+			message: '#^Call to function is_numeric\(\) with float\|int will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Form/DataTransformer/MoneyToStringTransformer.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between null and float\|int will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: src/Form/DataTransformer/MoneyToStringTransformer.php
+
+		-
+			message: '#^Undefined variable\: \$constraint$#'
+			identifier: variable.undefined
+			count: 1
+			path: src/Form/DataTransformer/PhoneNumberToStringTransformer.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: src/Form/DataTransformer/PhoneNumberToStringTransformer.php
+
+		-
+			message: '#^Variable \$constraint in empty\(\) is never defined\.$#'
+			identifier: empty.variable
+			count: 1
+			path: src/Form/DataTransformer/PhoneNumberToStringTransformer.php
+
+		-
+			message: '#^Parameter \#1 \$latitude of class NetBull\\CoreBundle\\ORM\\Objects\\Point constructor expects float, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Form/DataTransformer/PointToStringTransformer.php
+
+		-
+			message: '#^Parameter \#2 \$longitude of class NetBull\\CoreBundle\\ORM\\Objects\\Point constructor expects float, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Form/DataTransformer/PointToStringTransformer.php
+
+		-
+			message: '#^Variable \$prototype in PHPDoc tag @var does not exist\.$#'
+			identifier: varTag.variableNotFound
+			count: 1
+			path: src/Form/Type/UnorderedCollectionType.php
+
+		-
+			message: '#^Call to function method_exists\(\) with Doctrine\\DBAL\\Platforms\\AbstractPlatform and ''getStringTypeDeclar…'' will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/ORM/Types/PhoneNumber.php
+
+		-
+			message: '#^Expression on left side of \?\? is not nullable\.$#'
+			identifier: nullCoalesce.expr
+			count: 2
+			path: src/Paginator/BasePaginator.php
+
+		-
+			message: '#^Method NetBull\\CoreBundle\\Paginator\\BasePaginator\:\:__construct\(\) with return type void returns \$this\(NetBull\\CoreBundle\\Paginator\\BasePaginator\) but should not return anything\.$#'
+			identifier: return.void
+			count: 1
+			path: src/Paginator/BasePaginator.php
+
+		-
+			message: '#^Parameter \#1 \$string of function strtolower expects string, int\<min, \-1\>\|int\<1, max\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Paginator/Paginator.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between ''all'' and lowercase\-string&numeric\-string will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: src/Paginator/Paginator.php
+
+		-
+			message: '#^PHPDoc tag @return with type mixed is not subtype of native type Doctrine\\ORM\\QueryBuilder\.$#'
+			identifier: return.phpDocType
+			count: 1
+			path: src/Paginator/PaginatorRepositoryInterface.php
+
+		-
+			message: '#^Trait NetBull\\CoreBundle\\Repository\\RepositoryUtilsTrait is used zero times and is not analysed\.$#'
+			identifier: trait.unused
+			count: 1
+			path: src/Repository/RepositoryUtilsTrait.php
+
+		-
+			message: '#^Call to function is_null\(\) with null will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Utils/PDFUtils.php
+
+		-
+			message: '#^Parameter \#6 \$fill of method TCPDF\:\:MultiCell\(\) expects bool, int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Utils/PrintLabels.php
+
+		-
+			message: '#^Parameter \#8 \$x of method TCPDF\:\:MultiCell\(\) expects float\|null, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Utils/PrintLabels.php
+
+		-
+			message: '#^Parameter \#9 \$y of method TCPDF\:\:MultiCell\(\) expects float\|null, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Utils/PrintLabels.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between true and false will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/Utils/PrintLabels.php
+
+		-
+			message: '#^Variable \$defaultRegions on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.variable
+			count: 1
+			path: src/Validator/Constraints/PhoneNumber.php
+
+		-
+			message: '#^Access to an undefined property Symfony\\Component\\Validator\\Constraint\:\:\$defaultRegion\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Validator/Constraints/PhoneNumberValidator.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\Validator\\Constraint\:\:getMessage\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Validator/Constraints/PhoneNumberValidator.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\Validator\\Constraint\:\:getType\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: src/Validator/Constraints/PhoneNumberValidator.php
+
+		-
+			message: '#^Variable \$phoneNumber might not be defined\.$#'
+			identifier: variable.undefined
+			count: 2
+			path: src/Validator/Constraints/PhoneNumberValidator.php

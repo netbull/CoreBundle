@@ -2,11 +2,10 @@
 
 namespace NetBull\CoreBundle\Utils;
 
-class PrintLabels extends \TCPDF
+use TCPDF;
+
+class PrintLabels extends TCPDF
 {
-    /**
-     * @var PDFLabelFormat
-     */
     public PDFLabelFormat $format;
 
     // Left margin of labels
@@ -73,15 +72,15 @@ class PrintLabels extends \TCPDF
      * @var array
      */
     private $formats = [
-        'Labels'        => [ 'paper-size' => 'A4', 'orientation' => 'portrait', 'font-name' => 'helvetica', 'font-size' => 9, 'font-style' => '', 'NX' => 5, 'NY' => 13, 'metric'=>'mm', 'lMargin' => 5, 'tMargin' => 10.5, 'SpaceX' => 3, 'SpaceY' => .32, 'width' => 38, 'height' => 21, 'lPadding' => 0, 'tPadding' => 0 ],
-        'OrderLabels'   => [ 'paper-size' => 'A4', 'orientation' => 'portrait', 'font-name' => 'helvetica', 'font-size' => 12, 'font-style' => '', 'NX' => 3, 'NY' => 7, 'metric'=>'mm', 'lMargin' => 5, 'tMargin' => 5, 'SpaceX' => 0, 'SpaceY' => .32, 'width' => 70, 'height' => 42, 'lPadding' => 0, 'tPadding' => 0 ]
+        'Labels' => ['paper-size' => 'A4', 'orientation' => 'portrait', 'font-name' => 'helvetica', 'font-size' => 9, 'font-style' => '', 'NX' => 5, 'NY' => 13, 'metric' => 'mm', 'lMargin' => 5, 'tMargin' => 10.5, 'SpaceX' => 3, 'SpaceY' => .32, 'width' => 38, 'height' => 21, 'lPadding' => 0, 'tPadding' => 0],
+        'OrderLabels' => ['paper-size' => 'A4', 'orientation' => 'portrait', 'font-name' => 'helvetica', 'font-size' => 12, 'font-style' => '', 'NX' => 3, 'NY' => 7, 'metric' => 'mm', 'lMargin' => 5, 'tMargin' => 5, 'SpaceX' => 0, 'SpaceY' => .32, 'width' => 70, 'height' => 42, 'lPadding' => 0, 'tPadding' => 0],
     ];
 
     /**
      * Constructor.
      *
-     * @param array|string  $format Either the name of a Label Format in the Option Value table. or an array of Label Format values.
-     * @param string        $unit Unit of measure for the PDF document
+     * @param array|string $format Either the name of a Label Format in the Option Value table. or an array of Label Format values.
+     * @param string $unit Unit of measure for the PDF document
      */
     public function __construct($format, $unit = 'mm')
     {
@@ -126,9 +125,6 @@ class PrintLabels extends \TCPDF
 
     /**
      * initialize label format settings.
-     *
-     * @param $format
-     * @param $unit
      */
     public function labelSetFormat($format, $unit)
     {
@@ -154,25 +150,24 @@ class PrintLabels extends \TCPDF
 
     /**
      * Generate the pdf of one label (can be modified using SetGenerator)
-     *
-     * @param string $text
      */
-    public function generateLabel(string $text) {
+    public function generateLabel(string $text)
+    {
         $args = [
-            'w'             => $this->width,
-            'h'             => 0,
-            'txt'           => $text,
-            'border'        => 0,
-            'align'         => 'L',
-            'fill'          => 0,
-            'ln'            => 0,
-            'x'             => '',
-            'y'             => '',
-            'reseth'        => true,
-            'stretch'       => 0,
-            'ishtml'        => false,
-            'autopadding'   => false,
-            'maxh'          => $this->height,
+            'w' => $this->width,
+            'h' => 0,
+            'txt' => $text,
+            'border' => 0,
+            'align' => 'L',
+            'fill' => 0,
+            'ln' => 0,
+            'x' => '',
+            'y' => '',
+            'reseth' => true,
+            'stretch' => 0,
+            'ishtml' => false,
+            'autopadding' => false,
+            'maxh' => $this->height,
         ];
 
         if (true === $args['ishtml']) {
@@ -181,7 +176,7 @@ class PrintLabels extends \TCPDF
                 $args['txt'], $args['border'],
                 $args['ln'], $args['fill'],
                 $args['reseth'], $args['align'],
-                $args['autopadding']
+                $args['autopadding'],
             );
         } else {
             $this->multiCell($args['w'], $args['h'],
@@ -190,14 +185,13 @@ class PrintLabels extends \TCPDF
                 $args['ln'], $args['x'],
                 $args['y'], $args['reseth'],
                 $args['stretch'], $args['ishtml'],
-                $args['autopadding'], $args['maxh']
+                $args['autopadding'], $args['maxh'],
             );
         }
     }
+
     /**
      * Print a label.
-     *
-     * @param string $text
      */
     public function addPdfLabel(string $text)
     {
@@ -215,10 +209,10 @@ class PrintLabels extends \TCPDF
 
         $this->generateLabel($text);
 
-        $this->countY++;
+        ++$this->countY;
         if ($this->countY == $this->yNumber) {
             // End of column reached, we start a new one
-            $this->countX++;
+            ++$this->countX;
             $this->countY = 0;
         }
     }

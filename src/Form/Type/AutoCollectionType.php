@@ -6,9 +6,6 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType as BaseCollectionT
 
 class AutoCollectionType extends BaseCollectionType
 {
-    /**
-     * @return string
-     */
     public function getBlockPrefix(): string
     {
         return 'auto_collection';

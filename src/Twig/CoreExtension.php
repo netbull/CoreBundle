@@ -2,39 +2,31 @@
 
 namespace NetBull\CoreBundle\Twig;
 
+use Exception;
 use NetBull\CoreBundle\Paginator\Sorting;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\Intl\Countries;
-use Symfony\Component\DomCrawler\Crawler;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
 use NetBull\CoreBundle\Utils\Inflect;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Intl\Countries;
+use Symfony\Component\Routing\RouterInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
-use Twig\TwigTest;
 
 class CoreExtension extends AbstractExtension
 {
-    /**
-     * @param RouterInterface $router
-     * @param RequestStack $requestStack
-     * @param ParameterBagInterface $parameterBag
-     */
     public function __construct(private RouterInterface $router, private RequestStack $requestStack, private ParameterBagInterface $parameterBag)
     {
     }
 
-    /**
-     * @return array
-     */
     public function getFunctions(): array
     {
         return [
             new TwigFunction('pagination_sortable', [$this, 'sortable'], ['is_safe' => ['html']]),
             new TwigFunction('query_inputs', [$this, 'buildQueryInputs'], ['is_safe' => ['html']]),
             new TwigFunction('helperText', [$this, 'buildHelperText'], ['is_safe' => ['html']]),
-            new TwigFunction ('lipsum', [$this, 'loremIpsum'])
+            new TwigFunction('lipsum', [$this, 'loremIpsum']),
         ];
     }
 
@@ -44,7 +36,6 @@ class CoreExtension extends AbstractExtension
     public function getFilters(): array
     {
         return [
-            new TwigFilter('rename_pipe', [$this, 'renameByPipe']),
             new TwigFilter('inflect', [$this, 'inflect']),
             new TwigFilter('titleize', [$this, 'titleize']),
             new TwigFilter('country', [$this, 'getCountryName']),
@@ -52,25 +43,9 @@ class CoreExtension extends AbstractExtension
         ];
     }
 
-    /**
-     * @return TwigTest[]
-     */
-    public function getTests(): array
-    {
-        return [
-            new TwigTest('numeric', [$this, 'numericTest']),
-        ];
-    }
-
-    #########################################
-    #              Functions                #
-    #########################################
-    /**
-     * @param $pagination
-     * @param $label
-     * @param $field
-     * @return string
-     */
+    // ########################################
+    //              Functions                #
+    // ########################################
     public function sortable($pagination, $label, $field): string
     {
         $activeClass = $this->parameterBag->get('netbull_core.paginator.sortable.active_class');
@@ -85,7 +60,7 @@ class CoreExtension extends AbstractExtension
         if ($field === $sort->getField()) {
             $direction = $sort->getDirection();
 
-            $newDirection = $direction === Sorting::DIRECTION_ASC ? Sorting::DIRECTION_DESC : Sorting::DIRECTION_ASC;
+            $newDirection = Sorting::DIRECTION_ASC === $direction ? Sorting::DIRECTION_DESC : Sorting::DIRECTION_ASC;
             $hint = Sorting::DIRECTION_ASC === $direction ? 'Descending' : 'Ascending';
 
             // If we are on DESC sorting next should be the initial state to clear the sorting
@@ -97,16 +72,16 @@ class CoreExtension extends AbstractExtension
             } else {
                 $params = [
                     'field' => $field,
-                    'direction' => $newDirection
+                    'direction' => $newDirection,
                 ];
             }
             $link = $this->router->generate($pagination['route'], array_merge($pagination['routeParams'], $params));
-            $icon = $this->parameterBag->get('netbull_core.paginator.sortable.icons.'.$direction);
+            $icon = $this->parameterBag->get('netbull_core.paginator.sortable.icons.' . $direction);
             $string = sprintf('<a class="%s" href="%s" title="Sort %s">%s <i class="%s"></i></a>', $activeClass, $link, $hint, $label, $icon);
         } else {
             $link = $this->router->generate($pagination['route'], array_merge($pagination['routeParams'], [
                 'field' => $field,
-                'direction' => Sorting::DIRECTION_ASC
+                'direction' => Sorting::DIRECTION_ASC,
             ]));
             $icon = $this->parameterBag->get('netbull_core.paginator.sortable.icons.none');
             $string = sprintf('<a class="%s" href="%s" title="Sort Ascending">%s <i class="%s"></i></a>', $notActiveClass, $link, $label, $icon);
@@ -117,8 +92,6 @@ class CoreExtension extends AbstractExtension
 
     /**
      * Build Hidden fields based on the URL parameters
-     * @param $currentField
-     * @return string
      */
     public function buildQueryInputs($currentField): string
     {
@@ -126,10 +99,10 @@ class CoreExtension extends AbstractExtension
         $fields = '';
         foreach ($request->query->all() as $field => $value) {
             // Exclude the current field and the PAGE parameter
-            if ($field !== $currentField && $field !== 'page') {
+            if ($field !== $currentField && 'page' !== $field) {
                 if (is_array($value)) {
-                    foreach($value as $val) {
-                        $fields .= sprintf('<input type="hidden" name="%s" value="%s">', $field.'[]', $val);
+                    foreach ($value as $val) {
+                        $fields .= sprintf('<input type="hidden" name="%s" value="%s">', $field . '[]', $val);
                     }
                 } else {
                     $fields .= sprintf('<input type="hidden" name="%s" value="%s">', $field, $value);
@@ -142,18 +115,12 @@ class CoreExtension extends AbstractExtension
 
     /**
      * Build Helper icon
-     * @param $text
-     * @return mixed
      */
     public function buildHelperText($text): mixed
     {
         return sprintf('<i class="fa fa-question-circle text-primary helper-text" title="%s"></i>', $text);
     }
 
-    /**
-     * @param int $length
-     * @return string
-     */
     public function loremIpsum(int $length = 30): string
     {
         $string = [];
@@ -182,46 +149,37 @@ class CoreExtension extends AbstractExtension
             'leo',          'libero',      'ligula',       'litora',
             'lobortis',     'luctus',      'maecenas',     'magna',
             'magnis',       'malesuada',   'massa',        'mattis',
-            'mauris',       'metus',       'mi',           'molestie'
+            'mauris',       'metus',       'mi',           'molestie',
         ];
 
-        for ($i=0; $i < $length; $i++) {
+        for ($i = 0; $i < $length; ++$i) {
             $string[] = $words[rand(0, 99)];
         }
 
         return implode(' ', $string);
     }
 
-    #########################################
-    #                Filters                #
-    #########################################
+    // ########################################
+    //                Filters                #
+    // ########################################
 
     /**
      * Pluralize or Singularize a string
-     * @param string $string
-     * @param int $pluralize
-     * @return string
      */
-    public function inflect(string $string, int $pluralize = 0) : string
+    public function inflect(string $string, int $pluralize = 0): string
     {
-        return $pluralize === 0 || $pluralize > 1 ? Inflect::pluralize($string) : Inflect::singularize($string);
+        return 0 === $pluralize || $pluralize > 1 ? Inflect::pluralize($string) : Inflect::singularize($string);
     }
 
     /**
-     * @param string $string
-     * @return mixed|null|string|string[]
+     * @return mixed|string|string[]|null
      */
     public function titleize(string $string): mixed
     {
         return Inflect::titleize($string);
     }
 
-    /**
-     * @param string $code
-     * @param string $locale
-     * @return string
-     */
-    public function getCountryName(string $code, string $locale = '') : string
+    public function getCountryName(string $code, string $locale = ''): string
     {
         if (empty($code)) {
             return '';
@@ -229,16 +187,12 @@ class CoreExtension extends AbstractExtension
 
         try {
             return Countries::getName($code, $locale);
-        } catch (\Exception) {
+        } catch (Exception) {
             return $code;
         }
     }
 
-    /**
-     * @param string $string
-     * @return string
-     */
-    public function stripTagsSuper(string $string) : string
+    public function stripTagsSuper(string $string): string
     {
         if (!str_contains($string, '<body')) {
             $text = $string;
@@ -251,12 +205,9 @@ class CoreExtension extends AbstractExtension
         return $text;
     }
 
-    #########################################
-    #                 Tests                 #
-    #########################################
-    /**
-     * @return string
-     */
+    // ########################################
+    //                 Tests                 #
+    // ########################################
     public function getName(): string
     {
         return 'netbull_core.extension';

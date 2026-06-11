@@ -8,9 +8,7 @@ export default {
       throw new Error(`Path ${path} does not exists`);
     }
 
-    args.shift();
-
-    return this.route(routes[path]).apply(this, args);
+    return this.route(routes[path], ...args)();
   },
 
   route(route, ...args) {
@@ -18,7 +16,7 @@ export default {
       let i = 0;
       const params = [];
       for (i; args.length > i; i++) {
-        if (args[i]) {
+        if (args[i] !== undefined) {
           params[i] = args[i];
         }
       }

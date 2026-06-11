@@ -4,15 +4,10 @@ namespace NetBull\CoreBundle\Repository;
 
 trait RepositoryUtilsTrait
 {
-    ###################################################
-    #                       Helpers                   #
-    ###################################################
+    // ##################################################
+    //                       Helpers                   #
+    // ##################################################
 
-    /**
-     * @param array $target
-     * @param array $additions
-     * @return array|null
-     */
     protected function arrayCombine(array $target, array $additions): ?array
     {
         $tmp = null;

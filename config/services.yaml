@@ -22,5 +22,13 @@ services:
     NetBull\CoreBundle\Routing\Extractor:
         arguments: [ '@router', '%kernel.cache_dir%', '%kernel.bundles%' ]
 
+    NetBull\CoreBundle\Routing\ExtractorInterface: '@NetBull\CoreBundle\Routing\Extractor'
+
+    NetBull\CoreBundle\Command\JSRoutingCommand:
+        arguments: [ null, '@parameter_bag', '@NetBull\CoreBundle\Routing\Extractor' ]
+        tags:
+            - { name: console.command }
+
     libphonenumber.phone_number_util:
         class: libphonenumber\PhoneNumberUtil
+        factory: [ 'libphonenumber\PhoneNumberUtil', 'getInstance' ]

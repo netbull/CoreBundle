@@ -2,29 +2,21 @@
 
 namespace NetBull\CoreBundle\ORM\Types;
 
-use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Types\Type;
 use Exception;
 use geoPHP;
 
 class Multipolygon extends Type
 {
-    const MULTIPOLYGON = 'multipolygon';
+    public const MULTIPOLYGON = 'multipolygon';
 
-    /**
-     * @param array $column
-     * @param AbstractPlatform $platform
-     * @return string
-     */
     public function getSqlDeclaration(array $column, AbstractPlatform $platform): string
     {
         return 'MULTIPOLYGON';
     }
 
     /**
-     * @param mixed $value
-     * @param AbstractPlatform $platform
-     * @return mixed
      * @throws Exception
      */
     public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): mixed
@@ -47,9 +39,6 @@ class Multipolygon extends Type
     }
 
     /**
-     * @param mixed $value
-     * @param AbstractPlatform $platform
-     * @return mixed
      * @throws Exception
      */
     public function convertToPHPValue(mixed $value, AbstractPlatform $platform): mixed
@@ -71,37 +60,21 @@ class Multipolygon extends Type
         return $poly;
     }
 
-    /**
-     * @return bool
-     */
     public function canRequireSQLConversion(): bool
     {
         return true;
     }
 
-    /**
-     * @param $sqlExpr
-     * @param AbstractPlatform $platform
-     * @return string
-     */
     public function convertToDatabaseValueSQL($sqlExpr, AbstractPlatform $platform): string
     {
         return sprintf('ST_GeomFromText(%s)', $sqlExpr);
     }
 
-    /**
-     * @param $sqlExpr
-     * @param $platform
-     * @return string
-     */
     public function convertToPHPValueSQL($sqlExpr, $platform): string
     {
         return sprintf('ST_AsText(%s)', $sqlExpr);
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return self::MULTIPOLYGON;

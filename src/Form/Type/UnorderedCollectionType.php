@@ -13,17 +13,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UnorderedCollectionType extends AbstractType
 {
-	/**
-	 * @param FormBuilderInterface $builder
-	 * @param array $options
-	 * @return void
-	 */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         if ($options['allow_add'] && $options['prototype']) {
             $prototypeOptions = array_replace([
                 'required' => $options['required'],
-                'label' => $options['prototype_name'].'label__',
+                'label' => $options['prototype_name'] . 'label__',
             ], $options['entry_options']);
 
             if (null !== $options['prototype_data']) {
@@ -40,18 +35,15 @@ class UnorderedCollectionType extends AbstractType
             $options['entry_options'],
             $options['allow_add'],
             $options['allow_delete'],
-            $options['delete_empty']
+            $options['delete_empty'],
         );
 
         $builder->addEventSubscriber($resizeListener);
     }
 
-	/**
-	 * @param FormView $view
-	 * @param FormInterface $form
-	 * @param array $options
-	 * @return void
-	 */
+    /**
+     * @return void
+     */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars = array_replace($view->vars, [
@@ -65,12 +57,9 @@ class UnorderedCollectionType extends AbstractType
         }
     }
 
-	/**
-	 * @param FormView $view
-	 * @param FormInterface $form
-	 * @param array $options
-	 * @return void
-	 */
+    /**
+     * @return void
+     */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
         $prefixOffset = -2;
@@ -102,9 +91,6 @@ class UnorderedCollectionType extends AbstractType
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $entryOptionsNormalizer = function (Options $options, $value) {
@@ -114,7 +100,7 @@ class UnorderedCollectionType extends AbstractType
         };
 
         $resolver->setDefaults([
-			'property' => 'id',
+            'property' => 'id',
             'allow_add' => false,
             'allow_delete' => false,
             'prototype' => true,
@@ -134,11 +120,8 @@ class UnorderedCollectionType extends AbstractType
         $resolver->setAllowedTypes('delete_empty', ['bool', 'callable']);
     }
 
-	/**
-	 * @return string
-	 */
     public function getBlockPrefix(): string
-	{
+    {
         return 'unordered_collection';
     }
 }

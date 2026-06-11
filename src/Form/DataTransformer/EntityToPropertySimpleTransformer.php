@@ -9,22 +9,15 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 /**
  * Data transformer for single entity
  * Class EntityToPropertySimpleTransformer
- * @package NetBull\CoreBundle\Form\DataTransformer
  */
 class EntityToPropertySimpleTransformer implements DataTransformerInterface
 {
-    /**
-     * @param EntityManagerInterface $em
-     * @param string $className
-     */
     public function __construct(protected EntityManagerInterface $em, protected string $className)
     {
     }
 
     /**
      * Transform entity to array
-     * @param mixed $value
-     * @return mixed
      */
     public function transform(mixed $value): mixed
     {
@@ -39,8 +32,6 @@ class EntityToPropertySimpleTransformer implements DataTransformerInterface
 
     /**
      * Transform to single id value to an entity
-     * @param mixed $value
-     * @return mixed
      */
     public function reverseTransform(mixed $value): mixed
     {

@@ -4,9 +4,11 @@ namespace NetBull\CoreBundle\Utils;
 
 class PDFLabelFormat
 {
-    const TYPE_STRING = 0;
-    const TYPE_INT = 1;
-    const TYPE_FLOAT = 2;
+    public const TYPE_STRING = 0;
+
+    public const TYPE_INT = 1;
+
+    public const TYPE_FLOAT = 2;
 
     /**
      * Label Format fields stored in the 'value' field of the Option Value table.
@@ -118,25 +120,15 @@ class PDFLabelFormat
         ],
     ];
 
-    /**
-     * @var array
-     */
     protected array $values = [];
 
-    /**
-     * @param array $options
-     */
-    public function __construct( array $options = [])
+    public function __construct(array $options = [])
     {
         if (!empty($options)) {
             $this->setOptions($options);
         }
     }
 
-    /**
-     * @param array $options
-     * @return void
-     */
     public function setOptions(array $options): void
     {
         foreach ($this->defaults as $option => $defaults) {
@@ -147,11 +139,11 @@ class PDFLabelFormat
     /**
      * Get Label Format field from associative array.
      *
-     * @param string $field Name of a label format field.
-     * @param string|null $default
+     * @param string $field name of a label format field
+     *
      * @return float|int|mixed|null
      */
-    public function getValue(string $field, string $default = null): mixed
+    public function getValue(string $field, ?string $default = null): mixed
     {
         if (array_key_exists($field, $this->defaults)) {
             switch ($this->defaults[$field]['type']) {
@@ -163,8 +155,10 @@ class PDFLabelFormat
                     $f = sprintf('%05.3f', $this->values[$field]);
                     $f = rtrim($f, '0');
                     $f = rtrim($f, '.');
+
                     return (float) (empty($f) ? '0' : $f);
             }
+
             return $this->values[$field];
         }
 
@@ -173,14 +167,13 @@ class PDFLabelFormat
 
     /**
      * Check if field is metric
-     * @param $field
-     * @return bool
      */
     public function isMetric($field): bool
     {
-        if ( array_key_exists($field, $this->defaults) ){
+        if (array_key_exists($field, $this->defaults)) {
             return (isset($this->defaults[$field]['metric'])) ? $this->defaults[$field]['metric'] : false;
         }
+
         return false;
     }
 }

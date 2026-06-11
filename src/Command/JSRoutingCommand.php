@@ -2,51 +2,32 @@
 
 namespace NetBull\CoreBundle\Command;
 
+use NetBull\CoreBundle\Routing\ExtractorInterface;
 use RuntimeException;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use NetBull\CoreBundle\Routing\ExtractorInterface;
 
 #[AsCommand(name: 'netbull:core:js-routing', description: 'Dumps exposed routes to the filesystem')]
 class JSRoutingCommand extends Command
 {
-    /**
-     * @var string
-     */
     private string $targetPath;
 
-    /**
-     * @var bool
-     */
     private bool $canExecute = true;
 
-    /**
-     * @param string|null $name
-     * @param ParameterBagInterface|null $parameterBag
-     * @param ExtractorInterface|null $extractor
-     */
-    public function __construct(string $name = null, private ?ParameterBagInterface $parameterBag = null, private ?ExtractorInterface $extractor = null)
+    public function __construct(?string $name = null, private ?ParameterBagInterface $parameterBag = null, private ?ExtractorInterface $extractor = null)
     {
         parent::__construct($name);
     }
 
-    /**
-     * @return void
-     */
     protected function configure(): void
     {
         $this->addOption('target', null, InputOption::VALUE_OPTIONAL, 'Override the target directory to dump routes in.');
     }
 
-    /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     * @return void
-     */
     protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         parent::initialize($input, $output);
@@ -57,14 +38,9 @@ class JSRoutingCommand extends Command
             $this->canExecute = false;
         }
 
-        $this->targetPath = $input->getOption('target') ?: $this->parameterBag->get('kernel.project_dir').'/'.$this->parameterBag->get('netbull_core.js_routes_path');
+        $this->targetPath = $input->getOption('target') ?: $this->parameterBag->get('kernel.project_dir') . '/' . $this->parameterBag->get('netbull_core.js_routes_path');
     }
 
-    /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     * @return int
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (!$this->canExecute) {
@@ -96,26 +72,24 @@ class JSRoutingCommand extends Command
 
         $templates = [
             'js' => "this.%s = route('%s');\n",
-            'es6' => "\t\t\t'%s': '%s',\n"
+            'es6' => "\t\t\t'%s': '%s',\n",
         ];
 
         $type = $this->parameterBag->get('netbull_core.js_type');
 
         $routes = '';
         foreach ($this->extractor->getRoutes() as $name => $route) {
-            preg_match_all("/{(.*?)}/i", $route->getPath(), $routeParams);
+            preg_match_all('/{(.*?)}/i', $route->getPath(), $routeParams);
 
-            if (0 < count($routeParams)) {
-                $parameters = array_flip($routeParams[1]);
-                $normalizedRoute = preg_replace_callback("/{(.*?)}/i", function($m) use($parameters) {
-                    return ':' . ($parameters[$m[1]] + 1);
-                }, $route->getPath());
+            $parameters = array_flip($routeParams[1]);
+            $normalizedRoute = preg_replace_callback('/{(.*?)}/i', function ($m) use ($parameters) {
+                return ':' . ($parameters[$m[1]] + 1);
+            }, $route->getPath());
 
-                $routes .= sprintf($templates[$type], $name, $normalizedRoute);
-            }
+            $routes .= sprintf($templates[$type], $name, $normalizedRoute);
         }
 
-        $source = file_get_contents(__DIR__ . '/../Resources/js/router.' . $type . '.js');
+        $source = file_get_contents(__DIR__ . '/../../assets/js/router.' . $type . '.js');
         $content = str_replace('//<ROUTES>', $routes, $source);
 
         if (false === @file_put_contents($this->targetPath, $content)) {

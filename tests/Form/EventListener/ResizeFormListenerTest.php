@@ -58,7 +58,7 @@ class ResizeFormListenerTest extends TestCase
     {
         $form = $this->createCollectionForm(
             new ArrayCollection([new Item('3', 'three'), new Item(null, 'unsaved')]),
-            ['entry_type' => ItemDtoType::class, 'data_class' => null]
+            ['entry_type' => ItemDtoType::class, 'data_class' => null],
         );
 
         $this->assertTrue($form->has('3'));
@@ -218,7 +218,7 @@ class ResizeFormListenerTest extends TestCase
         $this->assertCount(1, $errors);
         $this->assertSame(
             'Duplicate "id" value "new_a" submitted in the collection.',
-            $errors[0]->getMessage()
+            $errors[0]->getMessage(),
         );
 
         $data = $form->getData();
@@ -268,7 +268,7 @@ class ResizeFormListenerTest extends TestCase
         $this->assertCount(1, $rootErrors);
         $this->assertSame(
             'Duplicate "id" value "dup" submitted in the collection.',
-            $rootErrors[0]->getMessage()
+            $rootErrors[0]->getMessage(),
         );
     }
 
@@ -308,7 +308,7 @@ class ResizeFormListenerTest extends TestCase
     {
         $form = $this->createCollectionForm(
             [['id' => '1', 'label' => 'one'], ['id' => '2', 'label' => 'two']],
-            ['allow_delete' => false]
+            ['allow_delete' => false],
         );
 
         $form->submit([

@@ -2,29 +2,21 @@
 
 namespace NetBull\CoreBundle\Form\DataTransformer;
 
+use NetBull\CoreBundle\ORM\Objects\Point;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
-use NetBull\CoreBundle\ORM\Objects\Point;
 
 class PointToStringTransformer implements DataTransformerInterface
 {
-    /**
-     * @param mixed $value
-     * @return mixed
-     */
     public function transform(mixed $value): mixed
     {
-        if (!(string)$value) {
+        if (!(string) $value) {
             return $value;
         }
 
         return $value->getLatitude() . ', ' . $value->getLongitude();
     }
 
-    /**
-     * @param mixed $value
-     * @return Point|null
-     */
     public function reverseTransform(mixed $value): ?Point
     {
         if (!$value) {
@@ -37,7 +29,7 @@ class PointToStringTransformer implements DataTransformerInterface
 
         $coordinates = explode(', ', $value);
 
-        if (count($coordinates) !== 2) {
+        if (2 !== count($coordinates)) {
             throw new TransformationFailedException('The Coordinates should contain latitude and longitude!');
         }
 

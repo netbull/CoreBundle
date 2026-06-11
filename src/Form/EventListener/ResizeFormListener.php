@@ -15,47 +15,24 @@ use Traversable;
 
 class ResizeFormListener implements EventSubscriberInterface
 {
-	/**
-	 * @var string
-	 */
     protected string $property;
 
-	/**
-	 * @var string
-	 */
     protected string $type;
 
-	/**
-	 * @var array
-	 */
     protected array $options;
 
-	/**
-	 * @var bool
-	 */
     protected bool $allowAdd;
 
-	/**
-	 * @var bool
-	 */
     protected bool $allowDelete;
 
-	/**
-	 * @var bool|callable
-	 */
+    /**
+     * @var bool|callable
+     */
     private $deleteEmpty;
 
-	/**
-	 * @var PropertyAccessor
-	 */
-	private PropertyAccessor $propertyAccessor;
+    private PropertyAccessor $propertyAccessor;
 
     /**
-     * @param string $property
-     * @param string $type
-     * @param array $options
-     * @param bool $allowAdd
-     * @param bool $allowDelete
      * @param bool|callable $deleteEmpty
      */
     public function __construct(string $property, string $type, array $options = [], bool $allowAdd = false, bool $allowDelete = false, $deleteEmpty = false)
@@ -66,14 +43,14 @@ class ResizeFormListener implements EventSubscriberInterface
         $this->allowDelete = $allowDelete;
         $this->options = $options;
         $this->deleteEmpty = $deleteEmpty;
-		$this->propertyAccessor = PropertyAccess::createPropertyAccessor();
+        $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
     }
 
-	/**s
-	 * @return array
-	 */
+    /**s
+     * @return array
+     */
     public static function getSubscribedEvents(): array
-	{
+    {
         return [
             FormEvents::PRE_SET_DATA => 'preSetData',
             FormEvents::PRE_SUBMIT => 'preSubmit',
@@ -81,10 +58,6 @@ class ResizeFormListener implements EventSubscriberInterface
         ];
     }
 
-	/**
-	 * @param FormEvent $event
-	 * @return void
-	 */
     public function preSetData(FormEvent $event): void
     {
         $form = $event->getForm();
@@ -106,45 +79,42 @@ class ResizeFormListener implements EventSubscriberInterface
         // Then add all rows again in the correct order. Items without an
         // identifier value (e.g. not yet persisted) get a synthetic key so
         // they are not silently dropped.
-		$transformedData = [];
-		$newIndex = 0;
+        $transformedData = [];
+        $newIndex = 0;
         foreach ($data as $value) {
-			$name = $this->getPropertyValue($value) ?: '__new_'.$newIndex++;
-			$transformedData[$name] = $value;
-			$form->add($name, $this->type, array_replace([
-                'property_path' => '['.$name.']',
+            $name = $this->getPropertyValue($value) ?: '__new_' . $newIndex++;
+            $transformedData[$name] = $value;
+            $form->add($name, $this->type, array_replace([
+                'property_path' => '[' . $name . ']',
             ], $this->options));
         }
-		$event->setData($transformedData);
+        $event->setData($transformedData);
     }
 
-	/**
-	 * @param FormEvent $event
-	 * @return void
-	 */
     public function preSubmit(FormEvent $event): void
     {
-		$form = $event->getForm();
-		$data = $event->getData();
+        $form = $event->getForm();
+        $data = $event->getData();
 
         if (!is_array($data)) {
             $data = [];
         }
 
-		$transformedData = [];
-		$newIndex = 0;
-		foreach ($data as $item) {
-			$name = $this->getPropertyValue($item);
-			if (!$name) {
-				// New items have no identifier yet - key them synthetically
-				// instead of silently dropping them.
-				$name = '__new_'.$newIndex++;
-			} elseif (isset($transformedData[$name])) {
-				$form->addError(new FormError(sprintf('Duplicate "%s" value "%s" submitted in the collection.', $this->property, $name)));
-				continue;
-			}
-			$transformedData[$name] = $item;
-		}
+        $transformedData = [];
+        $newIndex = 0;
+        foreach ($data as $item) {
+            $name = $this->getPropertyValue($item);
+            if (!$name) {
+                // New items have no identifier yet - key them synthetically
+                // instead of silently dropping them.
+                $name = '__new_' . $newIndex++;
+            } elseif (isset($transformedData[$name])) {
+                $form->addError(new FormError(sprintf('Duplicate "%s" value "%s" submitted in the collection.', $this->property, $name)));
+
+                continue;
+            }
+            $transformedData[$name] = $item;
+        }
 
         // Remove all empty rows
         if ($this->allowDelete) {
@@ -160,19 +130,15 @@ class ResizeFormListener implements EventSubscriberInterface
             foreach ($transformedData as $name => $value) {
                 if (!$form->has($name)) {
                     $form->add($name, $this->type, array_replace([
-                        'property_path' => '['.$name.']',
+                        'property_path' => '[' . $name . ']',
                     ], $this->options));
                 }
             }
         }
 
-		$event->setData($transformedData);
+        $event->setData($transformedData);
     }
 
-	/**
-	 * @param FormEvent $event
-	 * @return void
-	 */
     public function onSubmit(FormEvent $event): void
     {
         $form = $event->getForm();
@@ -229,12 +195,13 @@ class ResizeFormListener implements EventSubscriberInterface
         $event->setData($data);
     }
 
-	/**
-	 * @param ArrayAccess|array $item
-	 * @return mixed|null
-	 */
-	private function getPropertyValue($item)
+    /**
+     * @param ArrayAccess|array $item
+     *
+     * @return mixed|null
+     */
+    private function getPropertyValue($item)
     {
-		return $this->propertyAccessor->getValue($item, is_array($item) ? '['.$this->property.']' : $this->property);
-	}
+        return $this->propertyAccessor->getValue($item, is_array($item) ? '[' . $this->property . ']' : $this->property);
+    }
 }

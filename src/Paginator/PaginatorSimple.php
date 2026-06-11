@@ -6,30 +6,18 @@ use Doctrine\ORM\QueryBuilder;
 
 class PaginatorSimple extends BasePaginator implements PaginatorSimpleInterface
 {
-    /**
-     * @var array
-     */
     protected array $ids = [];
 
-    /**
-     * @var QueryBuilder|null
-     */
     protected ?QueryBuilder $query = null;
 
-    /**
-     * @return int
-     */
     public function getCount(): int
     {
         return count($this->ids);
     }
 
-    /**
-     * @return array
-     */
     public function getRecords(): array
     {
-        if (count($this->ids) == 0) {
+        if (0 == count($this->ids)) {
             return [];
         }
 
@@ -42,16 +30,12 @@ class PaginatorSimple extends BasePaginator implements PaginatorSimpleInterface
         return $this->query->getQuery()->getArrayResult();
     }
 
-    /**
-     * @return array
-     */
     public function getIds(): array
     {
         return $this->ids;
     }
 
     /**
-     * @param array $ids
      * @return $this
      */
     public function setIds(array $ids): PaginatorSimpleInterface
@@ -62,7 +46,6 @@ class PaginatorSimple extends BasePaginator implements PaginatorSimpleInterface
     }
 
     /**
-     * @param QueryBuilder $query
      * @return $this
      */
     public function setQuery(QueryBuilder $query): PaginatorSimpleInterface

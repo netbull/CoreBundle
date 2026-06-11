@@ -7,22 +7,13 @@ use Symfony\Component\Form\Extension\Core\DataTransformer\NumberToLocalizedStrin
 
 class NumberToStringTransformer extends NumberToLocalizedStringTransformer
 {
-    /**
-     * @param string $thousandsSeparator
-     * @param string $decimalSeparator
-     * @param int|null $scale
-     * @param bool|null $grouping
-     * @param int|null $roundingMode
-     */
-    public function __construct(protected string $thousandsSeparator = '.', protected string $decimalSeparator = ',', int $scale = null, ?bool $grouping = false, ?int $roundingMode = PHP_ROUND_HALF_UP)
+    public function __construct(protected string $thousandsSeparator = '.', protected string $decimalSeparator = ',', ?int $scale = null, ?bool $grouping = false, ?int $roundingMode = PHP_ROUND_HALF_UP)
     {
         parent::__construct($scale, $grouping, $roundingMode);
     }
 
     /**
      * Returns a preconfigured \NumberFormatter instance.
-     *
-     * @return NumberFormatter
      */
     protected function getNumberFormatter(): NumberFormatter
     {

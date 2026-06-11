@@ -2,19 +2,14 @@
 
 namespace NetBull\CoreBundle\Form\Type;
 
+use NetBull\CoreBundle\Form\DataTransformer\MoneyToStringTransformer;
+use Symfony\Component\Form\Extension\Core\DataTransformer\MoneyToLocalizedStringTransformer;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType as BaseType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType as BaseType;
-use Symfony\Component\Form\Extension\Core\DataTransformer\MoneyToLocalizedStringTransformer;
-use NetBull\CoreBundle\Form\DataTransformer\MoneyToStringTransformer;
 
 class MoneyType extends BaseType
 {
-    /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
-     * @return void
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $transformer = $options['localize'] ?
@@ -22,7 +17,7 @@ class MoneyType extends BaseType
                 $options['scale'],
                 $options['grouping'],
                 null,
-                $options['divisor']
+                $options['divisor'],
             ) :
             new MoneyToStringTransformer(
                 $options['thousands_separator'],
@@ -30,16 +25,12 @@ class MoneyType extends BaseType
                 $options['scale'],
                 $options['grouping'],
                 null,
-                $options['divisor']
+                $options['divisor'],
             );
 
         $builder->addViewTransformer($transformer);
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     * @return void
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
@@ -50,9 +41,6 @@ class MoneyType extends BaseType
         ]);
     }
 
-    /**
-     * @return string
-     */
     public function getBlockPrefix(): string
     {
         return 'money';

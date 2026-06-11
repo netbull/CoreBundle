@@ -3,20 +3,15 @@
 namespace NetBull\CoreBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Component\Validator\Constraints\Callback;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class CompoundRangeType extends AbstractType implements DataTransformerInterface
 {
-    /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
-     * @return void
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('min', IntegerType::class, [
@@ -28,11 +23,6 @@ class CompoundRangeType extends AbstractType implements DataTransformerInterface
         ->addViewTransformer($this);
     }
 
-    /**
-     * @param $value
-     * @param ExecutionContextInterface $context
-     * @return void
-     */
     public function validateRange($value, ExecutionContextInterface $context): void
     {
         $value = $this->transform($value);
@@ -55,10 +45,6 @@ class CompoundRangeType extends AbstractType implements DataTransformerInterface
         }
     }
 
-    /**
-     * @param $value
-     * @return array|null
-     */
     public function transform($value): ?array
     {
         if (null === $value) {
@@ -80,10 +66,6 @@ class CompoundRangeType extends AbstractType implements DataTransformerInterface
         ];
     }
 
-    /**
-     * @param $value
-     * @return string|null
-     */
     public function reverseTransform($value): ?string
     {
         if (!$value || !is_array($value) || 2 !== count($value)) {
@@ -93,10 +75,6 @@ class CompoundRangeType extends AbstractType implements DataTransformerInterface
         return implode('-', $value);
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     * @return void
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
@@ -105,9 +83,6 @@ class CompoundRangeType extends AbstractType implements DataTransformerInterface
         ]);
     }
 
-    /**
-     * @return string
-     */
     public function getBlockPrefix(): string
     {
         return 'compound_range';

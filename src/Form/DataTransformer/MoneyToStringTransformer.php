@@ -6,14 +6,6 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 
 class MoneyToStringTransformer extends NumberToStringTransformer
 {
-    /**
-     * @param string $thousandsSeparator
-     * @param string $decimalSeparator
-     * @param int|null $scale
-     * @param bool|null $grouping
-     * @param int|null $roundingMode
-     * @param int|null $divisor
-     */
     public function __construct(string $thousandsSeparator = '.', string $decimalSeparator = ',', ?int $scale = 2, ?bool $grouping = true, ?int $roundingMode = PHP_ROUND_HALF_UP, private ?int $divisor = 1)
     {
         if (null === $grouping) {
@@ -38,10 +30,10 @@ class MoneyToStringTransformer extends NumberToStringTransformer
      *
      * @param int|float $value Normalized number
      *
-     * @return string Localized money string
-     *
      * @throws TransformationFailedException if the given value is not numeric or
      *                                       if the value can not be transformed
+     *
+     * @return string Localized money string
      */
     public function transform($value): string
     {
@@ -60,10 +52,10 @@ class MoneyToStringTransformer extends NumberToStringTransformer
      *
      * @param string $value Localized money string
      *
-     * @return int|float|null Normalized number
-     *
      * @throws TransformationFailedException if the given value is not a string
      *                                       or if the value can not be transformed
+     *
+     * @return int|float|null Normalized number
      */
     public function reverseTransform($value): float|int|null
     {

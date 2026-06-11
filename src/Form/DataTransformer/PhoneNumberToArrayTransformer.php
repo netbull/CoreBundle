@@ -2,24 +2,20 @@
 
 namespace NetBull\CoreBundle\Form\DataTransformer;
 
-use libphonenumber\PhoneNumber;
-use libphonenumber\PhoneNumberUtil;
-use libphonenumber\PhoneNumberFormat;
 use libphonenumber\NumberParseException;
+use libphonenumber\PhoneNumber;
+use libphonenumber\PhoneNumberFormat;
+use libphonenumber\PhoneNumberUtil;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
 class PhoneNumberToArrayTransformer implements DataTransformerInterface
 {
-    /**
-     * @param array $countryChoices
-     */
     public function __construct(protected array $countryChoices)
     {
     }
 
     /**
-     * @param mixed $value
      * @return array|string[]
      */
     public function transform(mixed $value): array
@@ -45,10 +41,6 @@ class PhoneNumberToArrayTransformer implements DataTransformerInterface
         ];
     }
 
-    /**
-     * @param mixed $value
-     * @return mixed
-     */
     public function reverseTransform(mixed $value): mixed
     {
         if (!$value) {

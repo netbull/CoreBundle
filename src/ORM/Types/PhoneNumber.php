@@ -2,34 +2,26 @@
 
 namespace NetBull\CoreBundle\ORM\Types;
 
-use Doctrine\DBAL\Types\Type;
-use libphonenumber\PhoneNumberUtil;
-use libphonenumber\PhoneNumberFormat;
-use libphonenumber\NumberParseException;
-use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Types\ConversionException;
+use Doctrine\DBAL\Types\Type;
+use libphonenumber\NumberParseException;
 use libphonenumber\PhoneNumber as PhoneNumberBase;
+use libphonenumber\PhoneNumberFormat;
+use libphonenumber\PhoneNumberUtil;
 
 class PhoneNumber extends Type
 {
     /**
      * Phone number type name.
      */
-    const NAME = 'phone_number';
+    public const NAME = 'phone_number';
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return self::NAME;
     }
 
-    /**
-     * @param array $column
-     * @param AbstractPlatform $platform
-     * @return string
-     */
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
         if (method_exists($platform, 'getStringTypeDeclarationSQL')) {
@@ -40,9 +32,6 @@ class PhoneNumber extends Type
     }
 
     /**
-     * @param mixed $value
-     * @param AbstractPlatform $platform
-     * @return string|null
      * @throws ConversionException
      */
     public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
@@ -61,9 +50,6 @@ class PhoneNumber extends Type
     }
 
     /**
-     * @param mixed $value
-     * @param AbstractPlatform $platform
-     * @return mixed
      * @throws ConversionException
      */
     public function convertToPHPValue(mixed $value, AbstractPlatform $platform): mixed
@@ -81,10 +67,6 @@ class PhoneNumber extends Type
         }
     }
 
-    /**
-     * @param AbstractPlatform $platform
-     * @return bool
-     */
     public function requiresSQLCommentHint(AbstractPlatform $platform): bool
     {
         return true;

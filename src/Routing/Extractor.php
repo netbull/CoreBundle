@@ -9,18 +9,10 @@ use Symfony\Component\Routing\RouterInterface;
 
 class Extractor implements ExtractorInterface
 {
-    /**
-     * @param RouterInterface $router
-     * @param string $cacheDir
-     * @param array $bundles
-     */
     public function __construct(protected RouterInterface $router, protected string $cacheDir, protected array $bundles = [])
     {
     }
 
-    /**
-     * @return RouteCollection
-     */
     public function getRoutes(): RouteCollection
     {
         $collection = $this->router->getRouteCollection();
@@ -31,20 +23,15 @@ class Extractor implements ExtractorInterface
                 $routes->add($name, $route);
             }
         }
+
         return $routes;
     }
 
-    /**
-     * @return string
-     */
     public function getBaseUrl(): string
     {
         return $this->router->getContext()->getBaseUrl() ?: '';
     }
 
-    /**
-     * @return string
-     */
     public function getHost(): string
     {
         $requestContext = $this->router->getContext();
@@ -58,21 +45,15 @@ class Extractor implements ExtractorInterface
         return $host;
     }
 
-    /**
-     * @return string
-     */
     public function getScheme(): string
     {
         return $this->router->getContext()->getScheme();
     }
 
-    /**
-     * @return string
-     */
     public function getCachePath(): string
     {
         $cachePath = $this->cacheDir . DIRECTORY_SEPARATOR . 'netbullCore';
-        if ( !file_exists($cachePath) ) {
+        if (!file_exists($cachePath)) {
             mkdir($cachePath);
         }
 
@@ -87,12 +68,7 @@ class Extractor implements ExtractorInterface
         return $this->router->getRouteCollection()->getResources();
     }
 
-    /**
-     * @param Route $route
-     *
-     * @return bool
-     */
-    public function isRouteExposed( Route $route ): bool
+    public function isRouteExposed(Route $route): bool
     {
         return true === $route->getOption('expose')
             || 'true' === $route->getOption('expose');
@@ -100,8 +76,6 @@ class Extractor implements ExtractorInterface
 
     /**
      * Check whether server is serving this request from a non-standard port
-     *
-     * @return bool
      */
     private function usesNonStandardPort(): bool
     {
@@ -110,8 +84,6 @@ class Extractor implements ExtractorInterface
 
     /**
      * Check whether server is serving HTTP over a non-standard port
-     *
-     * @return bool
      */
     private function usesNonStandardHttpPort(): bool
     {
@@ -120,8 +92,6 @@ class Extractor implements ExtractorInterface
 
     /**
      * Check whether server is serving HTTPS over a non-standard port
-     *
-     * @return bool
      */
     private function usesNonStandardHttpsPort(): bool
     {

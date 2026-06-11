@@ -8,34 +8,16 @@ use Doctrine\ORM\QueryBuilder;
 
 class Paginator extends BasePaginator implements PaginatorInterface
 {
-    /**
-     * @var array
-     */
     protected array $ids = [];
 
-    /**
-     * @var int|null
-     */
     protected ?int $totalCount = null;
 
-    /**
-     * @var string
-     */
     protected string $idField = 'id';
 
-    /**
-     * @var QueryBuilder|null
-     */
     protected ?QueryBuilder $countQuery = null;
 
-    /**
-     * @var QueryBuilder|null
-     */
     protected ?QueryBuilder $idsQuery = null;
 
-    /**
-     * @var QueryBuilder|null
-     */
     protected ?QueryBuilder $query = null;
 
     /**
@@ -44,7 +26,6 @@ class Paginator extends BasePaginator implements PaginatorInterface
     protected array $additionalInfoQueries = [];
 
     /**
-     * @param string $field
      * @return $this
      */
     public function setIdField(string $field = 'id'): PaginatorInterface
@@ -55,7 +36,6 @@ class Paginator extends BasePaginator implements PaginatorInterface
     }
 
     /**
-     * @return int
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
@@ -68,15 +48,12 @@ class Paginator extends BasePaginator implements PaginatorInterface
         return $this->totalCount;
     }
 
-    /**
-     * @return array
-     */
     public function getRecords(): array
     {
         $idField = $this->idField;
         $this->ids = array_map(fn ($el) => $el[$idField], $this->getIds());
 
-        if (count($this->ids) == 0) {
+        if (0 == count($this->ids)) {
             return [];
         }
 
@@ -99,7 +76,6 @@ class Paginator extends BasePaginator implements PaginatorInterface
     }
 
     /**
-     * @param QueryBuilder $countQuery
      * @return $this
      */
     public function setCountQuery(QueryBuilder $countQuery): PaginatorInterface
@@ -109,20 +85,14 @@ class Paginator extends BasePaginator implements PaginatorInterface
         return $this;
     }
 
-    /**
-     * @return QueryBuilder
-     */
     public function getCountQuery(): QueryBuilder
     {
         return $this->countQuery;
     }
 
-    /**
-     * @return array
-     */
     public function getIds(): array
     {
-        if ($this->maxResults && strtolower($this->maxResults) !== self::ALL_PARAMETER) {
+        if ($this->maxResults && self::ALL_PARAMETER !== strtolower($this->maxResults)) {
             $this->idsQuery->setMaxResults($this->maxResults)->setFirstResult($this->getFirstResult());
         }
 
@@ -140,7 +110,6 @@ class Paginator extends BasePaginator implements PaginatorInterface
     }
 
     /**
-     * @param QueryBuilder $idsQuery
      * @return $this
      */
     public function setIdsQuery(QueryBuilder $idsQuery): PaginatorInterface
@@ -151,7 +120,6 @@ class Paginator extends BasePaginator implements PaginatorInterface
     }
 
     /**
-     * @param QueryBuilder $query
      * @return $this
      */
     public function setQuery(QueryBuilder $query): PaginatorInterface
@@ -162,7 +130,6 @@ class Paginator extends BasePaginator implements PaginatorInterface
     }
 
     /**
-     * @param QueryBuilder $additionalQuery
      * @return $this
      */
     public function setAdditionalQuery(QueryBuilder $additionalQuery): PaginatorInterface
@@ -173,7 +140,6 @@ class Paginator extends BasePaginator implements PaginatorInterface
     }
 
     /**
-     * @param QueryBuilder $additionalQuery
      * @return $this
      */
     public function addAdditionalQuery(QueryBuilder $additionalQuery): PaginatorInterface
@@ -183,31 +149,20 @@ class Paginator extends BasePaginator implements PaginatorInterface
         return $this;
     }
 
-    /**
-     * @return array
-     */
     public function getSelectedIds(): array
     {
         return $this->ids;
     }
 
-    /**
-     * @return void
-     */
     public function reset(): void
     {
         $this->totalCount = null;
     }
 
-    ####################################################
-    #                  Method Helpers                  #
-    ####################################################
+    // ###################################################
+    //                  Method Helpers                  #
+    // ###################################################
 
-    /**
-     * @param array $targets
-     * @param array $additions
-     * @return array
-     */
     protected function arrayCombine(array $targets, array $additions): array
     {
         $tmp = [];
@@ -215,10 +170,12 @@ class Paginator extends BasePaginator implements PaginatorInterface
             foreach ($additions as $addition) {
                 if ($target[$this->idField] == $addition[$this->idField]) {
                     $tmp[] = array_merge($target, $addition);
+
                     break;
                 }
             }
         }
+
         return $tmp;
     }
 }

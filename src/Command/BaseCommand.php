@@ -11,27 +11,17 @@ abstract class BaseCommand extends Command
 {
     /**
      * Debug switch
-     * @var bool
      */
     protected bool $debug = false;
 
-    /**
-     * @var OutputInterface
-     */
     protected OutputInterface $output;
 
-    /**
-     * @var ObjectManager|null $em
-     */
-    protected ObjectManager|null $em = null;
+    protected ?ObjectManager $em = null;
 
-    /**
-     * @return ObjectManager
-     */
     public function getManager(): ObjectManager
     {
         if (!$this->em) {
-            throw new LogicException('The DoctrineBundle is not registered in your application. Try running "composer require symfony/orm-pack".');
+            throw new LogicException('The DoctrineBundle is not registered in your application. Try running "composer require doctrine/orm doctrine/doctrine-bundle".');
         }
 
         return $this->em;
@@ -49,7 +39,6 @@ abstract class BaseCommand extends Command
 
     /**
      * Output used for nice debug
-     * @param $text
      */
     protected function output($text): void
     {

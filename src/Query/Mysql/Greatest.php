@@ -2,32 +2,28 @@
 
 namespace NetBull\CoreBundle\Query\Mysql;
 
+use Doctrine\ORM\Query\AST\Functions;
 use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\QueryException;
 use Doctrine\ORM\Query\SqlWalker;
-use Doctrine\ORM\Query\AST\Functions;
 use Doctrine\ORM\Query\TokenType;
 
 class Greatest extends Functions\FunctionNode
 {
-    protected $firstExpression, $secondExpression;
+    protected $firstExpression;
 
-    /**
-     * @param SqlWalker $sqlWalker
-     * @return string
-     */
+    protected $secondExpression;
+
     public function getSql(SqlWalker $sqlWalker): string
     {
         return sprintf(
-            "GREATEST(%s, %s)",
+            'GREATEST(%s, %s)',
             $this->firstExpression->dispatch($sqlWalker),
-            $this->secondExpression->dispatch($sqlWalker)
+            $this->secondExpression->dispatch($sqlWalker),
         );
     }
 
     /**
-     * @param Parser $parser
-     * @return void
      * @throws QueryException
      */
     public function parse(Parser $parser): void

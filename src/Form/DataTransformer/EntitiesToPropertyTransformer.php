@@ -2,36 +2,27 @@
 
 namespace NetBull\CoreBundle\Form\DataTransformer;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
  * Data transformer for multiple mode (i.e., multiple = true)
  * Class EntitiesToPropertyTransformer
- * @package NetBull\CoreBundle\Form\DataTransformer
  */
 class EntitiesToPropertyTransformer implements DataTransformerInterface
 {
-    /**
-     * @param EntityManagerInterface $em
-     * @param string $className
-     * @param string|null $textProperty
-     * @param string $primaryKey
-     */
     public function __construct(protected EntityManagerInterface $em, protected string $className, protected ?string $textProperty = null, protected string $primaryKey = 'id')
     {
     }
 
     /**
      * Transform initial entities to array
-     * @param mixed $value
-     * @return mixed
      */
     public function transform(mixed $value): mixed
     {
-        if (is_null($value) || count($value) === 0) {
+        if (is_null($value) || 0 === count($value)) {
             return [];
         }
 
@@ -40,10 +31,10 @@ class EntitiesToPropertyTransformer implements DataTransformerInterface
 
         foreach ($value as $entity) {
             $text = is_null($this->textProperty)
-                ? (string)$entity
+                ? (string) $entity
                 : $accessor->getValue($entity, $this->textProperty);
             $data[$accessor->getValue($entity, $this->primaryKey)] = [
-                'text' => $text
+                'text' => $text,
             ];
         }
 
@@ -52,12 +43,10 @@ class EntitiesToPropertyTransformer implements DataTransformerInterface
 
     /**
      * Transform array to a collection of entities
-     * @param mixed $value
-     * @return mixed
      */
     public function reverseTransform(mixed $value): mixed
     {
-        if (!is_array($value) || count($value) === 0) {
+        if (!is_array($value) || 0 === count($value)) {
             return [];
         }
 
@@ -67,7 +56,7 @@ class EntitiesToPropertyTransformer implements DataTransformerInterface
         $entities = $this->em->createQueryBuilder()
             ->select('entity')
             ->from($this->className, 'entity')
-            ->where('entity.'.$this->primaryKey.' IN (:ids)')
+            ->where('entity.' . $this->primaryKey . ' IN (:ids)')
             ->setParameter('ids', $value)
             ->getQuery()
             ->getResult();

@@ -2,29 +2,44 @@
 
 namespace NetBull\CoreBundle\Validator\Constraints;
 
+use Attribute;
 use libphonenumber\PhoneNumberUtil;
 use Symfony\Component\Validator\Constraint;
 
+#[Attribute(Attribute::TARGET_PROPERTY | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 class PhoneNumber extends Constraint
 {
-    const ANY = 'any';
-    const FIXED_LINE = 'fixed_line';
-    const MOBILE = 'mobile';
-    const PAGER = 'pager';
-    const PERSONAL_NUMBER = 'personal_number';
-    const PREMIUM_RATE = 'premium_rate';
-    const SHARED_COST = 'shared_cost';
-    const TOLL_FREE = 'toll_free';
-    const UAN = 'uan';
-    const VOIP = 'voip';
-    const VOICEMAIL = 'voicemail';
+    public const ANY = 'any';
+
+    public const FIXED_LINE = 'fixed_line';
+
+    public const MOBILE = 'mobile';
+
+    public const PAGER = 'pager';
+
+    public const PERSONAL_NUMBER = 'personal_number';
+
+    public const PREMIUM_RATE = 'premium_rate';
+
+    public const SHARED_COST = 'shared_cost';
+
+    public const TOLL_FREE = 'toll_free';
+
+    public const UAN = 'uan';
+
+    public const VOIP = 'voip';
+
+    public const VOICEMAIL = 'voicemail';
 
     public ?string $message = null;
+
     public string $type = self::ANY;
+
     public string $defaultRegion = PhoneNumberUtil::UNKNOWN_REGION;
+
     public array $defaultRegions = [];
 
-    public function __construct(string $defaultRegion = null, array $defaultRegions = [], $type = null, ?string $message = null, ?array $groups = null, mixed $payload = null, ?array $options = null)
+    public function __construct(?string $defaultRegion = null, array $defaultRegions = [], $type = null, ?string $message = null, ?array $groups = null, mixed $payload = null, ?array $options = null)
     {
         parent::__construct($options, $groups, $payload);
 
@@ -34,21 +49,14 @@ class PhoneNumber extends Constraint
         $this->message = $message ?? $this->message;
     }
 
-    /**
-     * @return string
-     */
     public function getType(): string
     {
         return match ($this->type) {
             self::FIXED_LINE, self::MOBILE, self::PAGER, self::PERSONAL_NUMBER, self::PREMIUM_RATE, self::SHARED_COST, self::TOLL_FREE, self::UAN, self::VOIP, self::VOICEMAIL => $this->type,
             default => self::ANY,
         };
-
     }
 
-    /**
-     * @return string|null
-     */
     public function getMessage(): ?string
     {
         if (null !== $this->message) {

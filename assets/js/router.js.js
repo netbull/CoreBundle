@@ -12,7 +12,7 @@ window.Netbull.Router = (function() {
         return function() {
             var i = 0, args = [];
             for ( i; arguments.length > i; i++ ) {
-                if ( arguments[i] ) {
+                if ( arguments[i] !== undefined ) {
                     args[i] = arguments[i];
                 }
             }
@@ -37,4 +37,4 @@ window.Netbull.Router = (function() {
     //<ROUTES>
 
     return this;
-})();
+}).call({});

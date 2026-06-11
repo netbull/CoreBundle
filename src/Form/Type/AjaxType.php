@@ -2,30 +2,19 @@
 
 namespace NetBull\CoreBundle\Form\Type;
 
-use Symfony\Component\Form\FormView;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Routing\RouterInterface;
 
 class AjaxType extends DynamicType
 {
-    /**
-     * @var int
-     */
     protected int $minimumInputLength;
 
-    /**
-     * @var int
-     */
     protected int $perPage;
 
-    /**
-     * @param EntityManagerInterface $em
-     * @param RouterInterface $router
-     * @param ParameterBagInterface $parameterBag
-     */
     public function __construct(protected EntityManagerInterface $em, protected RouterInterface $router, ParameterBagInterface $parameterBag)
     {
         parent::__construct($em);
@@ -34,9 +23,6 @@ class AjaxType extends DynamicType
         $this->perPage = $parameterBag->get('netbull_core.form_types.ajax.page_limit');
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
@@ -51,17 +37,12 @@ class AjaxType extends DynamicType
         ]);
     }
 
-    /**
-     * @param FormView $view
-     * @param FormInterface $form
-     * @param array $options
-     */
     public function finishView(FormView $view, FormInterface $form, array $options): void
     {
         parent::finishView($view, $form, $options);
 
         // make variables available to the view
-        $view->vars['remote_path'] = ( !$options['remote_route'] ) ? null : $this->router->generate($options['remote_route'], array_merge($options['remote_params'], [ 'perPage' => $options['perPage'] ]));
+        $view->vars['remote_path'] = (!$options['remote_route']) ? null : $this->router->generate($options['remote_route'], array_merge($options['remote_params'], ['perPage' => $options['perPage']]));
 
         $varNames = ['minimum_input_length', 'placeholder'];
 
@@ -70,9 +51,6 @@ class AjaxType extends DynamicType
         }
     }
 
-    /**
-     * @return string
-     */
     public function getBlockPrefix(): string
     {
         return 'ajax_type';

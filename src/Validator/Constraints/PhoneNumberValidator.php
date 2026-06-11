@@ -2,21 +2,17 @@
 
 namespace NetBull\CoreBundle\Validator\Constraints;
 
-use libphonenumber\PhoneNumberUtil;
-use libphonenumber\PhoneNumberType;
-use libphonenumber\PhoneNumberFormat;
 use libphonenumber\NumberParseException;
-use Symfony\Component\Validator\Constraint;
 use libphonenumber\PhoneNumber as PhoneNumberObject;
+use libphonenumber\PhoneNumberFormat;
+use libphonenumber\PhoneNumberType;
+use libphonenumber\PhoneNumberUtil;
+use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class PhoneNumberValidator extends ConstraintValidator
 {
-    /**
-     * @param $value
-     * @param Constraint $constraint
-     */
     public function validate($value, Constraint $constraint): void
     {
         if (null === $value || '' === $value) {
@@ -38,12 +34,15 @@ class PhoneNumberValidator extends ConstraintValidator
                     try {
                         $phoneNumber = $phoneUtil->parse($value, $defaultRegion);
                         $match = true;
+
                         break;
-                    } catch (NumberParseException) {}
+                    } catch (NumberParseException) {
+                    }
                 }
 
                 if (!$match) {
                     $this->addViolation($value, $constraint);
+
                     return;
                 }
             } else {
@@ -51,6 +50,7 @@ class PhoneNumberValidator extends ConstraintValidator
                     $phoneNumber = $phoneUtil->parse($value, $constraint->defaultRegion);
                 } catch (NumberParseException) {
                     $this->addViolation($value, $constraint);
+
                     return;
                 }
             }
@@ -61,6 +61,7 @@ class PhoneNumberValidator extends ConstraintValidator
 
         if (false === $phoneUtil->isValidNumber($phoneNumber)) {
             $this->addViolation($value, $constraint);
+
             return;
         }
 
@@ -87,15 +88,11 @@ class PhoneNumberValidator extends ConstraintValidator
         }
     }
 
-    /**
-     * @param $value
-     * @param Constraint $constraint
-     */
     private function addViolation($value, Constraint $constraint): void
     {
         $this->context->addViolation(
             $constraint->getMessage(),
-            array('{{ type }}' => $constraint->getType(), '{{ value }}' => $value)
+            ['{{ type }}' => $constraint->getType(), '{{ value }}' => $value],
         );
     }
 }

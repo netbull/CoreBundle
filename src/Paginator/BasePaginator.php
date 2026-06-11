@@ -9,52 +9,24 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 abstract class BasePaginator
 {
-    const ALL_PARAMETER = 'all';
+    public const ALL_PARAMETER = 'all';
 
-    /**
-     * @var Request|null
-     */
     protected ?Request $request;
 
-    /**
-     * @var int|null
-     */
     protected ?int $maxResults = null;
 
-    /**
-     * @var int|null
-     */
     protected ?int $page = 1;
 
-    /**
-     * @var string|null
-     */
     protected ?string $route;
 
-    /**
-     * @var array|null
-     */
     protected ?array $routeParams;
 
-    /**
-     * @var array
-     */
     protected array $sorting = [];
 
-    /**
-     * @var string|null
-     */
     protected ?string $queryFilter = null;
 
-    /**
-     * @var Closure|null
-     */
     protected ?Closure $itemNormalizer = null;
 
-    /**
-     * @param RequestStack $requestStack
-     *
-     */
     public function __construct(RequestStack $requestStack)
     {
         $this->request = $requestStack->getCurrentRequest();
@@ -62,25 +34,28 @@ abstract class BasePaginator
         $this->route = ($this->request) ? $this->request->attributes->get('_route') : null;
         $this->routeParams = ($this->request) ? array_merge($this->request->query->all(), $this->request->attributes->get('_route_params') ?? []) : null;
 
-        $params = ($this->request) ? array_merge($this->request->query->all(),$this->request->request->all()) : [];
+        $params = ($this->request) ? array_merge($this->request->query->all(), $this->request->request->all()) : [];
         $this->maxResults = 20;
         foreach (['perPage', 'pageSize'] as $maxResultsParam) {
             if (!array_key_exists($maxResultsParam, $params)) {
                 continue;
             }
             if (is_numeric($params[$maxResultsParam])) {
-                $this->maxResults = (int)$params[$maxResultsParam] ?? 20;
+                $this->maxResults = (int) $params[$maxResultsParam] ?? 20;
+
                 break;
             }
-            if (strtolower($params[$maxResultsParam]) === self::ALL_PARAMETER) {
+            if (self::ALL_PARAMETER === strtolower($params[$maxResultsParam])) {
                 $this->maxResults = null;
+
                 break;
             }
         }
 
         foreach (['page', 'currentPage'] as $pageParam) {
             if (array_key_exists($pageParam, $params)) {
-                $this->page = (int)$params[$pageParam] ?? 1;
+                $this->page = (int) $params[$pageParam] ?? 1;
+
                 break;
             }
         }
@@ -90,16 +65,13 @@ abstract class BasePaginator
         if (!empty($params['field'])) {
             try {
                 $this->sorting[] = new Sorting($params['field'], $params['direction']);
-            } catch (InvalidArgumentException) {}
+            } catch (InvalidArgumentException) {
+            }
         }
 
         return $this;
     }
 
-    /**
-     * @param bool $reset
-     * @return array
-     */
     private function doPaginate(bool $reset = false): array
     {
         $itemsCount = $this->getCount();
@@ -109,13 +81,9 @@ abstract class BasePaginator
             $this->reset();
         }
 
-        return [ $itemsCount, $records ];
+        return [$itemsCount, $records];
     }
 
-    /**
-     * @param bool $reset
-     * @return array
-     */
     public function paginate(bool $reset = false): array
     {
         list($itemsCount, $items) = $this->doPaginate($reset);
@@ -162,8 +130,8 @@ abstract class BasePaginator
 
         $pagination = [
             'last' => $pageCount,
-            'current' => (int)$current, // @deprecated: use currentPage as this will be removed in future
-            'currentPage' => (int)$current,
+            'current' => (int) $current, // @deprecated: use currentPage as this will be removed in future
+            'currentPage' => (int) $current,
             'numItemsPerPage' => $this->maxResults ?? ucfirst(self::ALL_PARAMETER), // @deprecated: use pageSize as this will be removed in future
             'pageSize' => $this->maxResults ?? ucfirst(self::ALL_PARAMETER),
             'first' => 1,
@@ -171,14 +139,14 @@ abstract class BasePaginator
             'totalCount' => $itemsCount, // @deprecated: use totalItems as this will be removed in future
             'totalItems' => $itemsCount,
             'pageRange' => $pageRange,
-            'startPage' => (int)$startPage,
-            'endPage' => (int)$endPage,
+            'startPage' => (int) $startPage,
+            'endPage' => (int) $endPage,
             'route' => $this->route,
             'routeParams' => $this->routeParams,
             'query' => $this->queryFilter,
             'pageParameterName' => 'page',
             'sorting' => $this->sorting, // ToDo: check the template paginator how will handle this..
-            'sort' => [] // deprecated: will be removed after the macros sync
+            'sort' => [], // deprecated: will be removed after the macros sync
         ];
 
         if ($current - 1 > 0) {
@@ -195,31 +163,27 @@ abstract class BasePaginator
 
         $pagination['currentItemCount'] = $itemsCount;
         $pagination['firstItemNumber'] = $this->maxResults ? (($current - 1) * $this->maxResults) + 1 : 1;
-        $pagination['lastItemNumber'] =  $pagination['firstItemNumber'] + $pagination['currentItemCount'] - 1;
+        $pagination['lastItemNumber'] = $pagination['firstItemNumber'] + $pagination['currentItemCount'] - 1;
 
         return [
             'items' => $this->itemNormalizer ? array_map($this->itemNormalizer, $items) : $items,
-            'pagination' => $pagination
+            'pagination' => $pagination,
         ];
     }
 
-    /**
-     * @param bool $reset
-     * @return array
-     */
     public function paginateShort(bool $reset = false): array
     {
         list($itemsCount, $items) = $this->doPaginate($reset);
 
         $pagination = [
-            'currentPage' => (int)$this->page,
+            'currentPage' => (int) $this->page,
             'pageSize' => $this->maxResults ?? ucfirst(self::ALL_PARAMETER),
             'totalItems' => $itemsCount,
         ];
 
         return [
             'items' => $this->itemNormalizer ? array_map($this->itemNormalizer, $items) : $items,
-            'pagination' => $pagination
+            'pagination' => $pagination,
         ];
     }
 
@@ -227,40 +191,33 @@ abstract class BasePaginator
     {
     }
 
-    /**
-     * @return int|null
-     */
     public function getPage(): ?int
     {
         return $this->page;
     }
 
     /**
-     * @param int $page
      * @return $this
      */
     public function setPage(int $page): BasePaginator
     {
         $this->page = $page;
+
         return $this;
     }
 
-    /**
-     * @return int|null
-     */
     public function getMaxResults(): ?int
     {
         return $this->maxResults;
     }
 
     /**
-     * @param int|string $maxResults
      * @return $this
      */
     public function setMaxResults(int|string $maxResults): BasePaginator
     {
-        if (strtolower($maxResults) !== self::ALL_PARAMETER) {
-            $this->maxResults = (int)$maxResults;
+        if (self::ALL_PARAMETER !== strtolower($maxResults)) {
+            $this->maxResults = (int) $maxResults;
         } else {
             $this->maxResults = null;
         }
@@ -278,9 +235,10 @@ abstract class BasePaginator
 
     /**
      * @param array|Sorting|Sorting[] $sorting
-     *  - array of Sorting instances
-     *  - single Sorting instance
-     *  - array in format ['field', 'direction']
+     *                                         - array of Sorting instances
+     *                                         - single Sorting instance
+     *                                         - array in format ['field', 'direction']
+     *
      * @return $this
      */
     public function setSorting(Sorting|array $sorting): BasePaginator
@@ -290,30 +248,30 @@ abstract class BasePaginator
             foreach ($sorting as $sort) {
                 try {
                     $this->sorting[] = $this->normalizeSort($sort);
-                } catch (InvalidArgumentException) {}
+                } catch (InvalidArgumentException) {
+                }
             }
         } else {
             try {
                 $this->sorting[] = $this->normalizeSort($sorting);
-            } catch (InvalidArgumentException) {}
+            } catch (InvalidArgumentException) {
+            }
         }
 
         return $this;
     }
 
     /**
-     * @param Sorting $sorting
      * @return $this
      */
     public function addSorting(Sorting $sorting): BasePaginator
     {
         $this->sorting[] = $sorting;
+
         return $this;
     }
 
     /**
-     * @param $sort
-     * @return Sorting
      * @throws InvalidArgumentException
      */
     private function normalizeSort($sort): Sorting
@@ -324,49 +282,35 @@ abstract class BasePaginator
 
         if (is_array($sort)) {
             list($field, $direction) = array_values($sort);
+
             return new Sorting($field, $direction);
         }
 
         throw new InvalidArgumentException("Value \"$sort\" is not a valid Sorting");
     }
 
-    /**
-     * @return int
-     */
     public function getFirstResult(): int
     {
         if (!$this->maxResults) {
             return 0;
         }
 
-        return ($this->page == 1) ? 0 : ($this->page - 1) * $this->maxResults;
+        return (1 == $this->page) ? 0 : ($this->page - 1) * $this->maxResults;
     }
 
-    /**
-     * @return Closure|null
-     */
     public function getItemNormalizer(): ?Closure
     {
         return $this->itemNormalizer;
     }
 
-    /**
-     * @param Closure|null $itemNormalizer
-     * @return BasePaginator
-     */
     public function setItemNormalizer(?Closure $itemNormalizer): BasePaginator
     {
         $this->itemNormalizer = $itemNormalizer;
+
         return $this;
     }
 
-    /**
-     * @return int
-     */
     abstract public function getCount(): int;
 
-    /**
-     * @return array
-     */
     abstract public function getRecords(): array;
 }
